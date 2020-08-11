@@ -1,3 +1,12 @@
+<!--
+TODO:
+<button>
+- 审核申请
+- 设为管理员
+- 取消管理员
+- 踢出团队
+-->
+
 <template>
   <el-container>
     <el-header>
@@ -91,8 +100,6 @@ export default {
           memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
         },
       ], // memberType: 0 创建者，1 管理员，2 成员
-
-      isInTeam: true,
     };
   },
   methods: {
@@ -117,34 +124,22 @@ export default {
         memberAvatar: "",
       };
       if (res.data.result == true) {
-        // creator
-        tmpMemberInfo.memberId = res.data.creatorId;
-        tmpMemberInfo.memberUrl = generateUserUrl(tmpMemberInfo.memberId);
-        tmpMemberInfo.memberType = 0;
-        GetUserInfo(res.data.creatorId).then((res2) => {
-          tmpMemberInfo.memberUsername = res2.data.username;
-          tmpMemberInfo.memberAvatar = res2.data.avatar;
-        });
-        this.memberInfo.push(tmpMemberInfo);
-
-        // admin
+        var idArray = [{ id: res.data.creatorId, type: 0 }];
         for (var tmpId in res.data.adminId) {
-          tmpMemberInfo.memberId = tmpId;
-          tmpMemberInfo.memberUrl = generateUserUrl(tmpId);
-          tmpMemberInfo.memberType = 1;
-          GetUserInfo(tmpId).then((res2) => {
-            tmpMemberInfo.memberUsername = res2.data.username;
-            tmpMemberInfo.memberAvatar = res2.data.avatar;
-          });
-          this.memberInfo.push(tmpMemberInfo);
+          idArray.push({ id: tmpId, type: 1 });
+        }
+        for (var tmpId in res.data.memberId) {
+          idArray.push({ id: tmpId, type: 2 });
         }
 
-        // member
-        for (var tmpId in res.data.memberId) {
-          tmpMemberInfo.memberId = tmpId;
-          tmpMemberInfo.memberUrl = generateUserUrl(tmpId);
-          tmpMemberInfo.memberType = 2;
-          GetUserInfo(tmpId).then((res2) => {
+        var tmpObj = { tmpId: "", tmpType: 0 };
+        for (tmpObj in idArray) {
+          if (tmpObj.tmpId == this.userId) this.userTypeInTeam = tmpObj.tmpType;
+
+          tmpMemberInfo.memberId = tmpObj.tmpId;
+          tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.tmpId);
+          tmpMemberInfo.memberType = tmpObj.tmpType;
+          GetUserInfo(tmpObj.tmpId).then((res2) => {
             tmpMemberInfo.memberUsername = res2.data.username;
             tmpMemberInfo.memberAvatar = res2.data.avatar;
           });
