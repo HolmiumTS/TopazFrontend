@@ -4,10 +4,10 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  //用status表示登录状态:-1为未登录,0为已登录
+  //用status表示登录状态:-1为未登录,0为已登录主界面,1为团队界面
   state: {
     // status: '0', // debug
-    status: '-1',
+    status: '0',
     userId: '',
     username: '',
     avatar: ''
@@ -24,17 +24,20 @@ const store = new Vuex.Store({
       state.userId = state.username = state.avatar = '';
     },
     ChangeStatus(state, status) {
+      console.log(status)
       state.status = status
+      console.log(state.status)
     }
   },
   actions: {
-    commitLogin({ commit, userId, username, avatar }) {
+    commitLogin({ commit }, userId, username, avatar) {
       commit('Login', userId, username, avatar)
     },
     commitLogout({ commit }) {
       commit('Logout')
     },
-    commitChangeStatus({ commit, status }) {
+    commitChangeStatus({ commit }, status) {
+      console.log(status)
       commit('ChangeStatus', status)
     }
   },

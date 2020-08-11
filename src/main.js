@@ -5,6 +5,8 @@ import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.config.productionTip = false;
 
@@ -17,7 +19,7 @@ axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 Vue.use(ElementUI);
-
+Vue.use(mavonEditor)
 /*
 接口日志:
   8月10日:

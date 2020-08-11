@@ -14,6 +14,7 @@ export default {
   methods: {
     goBack() {
       // 返回到 '我的团队'
+      this.$store.dispatch("commitChangeStatus", "0");
       this.$router.push("/home");
     },
   },
