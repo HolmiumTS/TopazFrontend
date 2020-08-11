@@ -5,8 +5,8 @@ import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
-import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import mavonEditor from 'mavon-editor';
+import 'mavon-editor/dist/css/index.css';
 
 Vue.config.productionTip = false;
 
@@ -22,10 +22,10 @@ Vue.use(ElementUI);
 
 // 待定
 export const generateUserUrl = (id) => {
-  return "http://60.205.189.66/user/" + id;
-}
+  return 'http://60.205.189.66/user/' + id;
+};
 
-Vue.use(mavonEditor)
+Vue.use(mavonEditor);
 /*
 接口日志:
   8月10日:
@@ -38,7 +38,10 @@ Vue.use(mavonEditor)
       修改头像,
       修改密码,
       查看团队信息,
-      查看团队成员
+      查看团队成员，
+      设置管理员，
+      取消管理员，
+      获取团队所有申请
 */
 
 // ! === 个人 === (begin)
@@ -131,6 +134,11 @@ export /**
   return axios.post('GetTeamInfo', params);
 };
 
+// TODO: 考虑第二次迭代时换成
+// {创建者id, 创建者用户名，创建者头像},
+// {管理员id，管理员用户名，管理员头像}[]，
+// {成员id，成员用户名，成员头像}[]
+// 的形式
 export /**
  * 查看团队成员
  * @param {teamId}
@@ -140,6 +148,48 @@ export /**
  */ const GetTeamMember = (params) => {
   return axios.post('GetTeamMember', params);
 };
+
+export /**
+ * 设置管理员
+ * @param {teamId, id}
+ * 团队id，管理员id
+ * @returns {result}
+ * 是否成功
+ */ const SetAdmin = (params) => {
+  return axios.post('SetAdmin', params);
+};
+
+export /**
+ * 取消管理员
+ * @param {teamId, id}
+ * 团队id，管理员id
+ * @returns {result}
+ * 是否成功
+ */ const CancelAdmin = (params) => {
+  return axios.post('CancelAdmin', params);
+};
+
+export /**
+ * 获取团队所有申请
+ * @param {teamId}
+ * 团队id
+ * @returns {result, application}
+ * 其中 application 为 {id, username, avatar}[] 数组
+ * 是否成功，{申请人id，申请人用户名，申请人头像}的数组
+ */ const GetAllApplication = (params) => {
+  return axios.post('GetAllApplication', params);
+};
+
+export /**
+ * 审核加入团队申请
+ * @param {teamId, id, isAccept}
+ * 团队id, 用户id，是否同意（字符串形式的 true OR false）
+ * @returns {result}
+ * 是否成功
+ */ const JudgeApplication = (params) => {
+  return axios.post('JudgeApplication', params);
+};
+
 // ! === 团队 === (end)
 
 //todo: 导航守卫

@@ -244,7 +244,7 @@ export default {
               });
             } else {
               this.$message.error({
-                message: "密码修改失败,请稍后再试",
+                message: "密码修改失败，请稍后再试",
               });
             }
           });

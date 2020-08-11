@@ -1,6 +1,7 @@
 <!--
 完成了团队信息的基本展示
 -->
+<!-- Todo: 添加`分享团队`功能 -->
 <template>
   <el-container>
     <el-main>
