@@ -1,9 +1,10 @@
 <template>
   <el-row class="header">
-    <el-col :span="3">
-      <h3 style="margin: 12px auto">金刚石文档</h3>
+    <el-col :span="2" style="margin: 0px 0px">
+      <img src="../assets/Topaz.png" alt />
+      <!--<h3 style="margin: 12px auto">金刚石文档</h3>-->
     </el-col>
-    <el-col :span="1" :offset="19">
+    <el-col :span="1" :offset="20">
       <p style="margin: 18px auto" class="el-icon-bell"></p>
     </el-col>
     <el-col :span="1">
