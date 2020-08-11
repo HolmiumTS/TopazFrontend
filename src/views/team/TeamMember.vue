@@ -22,17 +22,9 @@
         </el-table-column>
         <el-table-column label="操作" width="300">
           <template slot-scope="scope">
-            <el-button
-              type="primary"
-              plain
-              v-if="userTypeInTeam==0&&scope.row.memberType==2"
-            >设为管理员</el-button>
+            <el-button type="primary" plain v-if="userTypeInTeam==0&&scope.row.memberType==2">设为管理员</el-button>
 
-            <el-button
-              type="warning"
-              plain
-              v-if="userTypeInTeam==0&&scope.row.memberType==1"
-            >取消管理员</el-button>
+            <el-button type="warning" plain v-if="userTypeInTeam==0&&scope.row.memberType==1">取消管理员</el-button>
 
             <el-button
               type="success"
@@ -50,6 +42,7 @@
 </template>
 
 <script>
+import { GetTeamMember, generateUserUrl, GetUserInfo } from "../../main";
 export default {
   data() {
     return {
@@ -60,13 +53,7 @@ export default {
         teamInfo: "955团队",
       },
       userId: "1",
-      userTypeInTeam: "0",
-      userInfo: {
-        username: "",
-        tel: null,
-        email: "",
-        avatar: "",
-      },
+      userTypeInTeam: 0, //  0 创建者，1 管理员，2 成员，3 团队外用户
       memberInfo: [
         {
           memberId: "1",
@@ -113,6 +100,62 @@ export default {
       // 返回到 '我的团队'
       this.$router.push("/home");
     },
+  },
+  mounted() {
+    this.userId = this.$route.query.userId;
+    this.teamId = this.$route.query.teamId;
+    this.userTypeInTeam = "3";
+    let params = {
+      teamId: this.teamId,
+    };
+    GetTeamMember(params).then((res) => {
+      var tmpMemberInfo = {
+        memberId: "",
+        memberUrl: "",
+        memberUsername: "",
+        memberType: 0,
+        memberAvatar: "",
+      };
+      if (res.data.result == true) {
+        // creator
+        tmpMemberInfo.memberId = res.data.creatorId;
+        tmpMemberInfo.memberUrl = generateUserUrl(tmpMemberInfo.memberId);
+        tmpMemberInfo.memberType = 0;
+        GetUserInfo(res.data.creatorId).then((res2) => {
+          tmpMemberInfo.memberUsername = res2.data.username;
+          tmpMemberInfo.memberAvatar = res2.data.avatar;
+        });
+        this.memberInfo.push(tmpMemberInfo);
+
+        // admin
+        for (var tmpId in res.data.adminId) {
+          tmpMemberInfo.memberId = tmpId;
+          tmpMemberInfo.memberUrl = generateUserUrl(tmpId);
+          tmpMemberInfo.memberType = 1;
+          GetUserInfo(tmpId).then((res2) => {
+            tmpMemberInfo.memberUsername = res2.data.username;
+            tmpMemberInfo.memberAvatar = res2.data.avatar;
+          });
+          this.memberInfo.push(tmpMemberInfo);
+        }
+
+        // member
+        for (var tmpId in res.data.memberId) {
+          tmpMemberInfo.memberId = tmpId;
+          tmpMemberInfo.memberUrl = generateUserUrl(tmpId);
+          tmpMemberInfo.memberType = 2;
+          GetUserInfo(tmpId).then((res2) => {
+            tmpMemberInfo.memberUsername = res2.data.username;
+            tmpMemberInfo.memberAvatar = res2.data.avatar;
+          });
+          this.memberInfo.push(tmpMemberInfo);
+        }
+      } else {
+        this.$message.error({
+          message: "无法获取团队成员",
+        });
+      }
+    });
   },
 };
 </script>
