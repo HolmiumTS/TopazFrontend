@@ -4,8 +4,11 @@
       <img src="../assets/Topaz.png" alt />
       <!--<h3 style="margin: 12px auto">金刚石文档</h3>-->
     </el-col>
-    <el-col :span="1" :offset="20">
-      <p style="margin: 18px auto" class="el-icon-bell"></p>
+    <el-col :span="2" :offset="19">
+      <i>
+        <el-button type="info" size="small" @click.native.prevent="newFile">创建文档</el-button>
+      </i>
+      <i style="margin: 16px 30px" class="el-icon-bell"></i>
     </el-col>
     <el-col :span="1">
       <el-dropdown>
@@ -50,6 +53,9 @@ export default {
     Logout() {
       this.$store.dispatch("commitLogout");
       this.$router.push("/login");
+    },
+    newFile() {
+      //todo
     },
   },
   mounted() {},

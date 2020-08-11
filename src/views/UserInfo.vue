@@ -19,14 +19,12 @@
           <td>邮箱:</td>
           <td align="left">{{userInfo.email}}</td>
         </tr>
-        <tr v-if="isMyself()">
-          <td>密码:</td>
-          <td type="password" align="left">12345678</td>
-        </tr>
       </table>
-      <el-button @click.native.prevent="dis0=true">修改个人信息</el-button>
-      <el-button @click.native.prevent="dis1=true">修改密码</el-button>
-      <el-button @click.native.prevent="dis2=true">修改头像</el-button>
+      <span v-if="this.$store.state.userId == this.userId">
+        <el-button @click.native.prevent="dis0=true">修改个人信息</el-button>
+        <el-button @click.native.prevent="dis1=true">修改密码</el-button>
+        <el-button @click.native.prevent="dis2=true">修改头像</el-button>
+      </span>
       <el-dialog :visible.sync="dis0" title="修改个人信息">
         <el-form
           :model="changeUserInfoForm"
@@ -279,7 +277,7 @@ export default {
 
 <style scoped>
 .userinfo {
-  margin: auto auto;
+  margin: 2% auto;
   background: #fff;
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;

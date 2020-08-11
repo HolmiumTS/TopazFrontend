@@ -6,7 +6,7 @@
       </el-header>
       <el-container>
         <el-aside v-if="show" width="200px">
-          <asiderly></asiderly>
+          <asiderly style="height:90vh"></asiderly>
         </el-aside>
         <el-main>
           <transition name="el-zoom-in-center">
@@ -31,8 +31,8 @@ export default {
   },
   computed: {
     show() {
-      //return this.$store.state.status != "-1";
-      return true;
+      return this.$store.state.status != "-1";
+      //return true;
     },
   },
 };

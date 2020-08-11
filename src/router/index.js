@@ -19,16 +19,6 @@ const routes = [
     component: () => import('../views/Register.vue')
   },
   {
-    path: '/home',
-    name: '主界面',
-    component: () => import('../views/Home.vue')
-  },
-  {
-    path: '/workbench',
-    name: '工作台',
-    component: () => import('../views/Workbench.vue')
-  },
-  {
     path: '/recyclebin',
     name: '回收站',
     component: () => import('../views/Recyclebin.vue')
@@ -39,10 +29,38 @@ const routes = [
     component: () => import('../views/UserInfo.vue')
   },
   {
+    path: '/doc',
+    name: '文档',
+    component: () => import('../views/Doc.vue')
+  },
+  {
+    path: '/home',
+    name: '主界面',
+    redirect: '/nome/recentFile',
+    component: () => import('../views/Home.vue'),
+    hasChild: true,
+    children: [
+      {
+        path: '/home/recentFile',
+        name: '最近浏览的文档',
+        component: () => import('../views/home/RecentFile.vue'),
+      },
+      {
+        path: '/home/collectedFile',
+        name: '收藏的文档',
+        component: () => import('../views/home/CollectedFile.vue'),
+      },
+      {
+        path: '/home/myFile',
+        name: '我创建的文档',
+        component: () => import('../views/home/MyFile.vue'),
+      },
+    ]
+  },
+  {
     path: '/team',
     name: '团队',
     redirect: '/team/doc',
-    type: '0',
     component: () => import('../views/Team.vue'),
     hasChild: true,
     children: [
