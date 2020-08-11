@@ -3,29 +3,31 @@
     :default-active="$route.path"
     class="el-menu-vertical-demo"
     router
-    @open="handleOpen"
-    @close="handleClose"
     @select="handleSelect"
   >
-    <!-- todo: 把v-for改成确定的菜单项 -->
-    <template v-for="route in $router.options.routes">
-      <template v-if="route.type==status">
-        <el-menu-item v-if="!route.hasChild" :key="route.path" :index="route.path">{{ route.name }}</el-menu-item>
-        <template v-else>
-          <el-menu-item
-            v-for="child in route.children"
-            :key="child.path"
-            :index="child.path"
-          >{{ child.name }}</el-menu-item>
-        </template>
+    <el-menu-item index="workbench">
+      <i class="el-icon-s-platform"></i>
+      <span slot="title">工作台</span>
+    </el-menu-item>
+    <el-submenu>
+      <template slot="title">团队空间</template>
+      <template v-for="team in teams">
+        <el-menu-item :key="team.id" :index="team.name">{{team.name}}</el-menu-item>
       </template>
-    </template>
+    </el-submenu>
+    <el-menu-item index="recyclebin">
+      <i class="el-icon-delete-solid"></i>
+      <span slot="title">回收站</span>
+    </el-menu-item>
   </el-menu>
 </template>
 <script>
+import { GetUserTeam } from "../main";
 export default {
   data() {
-    return {};
+    return {
+      teams: {id:'01',name:'all'},
+    };
   },
   computed: {
     status() {
@@ -36,6 +38,11 @@ export default {
     handleSelect(key, index) {
       this.$router.push(index);
     },
+  },
+  mounted() {
+    GetUserTeam(this.$store.status.userId).then((res) => {
+      this.team = res.data.teams;
+    });
   },
 };
 </script>

@@ -57,8 +57,8 @@ export /**
   * 查看个人所在团队
   * @param {id}
   * 用户id
-  * @returns {joinedTeam[]}
-  * 团队id[]
+  * @returns {teams[{id, name}]}
+  * 团队[{团队id, 团队名称}]
   */
   const GetUserTeam = (params) => {
     return axios.post('/GetUserTeam', params);

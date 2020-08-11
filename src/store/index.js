@@ -21,6 +21,9 @@ const store = new Vuex.Store({
     Logout(state) {
       state.status = '-1';
       state.userId = state.username = state.avatar = '';
+    },
+    ChangeStatus(state, status) {
+      state.status = status
     }
   },
   actions: {
@@ -29,6 +32,9 @@ const store = new Vuex.Store({
     },
     commitLogout({ commit }) {
       commit('Logout')
+    },
+    commitChangeStatus({ commit, status }) {
+      commit('ChangeStatus', status)
     }
   },
   modules: {

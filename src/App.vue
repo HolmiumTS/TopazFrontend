@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-header v-if="show">
+    <el-container style="height:95vh">
+      <el-header v-if="show" style="z-index:1">
         <headerly></headerly>
       </el-header>
       <el-container>
@@ -31,8 +31,8 @@ export default {
   },
   computed: {
     show() {
-      return this.$store.state.status != "-1";
-      //return true;
+      //return this.$store.state.status != "-1";
+      return true;
     },
   },
 };
