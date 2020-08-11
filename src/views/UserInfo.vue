@@ -280,7 +280,6 @@ export default {
 <style scoped>
 .userinfo {
   margin: auto auto;
-  
   background: #fff;
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;

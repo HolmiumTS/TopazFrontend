@@ -4,7 +4,7 @@
 <template>
   <el-container>
     <el-main>
-      <el-page-header @back="goBack" :content="aboutTeam.teamName"></el-page-header>
+      <el-page-header @back="goBack" content="团队信息"></el-page-header>
       <table border="0" cellspacing="20" style="margin:0 auto;">
         <tr>
           <td>团队名称：</td>
@@ -18,7 +18,14 @@
           <td>团队创建者：</td>
           <td>
             <el-link :underline="false" :href="creatorInfo.creatorUrl">
-              <el-avatar :src="creatorInfo.creatorAvatar" :alt="creatorInfo.creatorUsername"></el-avatar>
+              <el-tooltip
+                class="item"
+                effect="light"
+                :content="creatorInfo.creatorUsername"
+                placement="top"
+              >
+                <el-avatar :src="creatorInfo.creatorAvatar" :alt="creatorInfo.creatorUsername"></el-avatar>
+              </el-tooltip>
             </el-link>
           </td>
         </tr>
@@ -47,6 +54,7 @@ export default {
       },
       creatorInfo: {
         creatorUrl: "https://www.baidu.com",
+        creatorUsername: "一个普通的创建者",
         creatorAvatar: "https://i.loli.net/2020/08/11/mfBdpDUIsJChLGM.png",
       },
       isInTeam: false,
@@ -64,6 +72,7 @@ export default {
       GetUserInfo(params).then((res) => {
         if (res.data.result == true) {
           this.creatorInfo.creatorUrl = "www.baidu.com"; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
+          this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
         } else {
           this.$message.error({
