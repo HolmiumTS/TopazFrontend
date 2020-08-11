@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   //用status表示登录状态:-1为未登录,0为已登录
   state: {
+    // status: '0', // debug
     status: '-1',
     userId: '',
     username: '',

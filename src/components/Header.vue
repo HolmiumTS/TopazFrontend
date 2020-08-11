@@ -1,25 +1,18 @@
 <template>
   <el-row class="header">
-    <el-col :span="2">
-    </el-col>
-    <el-col :span="18">
-    </el-col>
-    <el-col :span="4">
-    </el-col>
+    <el-col :span="2"></el-col>
+    <el-col :span="18"></el-col>
+    <el-col :span="4"></el-col>
   </el-row>
 </template>
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
-  computed: {
-  },
-  methods: {
-  },
-  mounted() {
-  }
+  computed: {},
+  methods: {},
+  mounted() {},
 };
 </script>
 <style scoped>
