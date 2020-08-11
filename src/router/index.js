@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/login',
   },
   {
     path: '/login',
@@ -29,11 +29,6 @@ const routes = [
     component: () => import('../views/Workbench.vue')
   },
   {
-    path: '/teamspace',
-    name: '团队空间',
-    component: () => import('../views/Teamspace.vue')
-  },
-  {
     path: '/recyclebin',
     name: '回收站',
     component: () => import('../views/Recyclebin.vue')
@@ -43,12 +38,37 @@ const routes = [
     name: '用户信息',
     component: () => import('../views/UserInfo.vue')
   },
-]
+  {
+    path: '/team',
+    name: '团队',
+    redirect: '/team/doc',
+    type: '0',
+    component: () => import('../views/Team.vue'),
+    hasChild: true,
+    children: [
+      {
+        path: '/team/doc',
+        name: '团队文档',
+        component: () => import('../views/team/TeamDoc.vue'),
+      },
+      {
+        path: '/team/member',
+        name: '团队成员',
+        component: () => import('../views/team/TeamMember.vue'),
+      },
+      {
+        path: '/team/info',
+        name: '团队信息',
+        component: () => import('../views/team/TeamInfo.vue'),
+      },
+    ],
+  },
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
