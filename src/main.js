@@ -35,7 +35,7 @@ export const generateUserUrl = (id) => {
 
 export const generateTeamUrl = (id) => {
   return 'http://60.205.189.66/team/info?teamId=' + id;
-}
+};
 
 Vue.use(mavonEditor);
 /*
@@ -154,12 +154,6 @@ export /**
     return axios.post('/GetTeamInfo', params);
   };
 
-// TODO: 考虑第二次迭代时换成
-// {创建者id, 创建者用户名，创建者头像},
-// {管理员id，管理员用户名，管理员头像}[]，
-// {成员id，成员用户名，成员头像}[]
-// 的形式
-
 export /**
  * 搜索团队
  * @param {id,keyword}
@@ -181,6 +175,11 @@ export /**
     return axios.post('/ApplyToTeam', params);
   };
 
+// TODO: 考虑第二次迭代时换成
+// {创建者id, 创建者用户名，创建者头像},
+// {管理员id，管理员用户名，管理员头像}[]，
+// {成员id，成员用户名，成员头像}[]
+// 的形式
 export /**
  * 查看团队成员
  * @param {teamId}
@@ -239,7 +238,7 @@ export /**
  * @returns {result}
  * 是否成功
  */ const KickOff = (params) => {
-    return axios.post('KickOff', params);
+    return axios.post('/KickOff', params);
   };
 
 export /**
@@ -249,7 +248,7 @@ export /**
  * @returns {result}
  * 是否成功
  */ const DissolveTeam = (params) => {
-    return axios.post('DissolveTeam', params);
+    return axios.post('/DissolveTeam', params);
   };
 
 export /**
@@ -259,7 +258,7 @@ export /**
  * @returns {result}
  * 是否成功
  */ const JoinTeam = (params) => {
-    return axios.post('JoinTeam', params);
+    return axios.post('/JoinTeam', params);
   };
 
 export /**
@@ -269,7 +268,7 @@ export /**
  * @returns {result}
  * 是否成功
  */ const QuitTeam = (params) => {
-    return axios.post('QuitTeam', params);
+    return axios.post('/QuitTeam', params);
   };
 // ! === 团队 === (end)
 
@@ -283,7 +282,7 @@ export /**
  * @returns {result}
  * 是否成功
  */ const NewFile = (params) => {
-    return axios.post('NewFile', params);
+    return axios.post('/NewFile', params);
   };
 
 export /**
@@ -293,7 +292,7 @@ export /**
   * @returns {}
   * 待定
   */ const GetFile = (params) => {
-    return axios.post('GetFile', params);
+    return axios.post('/GetFile', params);
   };
 // ! === 文档 === (end)
 

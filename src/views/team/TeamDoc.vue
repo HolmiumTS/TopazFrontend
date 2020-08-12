@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-page-header @back="goBack" :content="teamName"></el-page-header>
+    <h2>团队文档</h2>
   </el-main>
 </template>
 
@@ -11,6 +11,7 @@ export default {
       teamName: "Topaz Team", // for test
     };
   },
+<<<<<<< HEAD
   methods: {
     goBack() {
       // 返回
@@ -18,6 +19,9 @@ export default {
       this.$router.push("/home");
     },
   },
+=======
+  methods: {},
+>>>>>>> origin/dev
 };
 </script>
 

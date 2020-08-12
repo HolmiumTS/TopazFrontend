@@ -5,10 +5,8 @@ TODO:
 
 <template>
   <el-container>
-    <el-header>
-      <el-page-header @back="goBack" content="团队成员"></el-page-header>
-    </el-header>
     <el-main class="teamMember">
+      <h2>团队成员</h2>
       <el-table height="600" :data="memberInfo" stripe style="width: 100%">
         <el-table-column label="用户" width="400">
           <template slot-scope="scope">
@@ -153,11 +151,6 @@ export default {
     };
   },
   methods: {
-    goBack() {
-      // 返回到 '我的团队'
-      this.$router.push("/home");
-    },
-
     getAllApplication() {
       this.dialogTableVisible = true;
       let params = {
@@ -291,10 +284,9 @@ export default {
     },
   },
 
-  // ! query{teamId}
   // mounted() {
   //   this.userId = this.$store.state.userId;
-  //   this.aboutTeam.teamId = this.$route.query.teamId;
+  //   this.aboutTeam.teamId = this.$store.state.teamId;
   //   this.userTypeInTeam = "3";
   //   let params = {
   //     teamId: this.teamId,
