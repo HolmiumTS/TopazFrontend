@@ -50,8 +50,6 @@ export default {
   },
   methods: {
     submit() {
-      this.$router.push("/home");
-      return;
       this.$refs.LoginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
