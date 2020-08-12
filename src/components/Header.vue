@@ -20,7 +20,7 @@
         <el-input
           style="margin: 10px 15%;width:100%;"
           v-model="sTeam"
-          placeholder="输入团队Id或团队名以搜索团队"
+          placeholder="输入团队ID或团队名称以搜索团队"
           clearable
           size="small"
         >

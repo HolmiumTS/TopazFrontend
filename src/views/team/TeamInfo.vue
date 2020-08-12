@@ -4,7 +4,7 @@
 <template>
   <el-container>
     <el-main class="teamInfo">
-      <el-page-header content="团队信息"></el-page-header>
+      <h2>团队信息</h2>
       <table border="0" cellspacing="20" style="margin:0 auto;">
         <tr>
           <td>团队名称：</td>

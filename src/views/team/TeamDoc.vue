@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-page-header :content="teamName"></el-page-header>
+    <h2>团队文档</h2>
   </el-main>
 </template>
 

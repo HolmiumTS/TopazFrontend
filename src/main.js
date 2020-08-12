@@ -244,16 +244,6 @@ export /**
 };
 
 export /**
- * 加入团队
- * @param {id, teamId}
- * 用户id, 团队id
- * @returns {result}
- * 是否成功
- */ const JoinTeam = (params) => {
-  return axios.post('/JoinTeam', params);
-};
-
-export /**
  * 退出团队
  * @param {id, teamId}
  * 用户id, 团队id
