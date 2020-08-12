@@ -88,7 +88,7 @@ export default {
     },
   },
   mounted() {
-    GetUserTeam(this.$store.status.userId).then((res) => {
+    GetUserTeam(this.$store.state.userId).then((res) => {
       this.teams = res.data.teams;
     });
   },

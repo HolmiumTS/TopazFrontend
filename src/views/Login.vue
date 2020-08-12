@@ -61,7 +61,7 @@ export default {
                 type: "success",
                 message: "登录成功",
               });
-              this.$$store.dispatch(
+              this.$store.dispatch(
                 "commitLogin",
                 res.data.id,
                 res.data.username,
