@@ -291,8 +291,9 @@ export default {
     },
   },
 
+  // ! query{teamId}
   // mounted() {
-  //   this.userId = this.$route.query.userId;
+  //   this.userId = this.$store.state.userId;
   //   this.aboutTeam.teamId = this.$route.query.teamId;
   //   this.userTypeInTeam = "3";
   //   let params = {

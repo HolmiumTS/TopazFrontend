@@ -85,11 +85,11 @@ export default {
       dis1: false,
       sFile: "",
       sTeam: "",
-      /*teams: [
+      teams: [
         { id: "001", name: "moyu", info: "955" },
         { id: "002", name: "baogan", info: "996" },
-      ],*/
-      teams: null,
+      ],
+      //teams: null,
     };
   },
   computed: {

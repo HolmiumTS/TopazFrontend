@@ -20,30 +20,39 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 Vue.use(ElementUI);
 
-// 待定
+// TODO: 待定
 export const generateUserUrl = (id) => {
-  return 'http://60.205.189.66/user/' + id;
+  return 'http://60.205.189.66/userInfo?userId=' + id;
 };
+
+export const generateTeamUrl = (id) => {
+  return 'http://60.205.189.66/team/info?teamId=' + id;
+}
 
 Vue.use(mavonEditor);
 /*
 接口日志:
   8月11日:
     新增:
-      用户登录,
-      用户注册,
-      查看个人所在团队,
-      查看个人信息,
-      修改个人信息,
-      修改头像,
-      修改密码,
-      查看团队信息,
+      用户登录，
+      用户注册，
+      查看个人所在团队，
+      查看个人信息，
+      修改个人信息，
+      修改头像，
+      修改密码，
+      查看团队信息，
       查看团队成员，
       设置管理员，
       取消管理员，
-      获取团队所有申请
-  8月12日:
-    新增:
+      获取团队所有申请，
+      审核申请，
+      踢出成员
+  8月11日：
+    新增：
+      解散团队，
+      加入团队，
+      退出团队，
       搜索团队
 */
 
@@ -215,6 +224,45 @@ export /**
     return axios.post('/JudgeApplication', params);
   };
 
+export /**
+ * 踢出团队
+ * @param {teamId, id}
+ * 团队id, 用户id
+ * @returns {result}
+ * 是否成功
+ */ const KickOff = (params) => {
+  return axios.post('KickOff', params);
+};
+
+export /**
+ * 解散团队
+ * @param {teamId}
+ * 团队id
+ * @returns {result}
+ * 是否成功
+ */ const DissolveTeam = (params) => {
+  return axios.post('DissolveTeam', params);
+};
+
+export /**
+ * 加入团队
+ * @param {id, teamId}
+ * 用户id, 团队id
+ * @returns {result}
+ * 是否成功
+ */ const JoinTeam = (params) => {
+  return axios.post('JoinTeam', params);
+};
+
+export /**
+ * 退出团队
+ * @param {id, teamId}
+ * 用户id, 团队id
+ * @returns {result}
+ * 是否成功
+ */ const QuitTeam = (params) => {
+  return axios.post('QuitTeam', params);
+};
 // ! === 团队 === (end)
 
 //todo: 导航守卫
