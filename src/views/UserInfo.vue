@@ -55,8 +55,8 @@
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="changeUserInfoForm.email" placeholder="邮箱"></el-input>
           </el-form-item>
-          <el-form-item label="昵称" prop="name">
-            <el-input v-model="changeUserInfoForm.name" placeholder="昵称"></el-input>
+          <el-form-item label="昵称" prop="username">
+            <el-input v-model="changeUserInfoForm.username" placeholder="昵称"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -118,15 +118,6 @@ import random from "string-random";
 export default {
   components: {},
   data() {
-    let oldPasswordCheck = (rule, value, callback) => {
-      if (value === "") {
-        return callback(new Error("旧密码不能为空"));
-      } else if (value !== this.userInfo.password) {
-        return callback(new Error("旧密码错误"));
-      } else {
-        return callback();
-      }
-    };
     let confirmpasswordCheck = (rule, value, callback) => {
       if (value === "") {
         return callback(new Error("确认密码不能为空"));
@@ -156,7 +147,7 @@ export default {
         passwordOld: [
           {
             required: true,
-            validator: oldPasswordCheck,
+            message: "旧密码不能为空",
             trigger: "blur",
           },
         ],
@@ -164,7 +155,7 @@ export default {
           {
             required: true,
             min: 6,
-            message: "密码不能为空,长度最少6位",
+            message: "新密码不能为空,长度最少6位",
             trigger: "blur",
           },
         ],
@@ -192,7 +183,7 @@ export default {
             trigger: "blur",
           },
         ],
-        name: [
+        username: [
           {
             required: true,
             message: "昵称不能为空",
@@ -229,8 +220,10 @@ export default {
       this.$refs.changeUserInfoForm.validate((valid) => {
         if (valid) {
           this.submiting = true;
-          this.changeUserInfoForm.tel = this.changeUserInfoForm.tel.toString();
-          ChangeUserInfo(this.changeUserInfoForm).then((res) => {
+          let params = this.changeUserInfoForm;
+          params.id = this.userId;
+          params.tel = params.tel.toString();
+          ChangeUserInfo(params).then((res) => {
             if (res.data.result == true) {
               this.$message({
                 type: "success",
@@ -413,6 +406,9 @@ export default {
       this.userInfo.tel = res.data.tel;
       this.userInfo.email = res.data.email;
       this.userInfo.avatar = res.data.avatar;
+      this.changeUserInfoForm.username = res.data.username;
+      this.changeUserInfoForm.tel = res.data.tel;
+      this.changeUserInfoForm.email = res.data.email;
     });
   },
 };
