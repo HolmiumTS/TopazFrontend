@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import { GetUserInfo } from "../main";
 import { ChangeUserInfo } from "../main";
 import { ChangeUserPassword } from "../main";
 import { ChangeUserAvatar } from "../main";
