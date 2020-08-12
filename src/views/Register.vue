@@ -129,15 +129,14 @@ export default {
                 type: "success",
                 message: "注册成功",
               });
-              res.data.username;
               this.$notify({
                 title: "您的账号是",
-                message: res.data.username,
+                message: res.data.id,
                 duration: 0,
               });
               this.$router.push("/login");
             } else {
-              console.log(res.data);
+              //console.log(res.data);
               this.$message.error({
                 message: "注册失败,请稍后再试",
               });

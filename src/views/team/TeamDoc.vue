@@ -11,17 +11,7 @@ export default {
       teamName: "Topaz Team", // for test
     };
   },
-<<<<<<< HEAD
-  methods: {
-    goBack() {
-      // 返回
-      this.$store.dispatch("commitChangeStatus", "0");
-      this.$router.push("/home");
-    },
-  },
-=======
-  methods: {},
->>>>>>> origin/dev
+  methods: {}
 };
 </script>
 
