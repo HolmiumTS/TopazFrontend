@@ -25,7 +25,7 @@
         <el-button @click.native.prevent="dis1=true">修改密码</el-button>
         <el-button @click.native.prevent="dis2=true">修改头像</el-button>
       </span>
-      <el-dialog :visible.sync="dis0" title="修改个人信息">
+      <el-dialog :visible.sync="dis0" title="修改个人信息" width="30%">
         <el-form
           :model="changeUserInfoForm"
           ref="changeUserInfoForm"
@@ -46,7 +46,7 @@
           <el-button type="primary" :loading="submiting" @click.native.prevent="submit0">确认</el-button>
         </div>
       </el-dialog>
-      <el-dialog :visible.sync="dis1" title="修改密码">
+      <el-dialog :visible.sync="dis1" title="修改密码" width="30%">
         <el-form
           :model="changeUserPasswordForm"
           ref="changeUserPasswordForm"
@@ -68,7 +68,7 @@
           <el-button type="primary" :loading="submiting" @click.native.prevent="submit1">确认</el-button>
         </div>
       </el-dialog>
-      <el-dialog :visible.sync="dis2" title="上传头像">
+      <el-dialog :visible.sync="dis2" title="上传头像" width="30%">
         <el-upload
           :multiple="true"
           list-type="picture-card"
@@ -97,6 +97,7 @@ import { ChangeUserInfo } from "../main";
 import { ChangeUserPassword } from "../main";
 import { ChangeUserAvatar } from "../main";
 import { genToken } from "../genToken";
+import random from "string-random";
 export default {
   components: {},
   data() {
@@ -128,6 +129,8 @@ export default {
       }
     };
     return {
+      actionPath: "https://upload.qiniup.com", // 华东
+      photoUrl: "http://qexiy12gt.hd-bkt.clouddn.com/", //外链域名
       dis0: false,
       dis1: false,
       dis2: false,
@@ -212,7 +215,6 @@ export default {
           this.changeUserInfoForm.tel = this.changeUserInfoForm.tel.toString();
           ChangeUserInfo(this.changeUserInfoForm).then((res) => {
             if (res.data.result == true) {
-              this.logining = false;
               this.$message({
                 type: "success",
                 message: "信息修改成功",
@@ -271,7 +273,7 @@ export default {
               });
             } else {
               this.$message.error({
-                message: "密码修改失败,请稍后再试",
+                message: "密码修改失败，请稍后再试",
               });
             }
           });
@@ -282,7 +284,41 @@ export default {
         }
       });
     },
-    submit2() {},
+    submit2() {
+      if (this.avatar.length == 1) {
+        this.submiting = true;
+        ChangeUserAvatar({
+          id: this.$store.state.userId,
+          avatar: this.avatar[0],
+        }).then((res) => {
+          if (res.data.result == true) {
+            this.$message({
+              type: "success",
+              message: "头像修改成功",
+            });
+            this.submiting = false;
+            this.$store.dispatch(
+              "commitLogin",
+              this.userId,
+              this.$store.state.username,
+              this.avatar[0]
+            );
+            this.dis2 = false;
+            this.mounted();
+            this.$router.push({
+              path: "/userInfo",
+              query: {
+                userId: this.$store.state.userId,
+              },
+            });
+          } else {
+            this.$message.error("修改头像失败, 请稍后再试");
+          }
+        });
+      } else {
+        this.$message.error("请上传新头像");
+      }
+    },
     goBack() {
       this.$router.go(-1);
     },
@@ -305,8 +341,8 @@ export default {
       return checkFileType && checkFileSize;
     },
     handleSuccess(response) {
-      this.complaintForm.pic.push(this.photoUrl + response.key);
-      console.log(this.complaintForm.pic);
+      this.avatar.push(this.photoUrl + response.key);
+      console.log(this.avatar);
     },
     handleRemove(file) {
       Array.prototype.remove = function (val) {
@@ -318,14 +354,14 @@ export default {
 
       if (file.url) {
         let removePicture = file.url.substr(file.url.lastIndexOf("/"));
-        this.complaintForm.pic.remove(removePicture);
-        if (!this.complaintForm.pic.length) {
+        this.avatar.remove(removePicture);
+        if (!this.avatar.length) {
           this.hasFmt = false;
           this.$refs.image.validate();
         }
       }
       if (file.response.key) {
-        this.complaintForm.pic.remove(this.photoUrl + file.response.key);
+        this.avatar.remove(this.photoUrl + file.response.key);
       }
     },
     handleExceed() {
@@ -335,19 +371,16 @@ export default {
   created() {
     var token;
     var policy = {};
-    // var bucketName = "21push";
-    // var AK = "K96MCAU7eCnSWz4XUbxIBe9Q9PUm_gBHfacmsAEf";
-    // var SK = "g0eagx-yjztmAo0iVi-Nj8QrsCRGrKhdGKIjpVr9";
-    var bucketName = "21push";
-    var AK = "slnMazKaSrCowN_nA5Y4i0QwFo62AaZKZQ8h2xOj";
-    var SK = "wh8pr5uMd8_SNCxdGZvEh8-Hzy11swN6UaXwhlCF";
-    var deadline = 1594028031; // 2020-07-06
+    var bucketName = "domaint";
+    var AK = "K96MCAU7eCnSWz4XUbxIBe9Q9PUm_gBHfacmsAEf";
+    var SK = "g0eagx-yjztmAo0iVi-Nj8QrsCRGrKhdGKIjpVr9";
+    var deadline = 1599840000; // 2020-07-06
     policy.scope = bucketName;
     policy.deadline = deadline;
     token = genToken(AK, SK, policy);
     this.postData.token = token;
 
-    //console.log("token = " + token);
+    console.log("token = " + token);
   },
   mounted() {
     GetUserInfo(this.$route.query.userId).then((res) => {
