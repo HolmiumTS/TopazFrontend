@@ -68,6 +68,26 @@
           <el-button type="primary" :loading="submiting" @click.native.prevent="submit1">确认</el-button>
         </div>
       </el-dialog>
+      <el-dialog :visible.sync="dis2" title="上传头像">
+        <el-upload
+          :multiple="true"
+          list-type="picture-card"
+          :on-remove="handleRemove"
+          :action="actionPath"
+          accept="image/jpeg, image/png, image/jpg"
+          :before-upload="beforeUpload"
+          :data="postData"
+          :file-list="avatar"
+          :on-success="handleSuccess"
+          :on-exceed="handleExceed"
+          :limit="1"
+        >
+          <i class="el-icon-plus"></i>
+        </el-upload>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click.native.prevent="submit2">确认</el-button>
+        </div>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -75,6 +95,8 @@
 <script>
 import { ChangeUserInfo } from "../main";
 import { ChangeUserPassword } from "../main";
+import { ChangeUserAvatar } from "../main";
+import { genToken } from "../genToken";
 export default {
   components: {},
   data() {
@@ -159,6 +181,11 @@ export default {
         ],
       },
       userId: "",
+      avatar: [],
+      postData: {
+        token: "",
+        key: "",
+      },
       userInfo: {
         username: "",
         tel: null,
@@ -262,6 +289,65 @@ export default {
     isMyself() {
       return this.$store.state.userId == this.userId;
     },
+    beforeUpload(file) {
+      const checkFileType =
+        file.type === "image/jpeg" ||
+        file.type === "image/jpg" ||
+        file.type === "image/png";
+      const checkFileSize = file.size / 1024 / 1024 < 5;
+      if (!checkFileType) {
+        this.$message.error("上传图片必须是 jpeg/jpg/png 格式！");
+      }
+      if (!checkFileSize) {
+        this.$message.error("上传图片大小不能超过 5MB！");
+      }
+      if (checkFileType && checkFileSize) this.postData.key = random(16);
+      return checkFileType && checkFileSize;
+    },
+    handleSuccess(response) {
+      this.complaintForm.pic.push(this.photoUrl + response.key);
+      console.log(this.complaintForm.pic);
+    },
+    handleRemove(file) {
+      Array.prototype.remove = function (val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+          this.splice(index, 1);
+        }
+      };
+
+      if (file.url) {
+        let removePicture = file.url.substr(file.url.lastIndexOf("/"));
+        this.complaintForm.pic.remove(removePicture);
+        if (!this.complaintForm.pic.length) {
+          this.hasFmt = false;
+          this.$refs.image.validate();
+        }
+      }
+      if (file.response.key) {
+        this.complaintForm.pic.remove(this.photoUrl + file.response.key);
+      }
+    },
+    handleExceed() {
+      this.$message.warning("最多上传 1 张头像");
+    },
+  },
+  created() {
+    var token;
+    var policy = {};
+    // var bucketName = "21push";
+    // var AK = "K96MCAU7eCnSWz4XUbxIBe9Q9PUm_gBHfacmsAEf";
+    // var SK = "g0eagx-yjztmAo0iVi-Nj8QrsCRGrKhdGKIjpVr9";
+    var bucketName = "21push";
+    var AK = "slnMazKaSrCowN_nA5Y4i0QwFo62AaZKZQ8h2xOj";
+    var SK = "wh8pr5uMd8_SNCxdGZvEh8-Hzy11swN6UaXwhlCF";
+    var deadline = 1594028031; // 2020-07-06
+    policy.scope = bucketName;
+    policy.deadline = deadline;
+    token = genToken(AK, SK, policy);
+    this.postData.token = token;
+
+    //console.log("token = " + token);
   },
   mounted() {
     GetUserInfo(this.$route.query.userId).then((res) => {

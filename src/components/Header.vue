@@ -4,11 +4,13 @@
       <img src="../assets/Topaz.png" alt />
       <!--<h3 style="margin: 12px auto">金刚石文档</h3>-->
     </el-col>
-    <el-col :span="2" :offset="19">
+    <el-col :span="1" :offset="18">
       <i>
-        <el-button type="info" size="small" @click.native.prevent="newFile">创建文档</el-button>
+        <el-button style="margin: 10px auto" type="info" size="small" @click.native.prevent="newFile">创建文档</el-button>
       </i>
-      <i style="margin: 16px 30px" class="el-icon-bell"></i>
+    </el-col>
+    <el-col :span="1">
+      <i style="margin: 18px 40px" class="el-icon-bell"></i>
     </el-col>
     <el-col :span="1">
       <el-dropdown>
@@ -37,7 +39,8 @@ export default {
   },
   computed: {
     avatar() {
-      return this.$store.state.avatar;
+      //return this.$store.state.avatar;
+      return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     },
   },

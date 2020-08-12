@@ -81,7 +81,7 @@ export default {
   mounted() {
     /*
     GetUserTeam(this.$store.status.userId).then((res) => {
-      this.team = res.data.teams;
+      this.teams = res.data.teams;
     });*/
   },
 };
