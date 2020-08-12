@@ -9,7 +9,7 @@
         <el-input
           style="margin: 10px auto;width:100%;"
           v-model="sFile"
-          placeholder="输入文档Id以搜索文档"
+          placeholder="输入文档id以搜索文档"
           clearable
           size="small"
         >
@@ -20,7 +20,7 @@
         <el-input
           style="margin: 10px 15%;width:100%;"
           v-model="sTeam"
-          placeholder="输入团队Id或团队名以搜索团队"
+          placeholder="输入团队id或团队名以搜索团队"
           clearable
           size="small"
         >
@@ -61,7 +61,7 @@
     <el-dialog :visible.sync="dis0" title="文档搜索结果">
       <!-- todo -->
     </el-dialog>
-    <el-dialog :visible.sync="dis1" title="团队搜索结果" modal="false">
+    <el-dialog :visible.sync="dis1" title="团队搜索结果" :modal="false">
       <el-table :data="teams" style="width: 100%" border>
         <el-table-column prop="id" label="团队Id" min-width="20%"></el-table-column>
         <el-table-column prop="name" label="团队名称" min-width="20%"></el-table-column>
@@ -144,7 +144,9 @@ export default {
       });
     },
   },
-  mounted() {},
+  mounted() {
+
+  },
 };
 </script>
 <style scoped>

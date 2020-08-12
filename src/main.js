@@ -7,6 +7,14 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios';
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
+import VueQuillEditor from 'vue-quill-editor'
+
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor)
 
 Vue.config.productionTip = false;
 
@@ -231,8 +239,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const KickOff = (params) => {
-  return axios.post('KickOff', params);
-};
+    return axios.post('KickOff', params);
+  };
 
 export /**
  * 解散团队
@@ -241,8 +249,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const DissolveTeam = (params) => {
-  return axios.post('DissolveTeam', params);
-};
+    return axios.post('DissolveTeam', params);
+  };
 
 export /**
  * 加入团队
@@ -251,8 +259,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const JoinTeam = (params) => {
-  return axios.post('JoinTeam', params);
-};
+    return axios.post('JoinTeam', params);
+  };
 
 export /**
  * 退出团队
@@ -261,9 +269,33 @@ export /**
  * @returns {result}
  * 是否成功
  */ const QuitTeam = (params) => {
-  return axios.post('QuitTeam', params);
-};
+    return axios.post('QuitTeam', params);
+  };
 // ! === 团队 === (end)
+
+// ! === 文档 === (begin)
+
+export /**
+ * 创建文档
+ * @param {userId, teamId, name}
+ * 用户id, 团队id, 文件名
+ * 团队id为-1表示不属于团队
+ * @returns {result}
+ * 是否成功
+ */ const NewFile = (params) => {
+    return axios.post('NewFile', params);
+  };
+
+export /**
+  * 获取文档
+  * @param {id}
+  * 文档id
+  * @returns {}
+  * 待定
+  */ const GetFile = (params) => {
+    return axios.post('GetFile', params);
+  };
+// ! === 文档 === (end)
 
 //todo: 导航守卫
 

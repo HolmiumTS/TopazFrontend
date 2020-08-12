@@ -3,28 +3,45 @@
     <el-header>
       <el-page-header @back="goBack" content="用户信息"></el-page-header>
     </el-header>
-
     <el-main class="userinfo">
-      <h3>用户信息</h3>
-      <table border="0" cellspacing="30" style="margin:0 auto;" width="600">
-        <tr>
-          <td>昵称:</td>
-          <td align="left">{{userInfo.username}}</td>
-        </tr>
-        <tr>
-          <td>手机:</td>
-          <td align="left">{{userInfo.tel}}</td>
-        </tr>
-        <tr>
-          <td>邮箱:</td>
-          <td align="left">{{userInfo.email}}</td>
-        </tr>
-      </table>
-      <span v-if="this.$store.state.userId == this.userId">
-        <el-button @click.native.prevent="dis0=true">修改个人信息</el-button>
-        <el-button @click.native.prevent="dis1=true">修改密码</el-button>
-        <el-button @click.native.prevent="dis2=true">修改头像</el-button>
-      </span>
+      <el-container>
+        <el-aside style="width:200px">
+          <el-avatar
+            :src="ava"
+            :size="100"
+            fit="fill"
+            v-bind:username="this.$store.state.username"
+            style="margin:50% 20%"
+          >{{username}}</el-avatar>
+          <p v-if="this.$store.state.userId == this.userId" style="margin: -16% 22%">
+            <el-button @click.native.prevent="dis2=true">修改头像</el-button>
+          </p>
+        </el-aside>
+        <div class="tableTitle">
+          <span class="midText"></span>
+        </div>
+        <el-main>
+          <h3>用户信息</h3>
+          <table border="0" cellspacing="30" style="margin:0 auto;" width="400">
+            <tr>
+              <td>昵称:</td>
+              <td align="left">{{userInfo.username}}</td>
+            </tr>
+            <tr>
+              <td>手机:</td>
+              <td align="left">{{userInfo.tel}}</td>
+            </tr>
+            <tr>
+              <td>邮箱:</td>
+              <td align="left">{{userInfo.email}}</td>
+            </tr>
+          </table>
+          <span v-if="this.$store.state.userId == this.userId">
+            <el-button @click.native.prevent="dis0=true">修改个人信息</el-button>
+            <el-button @click.native.prevent="dis1=true">修改密码</el-button>
+          </span>
+        </el-main>
+      </el-container>
       <el-dialog :visible.sync="dis0" title="修改个人信息" width="30%">
         <el-form
           :model="changeUserInfoForm"
@@ -368,6 +385,13 @@ export default {
       this.$message.warning("最多上传 1 张头像");
     },
   },
+  computed: {
+    ava() {
+      //return this.$store.state.avatar;
+      return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
+      //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+    },
+  },
   created() {
     var token;
     var policy = {};
@@ -401,5 +425,21 @@ export default {
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;
   border-radius: 10px;
+}
+.tableTitle {
+  position: relative;
+  margin: 0 auto;
+  width: 1px;
+  background-color: #d4d4d4;
+  text-align: center;
+  font-size: 16px;
+  color: rgba(101, 101, 101, 1);
+}
+.midText {
+  position: absolute;
+  left: 50%;
+  background-color: #ffffff;
+  padding: 0 15px;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

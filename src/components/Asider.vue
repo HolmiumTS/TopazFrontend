@@ -35,6 +35,10 @@
       @select="handleSelect"
       v-if="this.$store.state.status == '1'"
     >
+      <el-menu-item index="goBack">
+        <i class="el-icon-back"></i>
+        <span slot="title">返回</span>
+      </el-menu-item>
       <el-menu-item index="/team/doc">
         <i class="el-icon-s-order"></i>
         <span slot="title">团队文档</span>
@@ -69,6 +73,11 @@ export default {
   },
   methods: {
     handleSelect(key, index) {
+      if (index.toString() == "goBack") {
+        this.$store.dispatch("commitChangeStatus", "0");
+        this.$router.push("/home/recentFile");
+        return;
+      }
       for (let i = 0; i < this.teams.length; i++) {
         if (this.teams[i].name == index.toString()) {
           //todo: 跳转到团队页面
@@ -79,10 +88,9 @@ export default {
     },
   },
   mounted() {
-    /*
     GetUserTeam(this.$store.status.userId).then((res) => {
       this.teams = res.data.teams;
-    });*/
+    });
   },
 };
 </script>

@@ -29,14 +29,19 @@ const routes = [
     component: () => import('../views/UserInfo.vue')
   },
   {
-    path: '/doc',
-    name: '文档',
-    component: () => import('../views/Doc.vue')
+    path: '/docBrowse',
+    name: '文档查看',
+    component: () => import('../views/DocBrowse.vue')
+  },
+  {
+    path: '/docEdit',
+    name: '文档编辑',
+    component: () => import('../views/DocEdit.vue')
   },
   {
     path: '/home',
     name: '主界面',
-    redirect: '/nome/recentFile',
+    redirect: '/home/recentFile',
     component: () => import('../views/Home.vue'),
     hasChild: true,
     children: [
