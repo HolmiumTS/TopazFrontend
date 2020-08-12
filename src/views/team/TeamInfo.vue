@@ -1,7 +1,6 @@
 <!--
 完成了团队信息的基本展示
 -->
-<!-- Todo: 添加`分享团队`功能 -->
 <template>
   <el-container>
     <el-main>
@@ -36,15 +35,6 @@
         </tr>
       </table>
 
-      <!-- 从分享后的信息页跳转到团队成员和文档页时的teamId传输有待考虑 -->
-      <el-dialog title="分享团队" :visible.sync="dialogVisible" center width="40%">
-        <div>为您生成的团队链接为：</div>
-        <pre>{{aboutTeam.teamUrl}}</pre>
-      </el-dialog>
-      <el-button type="success" v-if="isInTeam" plain round @click="dialogVisible = true">分享团队</el-button>
-
-      <el-button type="primary" v-if="!isInTeam" plain round @click="handleJoin">申请加入</el-button>
-
       <el-button
         type="danger"
         v-if="aboutTeam.creatorId == this.$store.state.userId"
@@ -67,7 +57,7 @@
 <script>
 import { GetUserInfo, GetUserTeam, generateTeamUrl } from "../../main";
 import { GetTeamInfo } from "../../main";
-import { DissolveTeam, JoinTeam } from "../../main";
+import { DissolveTeam } from "../../main";
 
 export default {
   data() {
@@ -79,7 +69,6 @@ export default {
         teamInfo: "955团队",
         teamUrl: "http://60.205.189.66/team/info?teamId=123",
       },
-      dialogVisible: false,
       creatorInfo: {
         creatorUrl: "https://www.baidu.com",
         creatorUsername: "一个普通的创建者",
@@ -120,26 +109,6 @@ export default {
           });
         })
         .catch(() => {});
-    },
-
-    handleJoin() {
-      let params = {
-        id: this.$store.state.userId,
-        teamId: this.aboutTeam.teamId,
-      };
-      console.log(params.id + " join team " + params.teamId);
-      JoinTeam(params).then((res) => {
-        if (res.data.result == true) {
-          this.$message({
-            type: "success",
-            message: "申请已发送！",
-          });
-        } else {
-          this.$message.error({
-            message: "加入团队失败，请稍后再试",
-          });
-        }
-      });
     },
 
     handleQuit() {
