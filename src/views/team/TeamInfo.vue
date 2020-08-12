@@ -3,8 +3,8 @@
 -->
 <template>
   <el-container>
-    <el-main>
-      <el-page-header @back="goBack" content="团队信息"></el-page-header>
+    <el-main class="teamInfo">
+      <el-page-header content="团队信息"></el-page-header>
       <table border="0" cellspacing="20" style="margin:0 auto;">
         <tr>
           <td>团队名称：</td>
@@ -18,14 +18,8 @@
           <td>团队创建者：</td>
           <td>
             <el-link :underline="false" :href="creatorInfo.creatorUrl">
-              <el-tooltip
-                class="item"
-                effect="light"
-                :content="creatorInfo.creatorUsername"
-                placement="top"
-              >
-                <el-avatar :src="creatorInfo.creatorAvatar" :alt="creatorInfo.creatorUsername"></el-avatar>
-              </el-tooltip>
+              <el-avatar :src="creatorInfo.creatorAvatar" :alt="creatorInfo.creatorUsername"></el-avatar>
+              <span>{{creatorInfo.creatorUsername}}</span>
             </el-link>
           </td>
         </tr>
@@ -78,11 +72,6 @@ export default {
     };
   },
   methods: {
-    goBack() {
-      // 返回到 '我的团队'
-      this.$router.push("/home");
-    },
-
     handleDissolve() {
       this.$confirm("确定要解散团队吗？这是不可逆转的操作", "警告", {
         confirmButtonText: "确定",
@@ -149,11 +138,10 @@ export default {
     },
   },
 
-  // ! query{teamId}
   mounted() {
-    GetTeamInfo({ teamId: this.$route.query.teamId }).then((res) => {
+    GetTeamInfo({ teamId: this.$store.state.teamId }).then((res) => {
       this.aboutTeam.teamName = res.data.teamName;
-      this.aboutTeam.teamId = this.$route.query.teamId;
+      this.aboutTeam.teamId = this.$store.state.teamId;
       this.aboutTeam.creatorId = res.data.creatorId;
       this.aboutTeam.teamInfo = res.data.teamInfo;
       this.aboutTeam.teamUrl = generateTeamUrl(this.aboutTeam.teamId);
@@ -172,4 +160,16 @@ export default {
 </script>
 
 <style scoped>
+.teamInfo {
+  margin: auto auto;
+  background: #fff;
+  box-shadow: 0 0 8px #b4bccc;
+  padding: 20px 30px 30px 30px;
+  border-radius: 10px;
+}
+
+span {
+  margin-left: 10px;
+  vertical-align: middle;
+}
 </style>
