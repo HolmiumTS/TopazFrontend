@@ -29,12 +29,53 @@
         </tr>
       </table>
 
+      <el-dialog :visible.sync="dialogFormVisible" title="修改团队信息" width="50%">
+        <el-form
+          :model="changeTeamInfoForm"
+          ref="changeTeamInfoForm"
+          label-width="80px"
+          :rules="rule"
+        >
+          <el-form-item label="团队名称" prop="teamName">
+            <el-input
+              v-model="changeTeamInfoForm.teamName"
+              placeholder="团队名称"
+              maxlength="20"
+              show-word-limit="true"
+              autofocus="true"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="团队简介" prop="teamInfo">
+            <el-input
+              type="textarea"
+              v-model="changeTeamInfoForm.teamInfo"
+              placeholder="团队简介"
+              maxlength="300"
+              resize="false"
+              show-word-limit="true"
+              rows="8"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" :loading="submiting" @click.native.prevent="submitTeamInfo">确认</el-button>
+        </div>
+      </el-dialog>
+
+      <el-button
+        type="primary"
+        v-if="isCreatorOrAdmin"
+        plain
+        round
+        @click.native.prevent="dialogFormVisible=true"
+      >修改团队信息</el-button>
+
       <el-button
         type="danger"
         v-if="aboutTeam.creatorId == this.$store.state.userId"
         plain
         round
-        @click="handleDissolve"
+        @click.native.prevent="handleDissolve"
       >解散团队</el-button>
 
       <el-button
@@ -42,14 +83,14 @@
         v-if="isInTeam && (aboutTeam.creatorId != this.$store.state.userId)"
         plain
         round
-        @click="handleQuit"
+        @click.native.prevent="handleQuit"
       >退出团队</el-button>
     </el-main>
   </el-container>
 </template>
 
 <script>
-import { GetUserInfo, GetUserTeam, generateTeamUrl } from "../../main";
+import { GetUserInfo, GetUserTeam, GetTeamMember } from "../../main";
 import { GetTeamInfo } from "../../main";
 import { DissolveTeam } from "../../main";
 
@@ -61,14 +102,28 @@ export default {
         teamId: "123",
         creatorId: "19260817",
         teamInfo: "955团队",
-        teamUrl: "http://60.205.189.66/team/info?teamId=123",
       },
       creatorInfo: {
         creatorUrl: "https://www.baidu.com",
         creatorUsername: "一个普通的创建者",
         creatorAvatar: "https://i.loli.net/2020/08/11/mfBdpDUIsJChLGM.png",
       },
+      changeTeamInfoForm: {
+        teamName: "",
+        teamInfo: "",
+      },
+      rule: {
+        teamName: [
+          { required: true, message: "请输入团队名称", trigger: "blur" },
+        ],
+        teamInfo: [
+          { required: true, message: "请输入团队简介", trigger: "blur" },
+        ],
+      },
+      dialogFormVisible: false,
       isInTeam: true,
+      isCreatorOrAdmin: true,
+      submiting: false,
     };
   },
   methods: {
@@ -136,6 +191,43 @@ export default {
         }
       });
     },
+
+    submitTeamInfo() {
+      this.$refs.changeTeamInfoForm.validate((valid) => {
+        if (valid) {
+          let params = {
+            teamId: this.aboutTeam.teamId,
+            teamName: this.changeTeamInfoForm.teamName,
+            teamInfo: this.changeTeamInfoForm.teamInfo,
+          };
+          this.submiting = true;
+          ChangeTeamInfo(params).then((res) => {
+            if (res.data.result == true) {
+              this.$message({
+                type: "success",
+                message: "信息修改成功",
+              });
+              this.aboutTeam.teamName = this.changeTeamInfoForm.teamName;
+              this.aboutTeam.teamInfo = this.changeTeamInfoForm.teamInfo;
+              this.submiting = false;
+              this.dialogFormVisible = false;
+              this.mounted();
+              this.$router.push({
+                path: "/team/info",
+              });
+            } else {
+              this.$message.error({
+                message: "修改团队信息失败",
+              });
+            }
+          });
+        } else {
+          this.$message.error({
+            message: "请检查输入信息",
+          });
+        }
+      });
+    },
   },
 
   mounted() {
@@ -144,10 +236,21 @@ export default {
       this.aboutTeam.teamId = this.$store.state.teamId;
       this.aboutTeam.creatorId = res.data.creatorId;
       this.aboutTeam.teamInfo = res.data.teamInfo;
-      this.aboutTeam.teamUrl = generateTeamUrl(this.aboutTeam.teamId);
     });
+    this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
+    this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
     this.getCreatorUsernameAndAvatar();
-    console.log(this.aboutTeam.teamUrl);
+    this.submiting = false;
+    this.dialogFormVisible = false;
+
+    GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
+      var userId = this.$store.state.userId;
+      if (
+        userId == this.aboutTeam.creatorId ||
+        res.data.adminId.includes(userId)
+      )
+        this.isCreatorOrAdmin = true;
+    });
 
     GetUserTeam({ id: this.$store.state.userId }).then((res) => {
       this.isInTeam = false;

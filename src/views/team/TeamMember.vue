@@ -29,14 +29,14 @@ TODO:
               type="primary"
               plain
               v-if="userTypeInTeam==0&&scope.row.memberType==2"
-              @click="setAdmin(scope.row.memberId)"
+              @click.native.prevent="setAdmin(scope.row.memberId)"
             >设为管理员</el-button>
 
             <el-button
               type="warning"
               plain
               v-if="userTypeInTeam==0&&scope.row.memberType==1"
-              @click="cancelAdmin(scope.row.memberId)"
+              @click.native.prevent="cancelAdmin(scope.row.memberId)"
             >取消管理员</el-button>
 
             <el-button
@@ -44,14 +44,14 @@ TODO:
               plain
               round
               v-if="scope.row.memberType<=1&&userId==scope.row.memberId"
-              @click="getAllApplication()"
+              @click.native.prevent="getAllApplication()"
             >审核申请</el-button>
 
             <el-button
               type="danger"
               plain
               v-if="userTypeInTeam<scope.row.memberType"
-              @click="confirmKickOff(scope.row.memberId, scope.row.memberUsername)"
+              @click.native.prevent="confirmKickOff(scope.row.memberId, scope.row.memberUsername)"
             >踢出团队</el-button>
           </template>
         </el-table-column>
@@ -72,13 +72,13 @@ TODO:
               <el-button
                 type="primary"
                 plain
-                @click="judgeApplication(scope.$index, scope.row.id, true)"
+                @click.native.prevent="judgeApplication(scope.$index, scope.row.id, true)"
               >通过</el-button>
 
               <el-button
                 type="warning"
                 plain
-                @click="judgeApplication(scope.$index, scope.row.id, false)"
+                @click.native.prevent="judgeApplication(scope.$index, scope.row.id, false)"
               >拒绝</el-button>
             </template>
           </el-table-column>
