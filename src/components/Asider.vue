@@ -160,7 +160,7 @@ export default {
               this.submitting = false;
               this.dialogFormVisible = false;
               // this.$store.dispatch("commitChangeTeamId", "123456");
-              this.$store.dispatch("commmitChangeTeamId", res.data.teamId);
+              this.$store.dispatch("commitChangeTeamId", res.data.teamId);
               this.$router.push({
                 path: "/team/info",
               });
