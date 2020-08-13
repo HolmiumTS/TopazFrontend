@@ -381,7 +381,10 @@ export default {
   },
   computed: {
     ava() {
-      return this.$store.state.avatar;
+      return (
+        this.$store.state.avatar ||
+        "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png"
+      );
       //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     },

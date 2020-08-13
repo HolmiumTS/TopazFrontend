@@ -21,10 +21,10 @@
           <span>团队空间</span>
         </template>
         <template v-for="team in teams">
-          <el-menu-item :key="team.id" :index="team.name">{{team.name}}</el-menu-item>
+          <el-menu-item :key="team.id" :index="team.name" :disabled="team.id=='-1'">{{team.name}}</el-menu-item>
         </template>
       </el-submenu>
-      <el-menu-item index="/recyclebin">
+      <el-menu-item index="/home/recyclebin">
         <i class="el-icon-delete-solid"></i>
         <span slot="title">回收站</span>
       </el-menu-item>
@@ -59,10 +59,7 @@ import { GetUserTeam } from "../main";
 export default {
   data() {
     return {
-      teams: [
-        { id: "01", name: "test1" },
-        { id: "02", name: "test2" },
-      ],
+      teams: [{ id: "-1", name: "空" }],
       //teams: null,
     };
   },
@@ -80,7 +77,8 @@ export default {
       }
       for (let i = 0; i < this.teams.length; i++) {
         if (this.teams[i].name == index.toString()) {
-          //todo: 跳转到团队页面
+          this.$store.dispatch("commitChangeTeamId", this.teams[i].id);
+          this.$router.push("/team");
           return;
         }
       }
@@ -91,6 +89,9 @@ export default {
     GetUserTeam(this.$store.state.userId).then((res) => {
       this.teams = res.data.teams;
     });
+    if (this.teams.length < 1) {
+      teams: [{ id: "-1", name: "空" }];
+    }
   },
 };
 </script>

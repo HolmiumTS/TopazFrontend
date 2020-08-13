@@ -7,7 +7,7 @@ const store = new Vuex.Store({
   //用status表示登录状态:-1为未登录,0为已登录主界面,1为团队界面
   state: {
     // status: '0', // debug
-    status: '-1',
+    status: '0',
     userId: '',
     username: '',
     avatar: '',
@@ -30,6 +30,9 @@ const store = new Vuex.Store({
       state.status = status;
       console.log(state.status);
     },
+    ChangeTeamId(state, teamId) {
+      state.teamId = teamId;
+    }
   },
   actions: {
     commitLogin({ commit }, value) {
@@ -43,6 +46,10 @@ const store = new Vuex.Store({
       console.log(status);
       commit('ChangeStatus', status);
     },
+    commitChangeTeamId({ commit }, teamId) {
+      console.log(teamId);
+      commit('ChangeTeamId', teamId);
+    }
   },
   modules: {},
 });
