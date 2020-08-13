@@ -12,7 +12,7 @@ const store = new Vuex.Store({
   mutations: {
     Login(state, value) {
       console.log(value);
-      state.status = '0';
+      state.status = '-1';
       state.userId = value.userId;
       state.username = value.username;
       state.avatar = value.avatar;
