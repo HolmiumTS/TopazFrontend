@@ -90,9 +90,9 @@
 </template>
 
 <script>
-import { GetUserInfo, GetUserTeam, GetTeamMember } from "../../main";
 import { GetTeamInfo } from "../../main";
 import { DissolveTeam } from "../../main";
+import { GetUserInfo, GetUserTeam, GetTeamMember, ChangeTeamInfo } from "../../main";
 
 export default {
   data() {
@@ -102,10 +102,10 @@ export default {
         // teamId: "123",
         // creatorId: "19260817",
         // teamInfo: "955团队",
-        teamName: "",
-        teamId: "",
-        creatorId: "",
-        teamInfo: "",
+         //teamName: "",
+         //teamId: "",
+         //creatorId: "",
+         //teamInfo: "",
       },
       creatorInfo: {
         creatorUrl: "",
@@ -183,6 +183,7 @@ export default {
     },
 
     getCreatorUsernameAndAvatar() {
+      console.log("creatorId: "+this.aboutTeam.creatorId);
       let params = {
         id: this.aboutTeam.creatorId,
       };
@@ -209,6 +210,7 @@ export default {
             teamInfo: this.changeTeamInfoForm.teamInfo,
           };
           this.submitting = true;
+          console.log(params);
           ChangeTeamInfo(params).then((res) => {
             if (res.data.result == true) {
               this.$message({
@@ -241,13 +243,21 @@ export default {
   mounted() {
     console.log(this.$store.state.teamId);
     GetTeamInfo({ teamId: this.$store.state.teamId }).then((res) => {
-      this.aboutTeam.teamName = res.data.teamName;
-      this.aboutTeam.teamId = this.$store.state.teamId;
-      this.aboutTeam.creatorId = res.data.creatorId;
-      this.aboutTeam.teamInfo = res.data.teamInfo;
+      if (res.data.result == false) {
+        console.log("ERROR");
+      } else {
+        this.aboutTeam.teamName = res.data.teamName;
+        this.aboutTeam.teamId = this.$store.state.teamId;
+        this.aboutTeam.creatorId = res.data.creatorId;
+        this.aboutTeam.teamInfo = res.data.teamInfo;
+      }
+      console.log("creatorId2: "+res.data.creatorId);
     });
+    console.log("teamInfo: "+this.aboutTeam.teamInfo);
+    console.log("creatorId3: "+this.aboutTeam.creatorId);
     this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
     this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
+
     this.getCreatorUsernameAndAvatar();
     this.submitting = false;
     this.dialogFormVisible = false;
@@ -267,6 +277,7 @@ export default {
         if (teamID == this.aboutTeam.teamId) this.isInTeam = true;
       }
     });
+    console.log("creatorId3: "+this.aboutTeam.creatorId);
   },
 };
 </script>
