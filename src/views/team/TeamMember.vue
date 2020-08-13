@@ -293,9 +293,9 @@ export default {
   mounted() {
     this.userId = this.$store.state.userId;
     this.aboutTeam.teamId = this.$store.state.teamId;
-    this.userTypeInTeam = "3";
+    this.userTypeInTeam = "2";
     let params = {
-      teamId: this.teamId,
+      teamId: this.aboutTeam.teamId,
     };
     GetTeamMember(params).then((res) => {
       var tmpMemberInfo = {

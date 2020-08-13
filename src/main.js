@@ -172,7 +172,7 @@ export /**
 
 export /**
  * 申请加入团队
- * @param {userId,teamId}
+ * @param {userId, teamId}
  * 用户Id,团队Id
  * @returns {result}
  * 申请提交是否成功
