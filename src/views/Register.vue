@@ -138,7 +138,7 @@ export default {
             } else {
               //console.log(res.data);
               this.$message.error({
-                message: "注册失败,请稍后再试",
+                message: "注册失败,请检查该邮箱或手机是否已经注册",
               });
             }
           });
