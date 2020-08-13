@@ -61,12 +61,14 @@ export default {
                 type: "success",
                 message: "登录成功",
               });
-              this.$store.dispatch(
-                "commitLogin",
-                res.data.id,
-                res.data.username,
-                res.data.avatar
-              );
+              console.log(res.data.id);
+              console.log(res.data.username);
+              console.log(res.data.avatar);
+              this.$store.dispatch("commitLogin", {
+                userId: res.data.id,
+                username: res.data.username,
+                avatar: res.data.avatar,
+              });
               this.$router.push("/home");
             } else if (res.data.result == false) {
               this.$message.error({

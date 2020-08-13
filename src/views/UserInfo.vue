@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import { GetUserInfo } from "../main";
 import { ChangeUserInfo } from "../main";
 import { ChangeUserPassword } from "../main";
 import { ChangeUserAvatar } from "../main";
@@ -380,8 +381,8 @@ export default {
   },
   computed: {
     ava() {
-      //return this.$store.state.avatar;
-      return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
+      return this.$store.state.avatar;
+      //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     },
   },
@@ -391,7 +392,7 @@ export default {
     var bucketName = "domaint";
     var AK = "K96MCAU7eCnSWz4XUbxIBe9Q9PUm_gBHfacmsAEf";
     var SK = "g0eagx-yjztmAo0iVi-Nj8QrsCRGrKhdGKIjpVr9";
-    var deadline = 1599840000; // 2020-07-06
+    var deadline = 1599840000; // 2020-09-12
     policy.scope = bucketName;
     policy.deadline = deadline;
     token = genToken(AK, SK, policy);
@@ -400,7 +401,7 @@ export default {
     console.log("token = " + token);
   },
   mounted() {
-    GetUserInfo(this.$route.query.userId).then((res) => {
+    GetUserInfo({ id: this.$route.query.userId }).then((res) => {
       this.userId = this.$route.query.userId;
       this.userInfo.username = res.data.username;
       this.userInfo.tel = res.data.tel;
