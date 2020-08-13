@@ -19,6 +19,11 @@
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span>团队空间</span>
+          <i
+            style="margin:auto 15%;"
+            class="el-icon-circle-plus-outline"
+            @click="dialogFormVisible=true"
+          ></i>
         </template>
         <template v-for="team in teams">
           <el-menu-item :key="team.id" :index="team.name" :disabled="team.id=='-1'">{{team.name}}</el-menu-item>
@@ -52,17 +57,69 @@
         <span slot="title">团队信息</span>
       </el-menu-item>
     </el-menu>
+
+    <el-dialog :visible.sync="dialogFormVisible" title="创建团队" width="50%">
+      <el-form
+        :model="createTeamInfoForm"
+        ref="createTeamInfoForm"
+        label-width="80px"
+        :rules="rule"
+      >
+        <el-form-item label="团队名称" prop="teamName">
+          <el-input
+            v-model="createTeamInfoForm.teamName"
+            placeholder="团队名称"
+            maxlength="20"
+            show-word-limit="true"
+            autofocus="true"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="团队简介" prop="teamInfo">
+          <el-input
+            type="textarea"
+            v-model="createTeamInfoForm.teamInfo"
+            placeholder="团队简介"
+            maxlength="300"
+            resize="false"
+            show-word-limit="true"
+            rows="8"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" :loading="submitting" @click.native.prevent="createTeam">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { GetUserTeam } from "../main";
+import { GetUserTeam, CreateTeam } from "../main";
 export default {
   data() {
     return {
+      /*teams: [
+        { id: "01", name: "test1" },
+        { id: "02", name: "test2" },
+      ],*/
       teams: [{ id: "-1", name: "空" }],
+      dialogFormVisible: false,
+      submitting: false,
+      createTeamInfoForm: {
+        teamName: "",
+        teamInfo: "",
+      },
+      rule: {
+        teamName: [
+          { required: true, message: "请输入团队名称", trigger: "blur" },
+        ],
+        teamInfo: [
+          { required: true, message: "请输入团队简介", trigger: "blur" },
+        ],
+      },
       //teams: null,
     };
   },
+
   computed: {
     status() {
       return this.$store.state.status;
@@ -84,13 +141,49 @@ export default {
       }
       this.$router.push(index.toString());
     },
+
+    createTeam() {
+      this.$refs.createTeamInfoForm.validate((valid) => {
+        if (valid) {
+          this.submitting = true;
+          let params = {
+            id: this.$store.state.userId,
+            teamName: this.createTeamInfoForm.teamName,
+            teamInfo: this.createTeamInfoForm.teamInfo,
+          };
+          CreateTeam(params).then((res) => {
+            if (res.data.result == true) {
+              this.$message({
+                type: "success",
+                message: "创建团队成功！",
+              });
+              this.submitting = false;
+              this.dialogFormVisible = false;
+              // this.$store.dispatch("commitChangeTeamId", "123456");
+              this.$store.dispatch("commmitChangeTeamId", res.data.teamId);
+              this.$router.push({
+                path: "/team/info",
+              });
+            } else {
+              this.$message.error({
+                message: "创建团队失败，请稍后再试",
+              });
+            }
+          });
+        } else {
+          this.$message.error({
+            message: "请检查输入信息",
+          });
+        }
+      });
+    },
   },
   mounted() {
     GetUserTeam(this.$store.state.userId).then((res) => {
       this.teams = res.data.teams;
     });
     if (this.teams.length < 1) {
-      teams: [{ id: "-1", name: "空" }];
+      this.teams = [{ id: "-1", name: "空" }];
     }
   },
 };

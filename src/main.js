@@ -63,6 +63,9 @@ Vue.use(mavonEditor);
       退出团队，
       搜索团队,
       修改团队信息
+  8月12日：
+    新增：
+      创建团队
 */
 
 // ! === 个人 === (begin)
@@ -270,6 +273,16 @@ export /**
  * 是否成功
  */ const ChangeTeamInfo = (params) => {
     return axios.post('/ChangeTeamInfo', params);
+  };
+
+export /**
+ * 创建团队
+ * @param {id, teamName, teamInfo}
+ * 创建者, 团队名称, 团队简介
+ * @returns {result, teamId}
+ * 是否成功，创建后团队id
+ */ const CreateTeam = (params) => {
+    return axios.post('/CreateTeam', params);
   };
 // ! === 团队 === (end)
 

@@ -60,7 +60,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="submiting" @click.native.prevent="submit0">确认</el-button>
+          <el-button type="primary" :loading="submitting" @click.native.prevent="submit0">确认</el-button>
         </div>
       </el-dialog>
       <el-dialog :visible.sync="dis1" title="修改密码" width="30%">
@@ -82,7 +82,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="submiting" @click.native.prevent="submit1">确认</el-button>
+          <el-button type="primary" :loading="submitting" @click.native.prevent="submit1">确认</el-button>
         </div>
       </el-dialog>
       <el-dialog :visible.sync="dis2" title="上传头像" width="30%">
@@ -143,7 +143,7 @@ export default {
       dis0: false,
       dis1: false,
       dis2: false,
-      submiting: false,
+      submitting: false,
       rule1: {
         passwordOld: [
           {
@@ -220,7 +220,7 @@ export default {
     submit0() {
       this.$refs.changeUserInfoForm.validate((valid) => {
         if (valid) {
-          this.submiting = true;
+          this.submitting = true;
           let params = this.changeUserInfoForm;
           params.id = this.userId;
           params.tel = params.tel.toString();
@@ -230,7 +230,7 @@ export default {
                 type: "success",
                 message: "信息修改成功",
               });
-              this.submiting = false;
+              this.submitting = false;
               this.$store.dispatch(
                 "commitLogin",
                 this.userId,
@@ -261,7 +261,7 @@ export default {
     submit1() {
       this.$refs.changeUserPasswordForm.validate((valid) => {
         if (valid) {
-          this.submiting = true;
+          this.submitting = true;
           let changePasswordParams = {
             userId: this.userId,
             oldPassword: this.changeUserPasswordForm.PasswordOld,
@@ -274,7 +274,7 @@ export default {
                 type: "success",
                 message: "密码修改成功",
               });
-              this.submiting = false;
+              this.submitting = false;
               this.dis1 = false;
               this.$router.push({
                 path: "/userInfo",
@@ -297,7 +297,7 @@ export default {
     },
     submit2() {
       if (this.avatar.length == 1) {
-        this.submiting = true;
+        this.submitting = true;
         ChangeUserAvatar({
           id: this.$store.state.userId,
           avatar: this.avatar[0],
@@ -307,7 +307,7 @@ export default {
               type: "success",
               message: "头像修改成功",
             });
-            this.submiting = false;
+            this.submitting = false;
             this.$store.dispatch(
               "commitLogin",
               this.userId,
