@@ -8,7 +8,7 @@
       <el-table-column min-width="10%" label="文档编号" prop="id" sortable></el-table-column>
       <el-table-column min-width="15%" label="文档名" prop="name" sortable></el-table-column>
       <el-table-column min-width="10%" label="创建者" prop="username" sortable></el-table-column>
-      <el-table-column min-width="10%" label="最后浏览时间" prop="time" sortable>
+      <el-table-column min-width="15%" label="最后浏览时间" prop="time" sortable>
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span style="margin-left: 10px">{{ scope.row.time }}</span>
@@ -45,7 +45,7 @@
           ></el-button>
         </template>
       </el-table-column>
-      <el-table-column min-width="50%" label="操作">
+      <el-table-column min-width="40%" label="操作">
         <template slot-scope="scope">
           <!-- <el-button
             round

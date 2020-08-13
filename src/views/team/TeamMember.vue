@@ -115,44 +115,44 @@ export default {
         // teamInfo: "955团队",
       },
       userId: "",
-      userTypeInTeam: 3, //  0 创建者，1 管理员，2 成员，3 团队外用户
+      userTypeInTeam: 2, //  0 创建者，1 管理员，2 成员
       applicationInfo: [],
       memberInfo: [
-        {
-          memberId: "1",
-          memberUrl: "https://www.google.com",
-          memberUsername: "谷歌",
-          memberType: 0,
-          memberAvatar: "https://i.loli.net/2020/08/11/qSLd3msVgwRlZaj.png",
-        },
-        {
-          memberId: "2",
-          memberUrl: "https://www.bing.com",
-          memberUsername: "必应",
-          memberType: 1,
-          memberAvatar: "https://i.loli.net/2020/08/11/RgaFXCAEDI62mfP.png",
-        },
-        {
-          memberId: "3",
-          memberUrl: "https://www.duckduckgo.com",
-          memberUsername: "鸭鸭走",
-          memberType: 1,
-          memberAvatar: "https://i.loli.net/2020/08/11/UnM3fR6DxVG4ATo.png",
-        },
-        {
-          memberId: "5",
-          memberUrl: "https://www.sogou.com",
-          memberUsername: "搜狗",
-          memberType: 2,
-          memberAvatar: "https://i.loli.net/2020/08/11/wTIekN52t1xEqQc.png",
-        },
-        {
-          memberId: "4",
-          memberUrl: "https://www.baidu.com",
-          memberUsername: "百度",
-          memberType: 2,
-          memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
-        },
+        // {
+        //   memberId: "1",
+        //   memberUrl: "https://www.google.com",
+        //   memberUsername: "谷歌",
+        //   memberType: 0,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/qSLd3msVgwRlZaj.png",
+        // },
+        // {
+        //   memberId: "2",
+        //   memberUrl: "https://www.bing.com",
+        //   memberUsername: "必应",
+        //   memberType: 1,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/RgaFXCAEDI62mfP.png",
+        // },
+        // {
+        //   memberId: "3",
+        //   memberUrl: "https://www.duckduckgo.com",
+        //   memberUsername: "鸭鸭走",
+        //   memberType: 1,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/UnM3fR6DxVG4ATo.png",
+        // },
+        // {
+        //   memberId: "5",
+        //   memberUrl: "https://www.sogou.com",
+        //   memberUsername: "搜狗",
+        //   memberType: 2,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/wTIekN52t1xEqQc.png",
+        // },
+        // {
+        //   memberId: "4",
+        //   memberUrl: "https://www.baidu.com",
+        //   memberUsername: "百度",
+        //   memberType: 2,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
+        // },
       ], // memberType: 0 创建者，1 管理员，2 成员
     };
   },
@@ -340,10 +340,10 @@ export default {
 <style scoped>
 .teamMember {
   margin: auto auto;
-  background: #fff;
+  /* background: #fff;
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;
-  border-radius: 10px;
+  border-radius: 10px; */
 }
 
 span {
