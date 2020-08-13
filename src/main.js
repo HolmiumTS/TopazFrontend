@@ -21,7 +21,8 @@ Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
 //后端地址
-axios.defaults.baseURL = 'http://60.205.189.66:18888';
+//axios.defaults.baseURL = 'http://60.205.189.66:18888';
+axios.defaults.baseURL = 'http://localhost:18888';
 axios.defaults.timeout = 5000;
 //UTF-8编码的json格式
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
