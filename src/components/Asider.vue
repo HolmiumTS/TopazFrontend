@@ -6,7 +6,7 @@
       @select="handleSelect"
       v-if="this.$store.state.status == '0'"
     >
-      <el-submenu index="sub1">
+      <el-submenu index>
         <template slot="title">
           <i class="el-icon-s-platform"></i>
           <span>工作台</span>
@@ -15,7 +15,7 @@
         <el-menu-item index="/home/collectedFile">收藏的文档</el-menu-item>
         <el-menu-item index="/home/myFile">我创建的文档</el-menu-item>
       </el-submenu>
-      <el-submenu index="sub2">
+      <el-submenu index>
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span>团队空间</span>
@@ -26,7 +26,7 @@
           ></i>
         </template>
         <template v-for="team in teams">
-          <el-menu-item :key="team.id" :index="team.name" :disabled="team.id=='-1'">{{team.name}}</el-menu-item>
+          <el-menu-item :key="team.id" :index="team.id" :disabled="team.id=='-1'">{{team.name}}</el-menu-item>
         </template>
       </el-submenu>
       <el-menu-item index="/home/recyclebin">
@@ -101,7 +101,8 @@ export default {
         { id: "01", name: "test1" },
         { id: "02", name: "test2" },
       ],*/
-      teams: [{ id: "-1", name: "空" }],
+      //teams: [{ id: "-1", name: "空" }],
+      teams: [],
       dialogFormVisible: false,
       submitting: false,
       createTeamInfoForm: {
@@ -133,7 +134,7 @@ export default {
         return;
       }
       for (let i = 0; i < this.teams.length; i++) {
-        if (this.teams[i].name == index.toString()) {
+        if (this.teams[i].id == index.toString()) {
           this.$store.dispatch("commitChangeTeamId", this.teams[i].id);
           this.$router.push("/team");
           return;
@@ -160,7 +161,7 @@ export default {
               this.submitting = false;
               this.dialogFormVisible = false;
               // this.$store.dispatch("commitChangeTeamId", "123456");
-              this.$store.dispatch("commitChangeTeamId", res.data.teamId);
+              this.$store.dispatch("commmitChangeTeamId", res.data.teamId);
               this.$router.push({
                 path: "/team/info",
               });
@@ -179,7 +180,7 @@ export default {
     },
   },
   mounted() {
-    GetUserTeam({ id: this.$store.state.userId }).then((res) => {
+    GetUserTeam({ userId: this.$store.state.userId }).then((res) => {
       this.teams = res.data.teams;
     });
     if (this.teams.length < 1) {
