@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <el-container style="height:95vh">
-      <el-header v-if="show" style="z-index:1">
+      <el-header v-if="show&&refresh" style="z-index:1">
         <headerly></headerly>
       </el-header>
       <el-container>
-        <el-aside v-if="show" width="200px">
+        <el-aside v-if="show&&refresh" width="200px">
           <asiderly class="asi"></asiderly>
         </el-aside>
         <el-main>
@@ -27,12 +27,18 @@ export default {
     asiderly,
   },
   data() {
-    return { winHeight: window.innerHeight };
+    return { refresh: true };
   },
   computed: {
     show() {
       return this.$store.state.status != "-1";
       //return true;
+    },
+  },
+  methods: {
+    reloadComponent() {
+      this.refresh = false;
+      this.$nextTick(() => (this.refresh = true));
     },
   },
 };

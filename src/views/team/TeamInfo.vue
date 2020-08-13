@@ -151,6 +151,7 @@ export default {
                 type: "success",
                 message: "成功解散团队",
               });
+              this.reload();
               this.$router.push("/home"); // 返回到主页
             } else {
               this.$message.error({
