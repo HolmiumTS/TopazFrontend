@@ -7,7 +7,13 @@ TODO:
   <el-container>
     <el-main class="teamMember">
       <h2>团队成员</h2>
-      <el-table height="600" :data="memberInfo" stripe style="width: 100%">
+      <el-table
+        height="600"
+        :data="memberInfo"
+        stripe
+        style="width: 100%"
+        :default-sort="{prop: 'memberType', order: 'ascending'}"
+      >
         <el-table-column label="用户" width="400">
           <template slot-scope="scope">
             <el-link :underline="false" :href="scope.row.memberUrl">
@@ -112,41 +118,41 @@ export default {
       userTypeInTeam: 3, //  0 创建者，1 管理员，2 成员，3 团队外用户
       applicationInfo: [],
       memberInfo: [
-        // {
-        //   memberId: "1",
-        //   memberUrl: "https://www.google.com",
-        //   memberUsername: "谷歌",
-        //   memberType: 0,
-        //   memberAvatar: "https://i.loli.net/2020/08/11/qSLd3msVgwRlZaj.png",
-        // },
-        // {
-        //   memberId: "2",
-        //   memberUrl: "https://www.bing.com",
-        //   memberUsername: "必应",
-        //   memberType: 1,
-        //   memberAvatar: "https://i.loli.net/2020/08/11/RgaFXCAEDI62mfP.png",
-        // },
-        // {
-        //   memberId: "3",
-        //   memberUrl: "https://www.duckduckgo.com",
-        //   memberUsername: "鸭鸭走",
-        //   memberType: 1,
-        //   memberAvatar: "https://i.loli.net/2020/08/11/UnM3fR6DxVG4ATo.png",
-        // },
-        // {
-        //   memberId: "5",
-        //   memberUrl: "https://www.sogou.com",
-        //   memberUsername: "搜狗",
-        //   memberType: 2,
-        //   memberAvatar: "https://i.loli.net/2020/08/11/wTIekN52t1xEqQc.png",
-        // },
-        // {
-        //   memberId: "4",
-        //   memberUrl: "https://www.baidu.com",
-        //   memberUsername: "百度",
-        //   memberType: 2,
-        //   memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
-        // },
+        {
+          memberId: "1",
+          memberUrl: "https://www.google.com",
+          memberUsername: "谷歌",
+          memberType: 0,
+          memberAvatar: "https://i.loli.net/2020/08/11/qSLd3msVgwRlZaj.png",
+        },
+        {
+          memberId: "2",
+          memberUrl: "https://www.bing.com",
+          memberUsername: "必应",
+          memberType: 1,
+          memberAvatar: "https://i.loli.net/2020/08/11/RgaFXCAEDI62mfP.png",
+        },
+        {
+          memberId: "3",
+          memberUrl: "https://www.duckduckgo.com",
+          memberUsername: "鸭鸭走",
+          memberType: 1,
+          memberAvatar: "https://i.loli.net/2020/08/11/UnM3fR6DxVG4ATo.png",
+        },
+        {
+          memberId: "5",
+          memberUrl: "https://www.sogou.com",
+          memberUsername: "搜狗",
+          memberType: 2,
+          memberAvatar: "https://i.loli.net/2020/08/11/wTIekN52t1xEqQc.png",
+        },
+        {
+          memberId: "4",
+          memberUrl: "https://www.baidu.com",
+          memberUsername: "百度",
+          memberType: 2,
+          memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
+        },
       ], // memberType: 0 创建者，1 管理员，2 成员
     };
   },
