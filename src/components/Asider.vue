@@ -161,6 +161,7 @@ export default {
               this.dialogFormVisible = false;
               // this.$store.dispatch("commitChangeTeamId", "123456");
               this.$store.dispatch("commitChangeTeamId", res.data.teamId);
+              this.$store.dispatch("commitChangeStatus", "1");
               this.$router.push({
                 path: "/team/info",
               });
