@@ -6,7 +6,7 @@
       @select="handleSelect"
       v-if="this.$store.state.status == '0'"
     >
-      <el-submenu>
+      <el-submenu index="sub1">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
           <span>工作台</span>
@@ -15,7 +15,7 @@
         <el-menu-item index="/home/collectedFile">收藏的文档</el-menu-item>
         <el-menu-item index="/home/myFile">我创建的文档</el-menu-item>
       </el-submenu>
-      <el-submenu>
+      <el-submenu index="sub2">
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span>团队空间</span>
@@ -180,7 +180,7 @@ export default {
     },
   },
   mounted() {
-    GetUserTeam(this.$store.state.userId).then((res) => {
+    GetUserTeam({ id: this.$store.state.userId }).then((res) => {
       this.teams = res.data.teams;
     });
     if (this.teams.length < 1) {
