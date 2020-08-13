@@ -3,7 +3,7 @@
     <el-table
       :data="files"
       :default-sort="{prop: 'time', order: 'descending'}"
-      style="width:80%;margin: auto auto"
+      style="width:100%;margin: auto auto"
     >
       <el-table-column min-width="10%" label="文档编号" prop="id" sortable></el-table-column>
       <el-table-column min-width="15%" label="文档名" prop="name" sortable></el-table-column>
@@ -45,7 +45,7 @@
           ></el-button>
         </template>
       </el-table-column>
-      <el-table-column min-width="30%" label="操作">
+      <el-table-column min-width="50%" label="操作">
         <template slot-scope="scope">
           <!-- <el-button
             round

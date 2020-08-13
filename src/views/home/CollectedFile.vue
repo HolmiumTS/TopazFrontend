@@ -3,12 +3,12 @@
     <el-table
       :data="files"
       :default-sort="{prop: 'id', order: 'ascending'}"
-      style="width:70%;margin: auto auto"
+      style="width:90%;margin: auto auto"
     >
       <el-table-column min-width="10%" label="文档编号" prop="id" sortable></el-table-column>
       <el-table-column min-width="15%" label="文档名" prop="name" sortable></el-table-column>
       <el-table-column min-width="10%" label="创建者" prop="username" sortable></el-table-column>
-      <el-table-column min-width="30%" label="操作">
+      <el-table-column min-width="50%" label="操作">
         <template slot-scope="scope">
           <!-- <el-button round size="mini" @click.native.prevent>取消收藏</el-button>
           <el-button @click.native.prevent="browseFile" size="mini">浏览</el-button>

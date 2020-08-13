@@ -407,11 +407,11 @@ export default {
     GetUserInfo({ id: this.$route.query.userId }).then((res) => {
       this.userId = this.$route.query.userId;
       this.userInfo.username = res.data.username;
-      this.userInfo.tel = res.data.tel;
+      this.userInfo.tel = parseInt(res.data.tel);
       this.userInfo.email = res.data.email;
       this.userInfo.avatar = res.data.avatar;
       this.changeUserInfoForm.username = res.data.username;
-      this.changeUserInfoForm.tel = res.data.tel;
+      this.changeUserInfoForm.tel = parseInt(res.data.tel);
       this.changeUserInfoForm.email = res.data.email;
     });
   },
