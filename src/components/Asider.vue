@@ -6,7 +6,7 @@
       @select="handleSelect"
       v-if="this.$store.state.status == '0'"
     >
-      <el-submenu index>
+      <el-submenu index="sub1">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
           <span>工作台</span>
@@ -15,7 +15,7 @@
         <el-menu-item index="/home/collectedFile">收藏的文档</el-menu-item>
         <el-menu-item index="/home/myFile">我创建的文档</el-menu-item>
       </el-submenu>
-      <el-submenu index>
+      <el-submenu index="sub2">
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span>团队空间</span>
@@ -127,7 +127,13 @@ export default {
     },
   },
   methods: {
-    handleSelect(key, index) {
+    handleSelect(key, ind) {
+      let index;
+      if (ind.length > 1) index = ind[1];
+      else index = ind[0];
+      console.log("start");
+      console.log(index);
+      console.log("end");
       if (index.toString() == "goBack") {
         this.$store.dispatch("commitChangeStatus", "0");
         this.$store.dispatch("commitChangeTeamId", "");
