@@ -58,7 +58,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="submiting" @click.native.prevent="submitTeamInfo">确认</el-button>
+          <el-button type="primary" :loading="submitting" @click.native.prevent="submitTeamInfo">确认</el-button>
         </div>
       </el-dialog>
 
@@ -130,7 +130,7 @@ export default {
       dialogFormVisible: false,
       isInTeam: false,
       isCreatorOrAdmin: false,
-      submiting: false,
+      submitting: false,
     };
   },
   methods: {
@@ -188,7 +188,8 @@ export default {
       };
       GetUserInfo(params).then((res) => {
         if (res.data.result == true) {
-          this.creatorInfo.creatorUrl = "http://localhost:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
+          this.creatorInfo.creatorUrl =
+            "http://localhost:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
           this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
         } else {
@@ -207,7 +208,7 @@ export default {
             teamName: this.changeTeamInfoForm.teamName,
             teamInfo: this.changeTeamInfoForm.teamInfo,
           };
-          this.submiting = true;
+          this.submitting = true;
           ChangeTeamInfo(params).then((res) => {
             if (res.data.result == true) {
               this.$message({
@@ -216,7 +217,7 @@ export default {
               });
               this.aboutTeam.teamName = this.changeTeamInfoForm.teamName;
               this.aboutTeam.teamInfo = this.changeTeamInfoForm.teamInfo;
-              this.submiting = false;
+              this.submitting = false;
               this.dialogFormVisible = false;
               this.mounted();
               this.$router.push({
@@ -238,6 +239,7 @@ export default {
   },
 
   mounted() {
+    console.log(this.$store.state.teamId);
     GetTeamInfo({ teamId: this.$store.state.teamId }).then((res) => {
       this.aboutTeam.teamName = res.data.teamName;
       this.aboutTeam.teamId = this.$store.state.teamId;
@@ -247,7 +249,7 @@ export default {
     this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
     this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
     this.getCreatorUsernameAndAvatar();
-    this.submiting = false;
+    this.submitting = false;
     this.dialogFormVisible = false;
 
     GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {

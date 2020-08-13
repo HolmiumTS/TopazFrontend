@@ -15,7 +15,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     Login(state, value) {
-      console.log(value)
+      console.log(value);
       state.status = '0';
       state.userId = value.userId;
       state.username = value.username;
@@ -30,10 +30,15 @@ const store = new Vuex.Store({
       state.status = status;
       console.log(state.status);
     },
+    ChangeTeamId(state, teamId) {
+      console.log(teamId);
+      state.teamId = teamId;
+      console.log(state.teamId);
+    },
   },
   actions: {
     commitLogin({ commit }, value) {
-      console.log(value)
+      console.log(value);
       commit('Login', value);
     },
     commitLogout({ commit }) {
@@ -42,6 +47,10 @@ const store = new Vuex.Store({
     commitChangeStatus({ commit }, status) {
       console.log(status);
       commit('ChangeStatus', status);
+    },
+    commitChangeTeamId({ commit }, teamId) {
+      console.log(teamId);
+      commit('ChangeTeamId', teamId);
     },
   },
   modules: {},
