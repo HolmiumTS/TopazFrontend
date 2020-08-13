@@ -31,7 +31,7 @@ export default {
       LoginForm: {},
       loading: false,
       rule: {
-        userType: [
+        user: [
           {
             required: true,
             message: "账号、邮箱或手机不能为空",
@@ -50,7 +50,13 @@ export default {
   },
   methods: {
     submit() {
-      this.$refs.LoginForm.validate((valid) => {
+      this.$store.dispatch("commitLogin", {
+        userId: "123",
+        username: "nameee",
+        avatar: "aaa",
+      });
+      this.$router.push("/home");
+      /*this.$refs.LoginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           let params = this.LoginForm;
@@ -81,7 +87,7 @@ export default {
             }
           });
         }
-      });
+      });*/
     },
     toRegister() {
       this.$router.push("/register");

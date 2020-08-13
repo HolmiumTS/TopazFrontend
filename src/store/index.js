@@ -5,14 +5,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   //用status表示登录状态:-1为未登录,0为已登录主界面,1为团队界面
-  state: {
-    // status: '0', // debug
-    status: '-1' || JSON.parse(sessionStorage.getItem('state')).status,
-    userId: '' || JSON.parse(sessionStorage.getItem('state')).userId,
-    username: '' || JSON.parse(sessionStorage.getItem('state')).username,
-    avatar: '' || JSON.parse(sessionStorage.getItem('state')).avatar,
-    teamId: '' || JSON.parse(sessionStorage.getItem('state')).teamId,
-  },
+  state: JSON.parse(sessionStorage.getItem('state') || JSON.stringify({ status: '-1', userId: '', username: '', avatar: '', teamId: '' })),
   mutations: {
     Login(state, value) {
       console.log(value);
