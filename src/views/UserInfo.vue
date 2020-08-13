@@ -381,7 +381,10 @@ export default {
   },
   computed: {
     ava() {
-      return this.$store.state.avatar;
+      return (
+        this.$store.state.avatar ||
+        "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png"
+      );
       //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     },
@@ -404,11 +407,11 @@ export default {
     GetUserInfo({ id: this.$route.query.userId }).then((res) => {
       this.userId = this.$route.query.userId;
       this.userInfo.username = res.data.username;
-      this.userInfo.tel = res.data.tel;
+      this.userInfo.tel = parseInt(res.data.tel);
       this.userInfo.email = res.data.email;
       this.userInfo.avatar = res.data.avatar;
       this.changeUserInfoForm.username = res.data.username;
-      this.changeUserInfoForm.tel = res.data.tel;
+      this.changeUserInfoForm.tel = parseInt(res.data.tel);
       this.changeUserInfoForm.email = res.data.email;
     });
   },

@@ -32,7 +32,7 @@
           style="margin: 10px 60%"
           type="info"
           size="small"
-          @click.native.prevent="newFile"
+          @click.native.prevent="dis2=true"
         >创建文档</el-button>
       </el-col>
       <el-col :span="1">
@@ -61,7 +61,12 @@
     <el-dialog :visible.sync="dis0" title="文档搜索结果">
       <!-- todo -->
     </el-dialog>
-    <el-dialog :visible.sync="dis1" title="团队搜索结果" :modal="false">
+    <el-dialog
+      :visible.sync="dis1"
+      title="团队搜索结果"
+      :modal="false"
+      style="width:1600px;margin: auto auto"
+    >
       <el-table :data="teams" style="width: 100%" border>
         <el-table-column prop="id" label="团队Id" min-width="20%"></el-table-column>
         <el-table-column prop="name" label="团队名称" min-width="20%"></el-table-column>
@@ -73,30 +78,65 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+    <el-dialog
+      :modal="false"
+      style="width: 600px;margin :auto auto;"
+      :visible.sync="dis2"
+      :title="newFileDialogTitle"
+    >
+      <el-form :model="newFileForm" ref="newFileForm" :rules="rule" label-width="0px">
+        <el-form-item prop="name">
+          <el-input type="text" v-model="newFileForm.name" placeholder="文件名"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click.native.prevent="newFile" size="small">确认创建</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { SearchTeams } from "../main";
 import { ApplyToTeam } from "../main";
+import { NewFile } from "../main";
 export default {
   data() {
     return {
       dis0: false,
       dis1: false,
+      dis2: false,
       sFile: "",
       sTeam: "",
-      teams: [
+      newFileForm: {},
+      /*teams: [
         { id: "001", name: "moyu", info: "955" },
         { id: "002", name: "baogan", info: "996" },
-      ],
-      //teams: null,
+      ],*/
+      teams: null,
+      rule: {
+        name: [
+          {
+            required: true,
+            message: "文件名不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   computed: {
     avatar() {
-      return this.$store.state.avatar;
+      return (
+        this.$store.state.avatar ||
+        "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png"
+      );
       //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+    },
+    newFileDialogTitle() {
+      if (this.$store.state.status == "1") {
+        return "创建团队文档";
+      } else return "创建个人文档";
     },
   },
   methods: {
@@ -114,6 +154,32 @@ export default {
     },
     newFile() {
       //todo
+      this.$refs.newFileForm.validate((valid) => {
+        if (valid) {
+          let params = {
+            userId: this.$store.state.userId,
+            teamId: "-1",
+            name: this.newFileForm.name,
+          };
+          if (this.$store.state.status == "1") {
+            params.teamId = this.$store.state.teamId;
+          }
+          NewFile(params).then((res) => {
+            if (res.data.result == true) {
+              this.$message({
+                type: "success",
+                message: "创建成功",
+              });
+              this.dis2 = false;
+              this.$router.go(0);
+            } else {
+              this.$message.error({
+                message: "创建失败,请稍后再试",
+              });
+            }
+          });
+        }
+      });
     },
     searchTeams() {
       SearchTeams({

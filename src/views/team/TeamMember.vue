@@ -7,7 +7,13 @@ TODO:
   <el-container>
     <el-main class="teamMember">
       <h2>团队成员</h2>
-      <el-table height="600" :data="memberInfo" stripe style="width: 100%">
+      <el-table
+        height="600"
+        :data="memberInfo"
+        stripe
+        style="width: 100%"
+        :default-sort="{prop: 'memberType', order: 'ascending'}"
+      >
         <el-table-column label="用户" width="400">
           <template slot-scope="scope">
             <el-link :underline="false" :href="scope.row.memberUrl">
@@ -109,7 +115,7 @@ export default {
         // teamInfo: "955团队",
       },
       userId: "",
-      userTypeInTeam: 3, //  0 创建者，1 管理员，2 成员，3 团队外用户
+      userTypeInTeam: 2, //  0 创建者，1 管理员，2 成员
       applicationInfo: [],
       memberInfo: [
         // {
@@ -334,10 +340,10 @@ export default {
 <style scoped>
 .teamMember {
   margin: auto auto;
-  background: #fff;
+  /* background: #fff;
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;
-  border-radius: 10px;
+  border-radius: 10px; */
 }
 
 span {

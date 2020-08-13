@@ -18,11 +18,7 @@ const routes = [
     name: '注册',
     component: () => import('../views/Register.vue')
   },
-  {
-    path: '/recyclebin',
-    name: '回收站',
-    component: () => import('../views/Recyclebin.vue')
-  },
+
   {
     path: '/userInfo',
     name: '用户信息',
@@ -59,6 +55,11 @@ const routes = [
         path: '/home/myFile',
         name: '我创建的文档',
         component: () => import('../views/home/MyFile.vue'),
+      },
+      {
+        path: '/home/recyclebin',
+        name: '回收站',
+        component: () => import('../views/home/Recyclebin.vue')
       },
     ]
   },
