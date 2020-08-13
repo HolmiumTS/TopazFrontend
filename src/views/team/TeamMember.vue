@@ -314,14 +314,14 @@ export default {
           idArray.push({ id: tmpId, type: 2 });
         }
 
-        var tmpObj = { tmpId: "", tmpType: 0 };
+        var tmpObj = { id: "", type: 0 };
         for (tmpObj in idArray) {
-          if (tmpObj.tmpId == this.userId) this.userTypeInTeam = tmpObj.tmpType;
+          if (tmpObj.id == this.userId) this.userTypeInTeam = tmpObj.type;
 
-          tmpMemberInfo.memberId = tmpObj.tmpId;
-          tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.tmpId);
-          tmpMemberInfo.memberType = tmpObj.tmpType;
-          GetUserInfo(tmpObj.tmpId).then((res2) => {
+          tmpMemberInfo.memberId = tmpObj.id;
+          tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.id);
+          tmpMemberInfo.memberType = tmpObj.type;
+          GetUserInfo(tmpObj.id).then((res2) => {
             tmpMemberInfo.memberUsername = res2.data.username;
             tmpMemberInfo.memberAvatar = res2.data.avatar;
           });
