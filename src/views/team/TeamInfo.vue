@@ -142,7 +142,7 @@ export default {
       })
         .then(() => {
           let params = {
-            teamId: this.aboutTeam.teamId,
+            id: this.aboutTeam.teamId,
           };
           console.log("confirm dissolve");
           DissolveTeam(params).then((res) => {
@@ -253,7 +253,7 @@ export default {
       }
       console.log("creatorId2: "+res.data.creatorId);
     });
-    console.log("teamInfo: "+this.aboutTeam.teamInfo);
+    console.log("teamInfo: "+this.aboutTeam.teamName);
     console.log("creatorId3: "+this.aboutTeam.creatorId);
     this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
     this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;

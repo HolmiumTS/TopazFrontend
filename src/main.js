@@ -250,7 +250,7 @@ export /**
 
 export /**
  * 解散团队
- * @param {teamId}
+ * @param {id}
  * 团队id
  * @returns {result}
  * 是否成功
