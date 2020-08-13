@@ -103,50 +103,50 @@ export default {
     return {
       dialogTableVisible: false,
       aboutTeam: {
-        teamName: "Topaz Team", // for test
-        teamId: "123",
-        creatorId: "19260817",
-        teamInfo: "955团队",
+        // teamName: "Topaz Team", // for test
+        // teamId: "123",
+        // creatorId: "19260817",
+        // teamInfo: "955团队",
       },
-      userId: "1",
-      userTypeInTeam: 0, //  0 创建者，1 管理员，2 成员，3 团队外用户
+      userId: "",
+      userTypeInTeam: 3, //  0 创建者，1 管理员，2 成员，3 团队外用户
       applicationInfo: [],
       memberInfo: [
-        {
-          memberId: "1",
-          memberUrl: "https://www.google.com",
-          memberUsername: "谷歌",
-          memberType: 0,
-          memberAvatar: "https://i.loli.net/2020/08/11/qSLd3msVgwRlZaj.png",
-        },
-        {
-          memberId: "2",
-          memberUrl: "https://www.bing.com",
-          memberUsername: "必应",
-          memberType: 1,
-          memberAvatar: "https://i.loli.net/2020/08/11/RgaFXCAEDI62mfP.png",
-        },
-        {
-          memberId: "3",
-          memberUrl: "https://www.duckduckgo.com",
-          memberUsername: "鸭鸭走",
-          memberType: 1,
-          memberAvatar: "https://i.loli.net/2020/08/11/UnM3fR6DxVG4ATo.png",
-        },
-        {
-          memberId: "5",
-          memberUrl: "https://www.sogou.com",
-          memberUsername: "搜狗",
-          memberType: 2,
-          memberAvatar: "https://i.loli.net/2020/08/11/wTIekN52t1xEqQc.png",
-        },
-        {
-          memberId: "4",
-          memberUrl: "https://www.baidu.com",
-          memberUsername: "百度",
-          memberType: 2,
-          memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
-        },
+        // {
+        //   memberId: "1",
+        //   memberUrl: "https://www.google.com",
+        //   memberUsername: "谷歌",
+        //   memberType: 0,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/qSLd3msVgwRlZaj.png",
+        // },
+        // {
+        //   memberId: "2",
+        //   memberUrl: "https://www.bing.com",
+        //   memberUsername: "必应",
+        //   memberType: 1,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/RgaFXCAEDI62mfP.png",
+        // },
+        // {
+        //   memberId: "3",
+        //   memberUrl: "https://www.duckduckgo.com",
+        //   memberUsername: "鸭鸭走",
+        //   memberType: 1,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/UnM3fR6DxVG4ATo.png",
+        // },
+        // {
+        //   memberId: "5",
+        //   memberUrl: "https://www.sogou.com",
+        //   memberUsername: "搜狗",
+        //   memberType: 2,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/wTIekN52t1xEqQc.png",
+        // },
+        // {
+        //   memberId: "4",
+        //   memberUrl: "https://www.baidu.com",
+        //   memberUsername: "百度",
+        //   memberType: 2,
+        //   memberAvatar: "https://i.loli.net/2020/08/11/sqywvkrAh9JY5od.png",
+        // },
       ], // memberType: 0 创建者，1 管理员，2 成员
     };
   },
@@ -284,50 +284,50 @@ export default {
     },
   },
 
-  // mounted() {
-  //   this.userId = this.$store.state.userId;
-  //   this.aboutTeam.teamId = this.$store.state.teamId;
-  //   this.userTypeInTeam = "3";
-  //   let params = {
-  //     teamId: this.teamId,
-  //   };
-  //   GetTeamMember(params).then((res) => {
-  //     var tmpMemberInfo = {
-  //       memberId: "",
-  //       memberUrl: "",
-  //       memberUsername: "",
-  //       memberType: 0,
-  //       memberAvatar: "",
-  //     };
-  //     if (res.data.result == true) {
-  //       var idArray = [{ id: res.data.creatorId, type: 0 }];
-  //       for (var tmpId in res.data.adminId) {
-  //         idArray.push({ id: tmpId, type: 1 });
-  //       }
-  //       for (var tmpId in res.data.memberId) {
-  //         idArray.push({ id: tmpId, type: 2 });
-  //       }
+  mounted() {
+    this.userId = this.$store.state.userId;
+    this.aboutTeam.teamId = this.$store.state.teamId;
+    this.userTypeInTeam = "3";
+    let params = {
+      teamId: this.teamId,
+    };
+    GetTeamMember(params).then((res) => {
+      var tmpMemberInfo = {
+        memberId: "",
+        memberUrl: "",
+        memberUsername: "",
+        memberType: 0,
+        memberAvatar: "",
+      };
+      if (res.data.result == true) {
+        var idArray = [{ id: res.data.creatorId, type: 0 }];
+        for (var tmpId in res.data.adminId) {
+          idArray.push({ id: tmpId, type: 1 });
+        }
+        for (var tmpId in res.data.memberId) {
+          idArray.push({ id: tmpId, type: 2 });
+        }
 
-  //       var tmpObj = { tmpId: "", tmpType: 0 };
-  //       for (tmpObj in idArray) {
-  //         if (tmpObj.tmpId == this.userId) this.userTypeInTeam = tmpObj.tmpType;
+        var tmpObj = { tmpId: "", tmpType: 0 };
+        for (tmpObj in idArray) {
+          if (tmpObj.tmpId == this.userId) this.userTypeInTeam = tmpObj.tmpType;
 
-  //         tmpMemberInfo.memberId = tmpObj.tmpId;
-  //         tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.tmpId);
-  //         tmpMemberInfo.memberType = tmpObj.tmpType;
-  //         GetUserInfo(tmpObj.tmpId).then((res2) => {
-  //           tmpMemberInfo.memberUsername = res2.data.username;
-  //           tmpMemberInfo.memberAvatar = res2.data.avatar;
-  //         });
-  //         this.memberInfo.push(tmpMemberInfo);
-  //       }
-  //     } else {
-  //       this.$message.error({
-  //         message: "无法获取团队成员",
-  //       });
-  //     }
-  //   });
-  // },
+          tmpMemberInfo.memberId = tmpObj.tmpId;
+          tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.tmpId);
+          tmpMemberInfo.memberType = tmpObj.tmpType;
+          GetUserInfo(tmpObj.tmpId).then((res2) => {
+            tmpMemberInfo.memberUsername = res2.data.username;
+            tmpMemberInfo.memberAvatar = res2.data.avatar;
+          });
+          this.memberInfo.push(tmpMemberInfo);
+        }
+      } else {
+        this.$message.error({
+          message: "无法获取团队成员",
+        });
+      }
+    });
+  },
 };
 </script>
 

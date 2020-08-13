@@ -98,15 +98,22 @@ export default {
   data() {
     return {
       aboutTeam: {
-        teamName: "Topaz Team", // for test
-        teamId: "123",
-        creatorId: "19260817",
-        teamInfo: "955团队",
+        // teamName: "Topaz Team", // for test
+        // teamId: "123",
+        // creatorId: "19260817",
+        // teamInfo: "955团队",
+        teamName: "",
+        teamId: "",
+        creatorId: "",
+        teamInfo: "",
       },
       creatorInfo: {
-        creatorUrl: "https://www.baidu.com",
-        creatorUsername: "一个普通的创建者",
-        creatorAvatar: "https://i.loli.net/2020/08/11/mfBdpDUIsJChLGM.png",
+        creatorUrl: "",
+        creatorUsername: "",
+        creatorAvatar: "",
+        // creatorUrl: "https://www.baidu.com",
+        // creatorUsername: "一个普通的创建者",
+        // creatorAvatar: "https://i.loli.net/2020/08/11/mfBdpDUIsJChLGM.png",
       },
       changeTeamInfoForm: {
         teamName: "",
@@ -121,8 +128,8 @@ export default {
         ],
       },
       dialogFormVisible: false,
-      isInTeam: true,
-      isCreatorOrAdmin: true,
+      isInTeam: false,
+      isCreatorOrAdmin: false,
       submiting: false,
     };
   },
@@ -181,7 +188,7 @@ export default {
       };
       GetUserInfo(params).then((res) => {
         if (res.data.result == true) {
-          this.creatorInfo.creatorUrl = "www.baidu.com"; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
+          this.creatorInfo.creatorUrl = "http://localhost:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
           this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
         } else {
