@@ -130,6 +130,7 @@ export default {
     handleSelect(key, index) {
       if (index.toString() == "goBack") {
         this.$store.dispatch("commitChangeStatus", "0");
+        this.$store.dispatch("commitChangeTeamId", "");
         this.$router.push("/home/recentFile");
         return;
       }

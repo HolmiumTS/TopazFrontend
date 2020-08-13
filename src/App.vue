@@ -6,7 +6,7 @@
       </el-header>
       <el-container>
         <el-aside v-if="show" width="200px">
-          <asiderly style="height:90vh"></asiderly>
+          <asiderly style="height:90%;positon: fixed;"></asiderly>
         </el-aside>
         <el-main>
           <transition name="el-zoom-in-center">
