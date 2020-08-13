@@ -181,7 +181,7 @@ export default {
     },
   },
   mounted() {
-    GetUserTeam({ userId: this.$store.state.userId }).then((res) => {
+    GetUserTeam({ id: this.$store.state.userId }).then((res) => {
       this.teams = res.data.teams;
     });
     if (this.teams.length < 1) {
