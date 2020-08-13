@@ -26,7 +26,8 @@ TODO:
           <template slot-scope="scope">
             <div v-if="scope.row.memberType==0">创建者</div>
             <div v-else-if="scope.row.memberType==1">管理员</div>
-            <div v-else>普通成员</div>
+            <div v-else-if="scope.row.memberType==2">普通成员</div>
+            <div v-else>ERROR</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="300">
@@ -293,7 +294,6 @@ export default {
   mounted() {
     this.userId = this.$store.state.userId;
     this.aboutTeam.teamId = this.$store.state.teamId;
-    this.userTypeInTeam = "2";
     let params = {
       teamId: this.aboutTeam.teamId,
     };
@@ -315,13 +315,15 @@ export default {
         }
 
         var tmpObj = { id: "", type: 0 };
+        console.log("idArray = " + idArray);
         for (tmpObj in idArray) {
           if (tmpObj.id == this.userId) this.userTypeInTeam = tmpObj.type;
-
+          console.log("tmpObj.type = " + tmpObj.type);
+          console.log("this.userTypeInTeam = " + this.userTypeInTeam);
           tmpMemberInfo.memberId = tmpObj.id;
           tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.id);
           tmpMemberInfo.memberType = tmpObj.type;
-          GetUserInfo(tmpObj.id).then((res2) => {
+          GetUserInfo({ id: tmpObj.id }).then((res2) => {
             tmpMemberInfo.memberUsername = res2.data.username;
             tmpMemberInfo.memberAvatar = res2.data.avatar;
           });
