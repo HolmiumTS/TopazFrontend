@@ -181,7 +181,7 @@ export default {
         }
       });
       // for test
-      this.applicationInfo.push({
+      /*this.applicationInfo.push({
         id: "12",
         url: "www.bilibili.com",
         username: "bilibili",
@@ -192,7 +192,7 @@ export default {
         url: "www.acfun.cn",
         username: "acfun",
         avatar: "https://i.loli.net/2020/08/11/Rqm3hEG6bnHLsd4.png",
-      });
+      });*/
       // for test
     },
 
