@@ -315,10 +315,12 @@ export default {
         }
 
         var tmpObj = { id: "", type: 0 };
-        console.log("idArray = " + idArray);
-        for (tmpObj in idArray) {
+        console.log("idArray = " + idArray[0].id);
+        var length = idArray.length;
+        for (var i = 0; i < length; i++) {
+          tmpObj = idArray[i];
           if (tmpObj.id == this.userId) this.userTypeInTeam = tmpObj.type;
-          console.log("tmpObj.type = " + tmpObj.type);
+          console.log("tmpObj.type = " + tmpObj.id);
           console.log("this.userTypeInTeam = " + this.userTypeInTeam);
           tmpMemberInfo.memberId = tmpObj.id;
           tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.id);
