@@ -50,13 +50,13 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("commitLogin", {
+      /*this.$store.dispatch("commitLogin", {
         userId: "123",
-        username: "nameee",
+        username: this.LoginForm.user,
         avatar: "aaa",
       });
-      this.$router.push("/home");
-      /*this.$refs.LoginForm.validate((valid) => {
+      this.$router.push("/home");*/
+      this.$refs.LoginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           let params = this.LoginForm;
@@ -87,7 +87,7 @@ export default {
             }
           });
         }
-      });*/
+      });
     },
     toRegister() {
       this.$router.push("/register");

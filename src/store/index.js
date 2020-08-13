@@ -13,6 +13,7 @@ const store = new Vuex.Store({
       state.userId = value.userId;
       state.username = value.username;
       state.avatar = value.avatar;
+      //sessionStorage.removeItem('state');
       sessionStorage.setItem("state", JSON.stringify(state));
     },
     Logout(state) {
@@ -23,12 +24,14 @@ const store = new Vuex.Store({
     ChangeStatus(state, status) {
       console.log(status);
       state.status = status;
+      //sessionStorage.removeItem('state');
       sessionStorage.setItem("state", JSON.stringify(state));
       console.log(state.status);
     },
     ChangeTeamId(state, teamId) {
       console.log(teamId);
       state.teamId = teamId;
+      //sessionStorage.removeItem('state');
       sessionStorage.setItem("state", JSON.stringify(state));
       console.log(state.teamId);
     },
