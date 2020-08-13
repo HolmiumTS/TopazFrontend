@@ -136,6 +136,7 @@ export default {
       for (let i = 0; i < this.teams.length; i++) {
         if (this.teams[i].id == index.toString()) {
           this.$store.dispatch("commitChangeTeamId", this.teams[i].id);
+          this.$store.dispatch("commitChangeStatus", "1");
           this.$router.push("/team");
           return;
         }
