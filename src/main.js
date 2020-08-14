@@ -159,7 +159,7 @@ export /**
  * @returns {messages[{id,content,time,status}]}
  * messages:[{消息id,消息内容,消息时间,消息状态:'0'为未读,'1'为已读}]
  * 返回给前端的数据按时间降序排序(最新的在前)
- * 
+ *
  * content格式(不用带中括号):
  * 用户加入的团队解散了: 团队 [团队名] 已被解散
  * 用户被踢出团队:  已被踢出 团队 [团队名]
@@ -222,12 +222,21 @@ export /**
 // {管理员id，管理员用户名，管理员头像}[]，
 // {成员id，成员用户名，成员头像}[]
 // 的形式
+// export /**
+//  * 查看团队成员
+//  * @param {teamId}
+//  * 团队id
+//  * @returns {result, creatorId, adminId[], memberId[]}
+//  * 是否成功，创建者id，管理员id[]，成员id[]
+//  */ const GetTeamMember = (params) => {
+//     return axios.post('/GetTeamMember', params);
+//   };
 export /**
  * 查看团队成员
  * @param {teamId}
  * 团队id
- * @returns {result, creatorId, adminId[], memberId[]}
- * 是否成功，创建者id，管理员id[]，成员id[]
+ * @returns {result, memberInfo[{memberId, memberUsername, memberAvatar, memberType}]}
+ * 是否成功，成员信息[成员id, 成员用户名，成员头像，成员类型（0 创建者/1 管理员/2 普通成员）（是字符串）]
  */ const GetTeamMember = (params) => {
     return axios.post('/GetTeamMember', params);
   };
