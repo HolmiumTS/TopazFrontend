@@ -92,7 +92,12 @@
 <script>
 import { GetTeamInfo } from "../../main";
 import { DissolveTeam } from "../../main";
-import { GetUserInfo, GetUserTeam, GetTeamMember, ChangeTeamInfo } from "../../main";
+import {
+  GetUserInfo,
+  GetUserTeam,
+  GetTeamMember,
+  ChangeTeamInfo,
+} from "../../main";
 
 export default {
   data() {
@@ -102,10 +107,10 @@ export default {
         // teamId: "123",
         // creatorId: "19260817",
         // teamInfo: "955团队",
-         //teamName: "",
-         //teamId: "",
-         //creatorId: "",
-         //teamInfo: "",
+        //teamName: "",
+        //teamId: "",
+        //creatorId: "",
+        //teamInfo: "",
       },
       creatorInfo: {
         creatorUrl: "",
@@ -151,7 +156,7 @@ export default {
                 type: "success",
                 message: "成功解散团队",
               });
-              this.reload();
+              this.reloadComponent();
               this.$router.push("/home"); // 返回到主页
             } else {
               this.$message.error({
@@ -184,7 +189,7 @@ export default {
     },
 
     getCreatorUsernameAndAvatar() {
-      console.log("creatorId: "+this.aboutTeam.creatorId);
+      console.log("creatorId: " + this.aboutTeam.creatorId);
       let params = {
         id: this.aboutTeam.creatorId,
       };
@@ -252,10 +257,10 @@ export default {
         this.aboutTeam.creatorId = res.data.creatorId;
         this.aboutTeam.teamInfo = res.data.teamInfo;
       }
-      console.log("creatorId2: "+res.data.creatorId);
+      console.log("creatorId2: " + res.data.creatorId);
     });
-    console.log("teamInfo: "+this.aboutTeam.teamName);
-    console.log("creatorId3: "+this.aboutTeam.creatorId);
+    console.log("teamInfo: " + this.aboutTeam.teamName);
+    console.log("creatorId3: " + this.aboutTeam.creatorId);
     this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
     this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
 
@@ -278,7 +283,7 @@ export default {
         if (teamID == this.aboutTeam.teamId) this.isInTeam = true;
       }
     });
-    console.log("creatorId3: "+this.aboutTeam.creatorId);
+    console.log("creatorId3: " + this.aboutTeam.creatorId);
   },
 };
 </script>

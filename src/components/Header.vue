@@ -5,6 +5,7 @@
         <img src="../assets/Topaz.png" alt />
         <!--<h3 style="margin: 12px auto">金刚石文档</h3>-->
       </el-col>
+      <!--
       <el-col :span="4" :offset="9">
         <el-input
           style="margin: 10px auto;width:100%;"
@@ -15,8 +16,8 @@
         >
           <el-button slot="append" icon="el-icon-search" circle @click.native.prevent="searchFiles"></el-button>
         </el-input>
-      </el-col>
-      <el-col :span="4">
+      </el-col>-->
+      <el-col :span="4" :offset="13">
         <el-input
           style="margin: 10px 15%;width:100%;"
           v-model="sTeam"
@@ -35,22 +36,40 @@
           @click.native.prevent="dis2=true"
         >创建文档</el-button>
       </el-col>
+      <!-- todo:消息通知 -->
       <el-col :span="1">
-        <i style="margin: 18px 100%" class="el-icon-bell"></i>
+        <el-badge :value="UnreadMessages" style="margin: 18px 85%;" :hidden="UnreadMessages<1">
+          <el-popover placement="bottom-start" trigger="click" width="400" style="positon:fixed;">
+            <el-link :underline="false" @click="changeMessageStatus">全部标记为已读</el-link>
+            <el-tabs>
+              <el-tab-pane label="全部通知" style="overflow:auto;height:400px">
+                <div v-for="message in messages" :key="message.id">
+                  <el-card shadow="hover" style="margin:0px 0px 5px 0px;height:80px">
+                    <p style="font-size:130%;margin:-2% 0px;">{{message.content}}</p>
+                    <p style="color:#C0C0C0">{{message.time}}</p>
+                  </el-card>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="未读">
+                <div v-for="message in unReadMessages" :key="message.id">
+                  <el-card shadow="hover" style="margin:0px 0px 5px 0px;height:80px">
+                    <p style="font-size:130%;margin:-2% 0px;">{{message.content}}</p>
+                    <p style="color:#C0C0C0">{{message.time}}</p>
+                  </el-card>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+            <i slot="reference" class="el-icon-bell" style="width: 30px;height:30px"></i>
+          </el-popover>
+        </el-badge>
       </el-col>
       <el-col :span="1">
-        <el-dropdown>
-          <span class="el-dropdown-link">
+        <el-dropdown style="margin: -4px 100%">
+          <div class="el-dropdown-link">
             <p>
-              <el-avatar
-                :src="avatar"
-                :size="30"
-                fit="fill"
-                v-bind:username="this.$store.state.username"
-                style="margin: -4px 100%"
-              >{{username}}</el-avatar>
+              <el-avatar :src="avatar" :size="30" fit="fill" v-bind:username="username">{{username}}</el-avatar>
             </p>
-          </span>
+          </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native.prevent="toUserInfo">个人信息</el-dropdown-item>
             <el-dropdown-item @click.native.prevent="Logout">退出登录</el-dropdown-item>
@@ -99,6 +118,9 @@
 import { SearchTeams } from "../main";
 import { ApplyToTeam } from "../main";
 import { NewFile } from "../main";
+import { GetUserMessage } from "../main";
+import { ChangeMessageStatus } from "../main";
+import { Message } from "element-ui";
 export default {
   data() {
     return {
@@ -113,6 +135,60 @@ export default {
         { id: "002", name: "baogan", info: "996" },
       ],*/
       teams: null,
+      messages: [
+        {
+          id: "001",
+          content: "张三 退出了团队 Test",
+          time: "8月14日 11:43",
+          status: "1",
+        },
+        {
+          id: "002",
+          content: "李四 申请加入团队 ff",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+        {
+          id: "003",
+          content: "加入团队 Teee 的申请已被 接受",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+        {
+          id: "004",
+          content: "李四 申请加入团队 ff",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+        {
+          id: "005",
+          content: "李四 申请加入团队 ff",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+        {
+          id: "006",
+          content: "李四 申请加入团队 ff",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+        {
+          id: "007",
+          content: "李四 申请加入团队 ff",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+      ],
+      //messages: [],
+      //unReadMessages: [],
+      unReadMessages: [
+        {
+          id: "001",
+          content: "李四 申请加入团队 ff",
+          time: "8月13日 12:43",
+          status: "0",
+        },
+      ],
       rule: {
         name: [
           {
@@ -125,6 +201,9 @@ export default {
     };
   },
   computed: {
+    username() {
+      return this.$store.state.username;
+    },
     avatar() {
       return (
         this.$store.state.avatar ||
@@ -132,6 +211,14 @@ export default {
       );
       //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+    },
+    UnreadMessages() {
+      /*let cnt = 0;
+      for (let message of this.messages) {
+        if (message.status == "0") cnt++;
+      }
+      return cnt;*/
+      return this.unReadMessages.length;
     },
     newFileDialogTitle() {
       if (this.$store.state.status == "1") {
@@ -209,8 +296,32 @@ export default {
         }
       });
     },
+    changeMessageStatus() {
+      let id = [];
+      for (let message in this.unReadMessages) {
+        id.push(message.id);
+      }
+      ChangeMessageStatus({ id: id }).then((res) => {
+        if (res.data.result == true) {
+          this.unReadMessages = [];
+          console.log(changeMessageStatus_Succeed);
+        } else {
+          this.$message.error("无法标记消息为已读");
+          console.log(changeMessageStatus_Failed);
+        }
+      });
+    },
   },
-  mounted() {},
+  mounted() {
+    GetUserMessage({ id: this.$store.state.userId }).then((res) => {
+      this.messages = res.data.messages;
+      for (let message in this.messages) {
+        if (message.status == "0") {
+          this.unReadMessages.push(message);
+        }
+      }
+    });
+  },
 };
 </script>
 <style scoped>
@@ -226,5 +337,7 @@ export default {
 }
 .button {
   margin: 10px 0;
+}
+.el-card {
 }
 </style>
