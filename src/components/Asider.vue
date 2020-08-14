@@ -97,6 +97,7 @@ import { GetUserTeam, CreateTeam } from "../main";
 export default {
   data() {
     return {
+      inject: ['reloadComponent'],
       /*teams: [
         { id: "01", name: "test1" },
         { id: "02", name: "test2" },
@@ -171,7 +172,7 @@ export default {
               // this.$store.dispatch("commitChangeTeamId", "123456");
               this.$store.dispatch("commitChangeTeamId", res.data.teamId);
               this.$store.dispatch("commitChangeStatus", "1");
-              // this.reloadComponent();
+              this.reloadComponent();
               this.$router.push({
                 path: "/team/info",
               });
