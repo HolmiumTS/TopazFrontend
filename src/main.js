@@ -386,6 +386,50 @@ export /**
  */ const GetFile = (params) => {
     return axios.post('/GetFile', params);
   };
+
+export /**
+  * 文档变更收藏
+  * 已收藏变为未收藏,未收藏变为已收藏
+  * @param {id}
+  * 文档id
+  * @returns {result}
+  * 是否成功
+  */ const CollectFile = (params) => {
+    return axios.post('/CollectFile', params);
+  };
+
+export /**
+   * 管理文档权限
+   * @param {id,view,edit}
+   * 文档id,查看权限,编辑权限
+   * 查看权限:'0'为 private, '1'为 public
+   * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
+   * @returns {}
+   * 待定
+   */ const AuthorizeFile = (params) => {
+    return axios.post('/AuthorizeFile', params);
+  };
+
+export /**
+    * 删除文档
+    * @param {id}
+    * 文档id
+    * @returns {result}
+    * 是否成功
+    */ const DeleteFile = (params) => {
+    return axios.post('/DeleteFile', params);
+  };
+
+export /**
+  * 保存文档为模板
+  * @param {id}
+  * 文档id
+  * @returns {result}
+  * 是否成功
+  */ const TemplateFile = (params) => {
+    return axios.post('/TemplateFile', params);
+  };
+
 // ! === 文档 === (end)
 
 //todo: 导航守卫
