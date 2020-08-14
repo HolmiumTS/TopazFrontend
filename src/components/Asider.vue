@@ -131,9 +131,9 @@ export default {
       let index;
       if (ind.length > 1) index = ind[1];
       else index = ind[0];
-      console.log("start");
+      /*console.log("start");
       console.log(index);
-      console.log("end");
+      console.log("end");*/
       if (index.toString() == "goBack") {
         this.$store.dispatch("commitChangeStatus", "0");
         this.$store.dispatch("commitChangeTeamId", "");
@@ -193,7 +193,10 @@ export default {
     GetUserTeam({ id: this.$store.state.userId }).then((res) => {
       this.teams = res.data.teams;
     });
-    if (this.teams.length < 1) {
+    console.log("Asider.vue_teams");
+    console.log(this.teams.length);
+    console.log(this.teams);
+    if (this.teams.length < 1 || this.teams == []) {
       this.teams = [{ id: "-1", name: "空" }];
     }
   },

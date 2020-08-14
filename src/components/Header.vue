@@ -39,7 +39,12 @@
       <!-- todo:消息通知 -->
       <el-col :span="1">
         <el-badge :value="UnreadMessages" style="margin: 18px 85%;" :hidden="UnreadMessages<1">
-          <el-popover placement="bottom-start" trigger="click" width="400" style="positon:fixed;">
+          <el-popover
+            placement="bottom-start"
+            trigger="click"
+            width="400"
+            style="top:60px;positon:fixed;"
+          >
             <el-link :underline="false" @click="changeMessageStatus">全部标记为已读</el-link>
             <el-tabs>
               <el-tab-pane label="全部通知" style="overflow:auto;height:400px">
@@ -337,7 +342,5 @@ export default {
 }
 .button {
   margin: 10px 0;
-}
-.el-card {
 }
 </style>

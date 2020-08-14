@@ -5,7 +5,8 @@
         <headerly :key="refresh"></headerly>
       </el-header>
       <el-container>
-        <el-aside v-if="show" width="200px" style="margin: 0px -3%;">
+        <!--<el-aside v-if="show" width="200px" style="margin: 0px -3%;">-->
+        <el-aside v-if="show" width="200px">
           <asiderly v-if="refresh" class="asi"></asiderly>
         </el-aside>
         <el-main>
@@ -57,7 +58,8 @@ export default {
   text-align: left;
 }
 .asi {
-  height: calc(90vh - 100px);
-  margin: 50px 0px;
+  /*height: calc(90vh - 100px);
+  margin: 50px 0px;*/
+  height: 85vh;
 }
 </style>

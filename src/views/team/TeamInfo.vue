@@ -102,6 +102,7 @@ import {
 export default {
   data() {
     return {
+      inject: ["reloadComponent"],
       aboutTeam: {
         // teamName: "Topaz Team", // for test
         // teamId: "123",
