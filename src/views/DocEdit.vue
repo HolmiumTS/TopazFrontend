@@ -11,11 +11,13 @@
       ref="editor"
       :toolbars="toolbars"
       placeholder="oooooooo"
-      defaultOpen="edit"
+      defaultOpen="preview"
+      :editable="true"
       toolbarsBackground="#66ccff"
-      subfield="true"
+      :subfield="true"
       @imgAdd="imgAdd"
-    />
+    ></mavon-editor>
+
   </div>
 </template>
 
@@ -30,7 +32,7 @@
         actionPath: "https://upload.qiniup.com", // 华东
         photoUrl: "http://qexiy12gt.hd-bkt.clouddn.com/", //外链域名
         title: "未命名",
-        value: "",
+        value: "# test\n sss",
         editorOption: {
           placeholder: "编辑文章内容",
         }, toolbars: {
