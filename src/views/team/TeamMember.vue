@@ -17,7 +17,7 @@ TODO:
         <el-table-column label="用户" width="400">
           <template slot-scope="scope">
             <el-link :underline="false" :href="scope.row.memberUrl">
-              <el-avatar :src="scope.row.memberAvatar" :alt="scope.row.memberUsername"></el-avatar>
+              <el-avatar :src="getAvatar(scope.row.memberAvatar)" :alt="scope.row.memberUsername"></el-avatar>
               <span>{{scope.row.memberUsername}}</span>
             </el-link>
           </template>
@@ -69,7 +69,7 @@ TODO:
           <el-table-column label="用户" width="350">
             <template slot-scope="scope">
               <el-link :underline="false" :href="scope.row.url">
-                <el-avatar :src="scope.row.avatar" :alt="scope.row.username"></el-avatar>
+                <el-avatar :src="getAvatar(scope.row.avatar)" :alt="scope.row.username"></el-avatar>
                 <span>{{scope.row.username}}</span>
               </el-link>
             </template>
@@ -99,7 +99,6 @@ TODO:
 import {
   GetTeamMember,
   generateUserUrl,
-  GetUserInfo,
   SetAdmin,
   CancelAdmin,
   GetAllApplication,
@@ -158,15 +157,22 @@ export default {
     };
   },
   methods: {
+    getAvatar(avatar) {
+      return avatar || "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
+    },
+
     getAllApplication() {
       this.dialogTableVisible = true;
       let params = {
         teamId: this.aboutTeam.teamId,
       };
       GetAllApplication(params).then((res) => {
+        console.log(res.data);
         if (res.data.result == true) {
           this.applicationInfo.splice(0, this.applicationInfo.length);
-          for (var tmp in res.data.application) {
+          var length = res.data.application.length;
+          for (var i = 0; i < length; i++) {
+            var tmp = res.data.application[i];
             this.applicationInfo.push({
               id: tmp.id,
               url: generateUserUrl(tmp.id),
@@ -202,8 +208,8 @@ export default {
         id: id,
         isAccept: isAccept == true ? "true" : "false",
       };
-      // console.log(index);
-      JudgeApplication(params).them((res) => {
+      console.log("JudgeApplication.params: " + params);
+      JudgeApplication(params).then((res) => {
         if (res.data.result == true) {
           this.$message({
             type: "success",
@@ -306,31 +312,41 @@ export default {
         memberAvatar: "",
       };
       if (res.data.result == true) {
-        var idArray = [{ id: res.data.creatorId, type: 0 }];
-        for (var tmpId in res.data.adminId) {
-          idArray.push({ id: tmpId, type: 1 });
-        }
-        for (var tmpId in res.data.memberId) {
-          idArray.push({ id: tmpId, type: 2 });
-        }
-
-        var tmpObj = { id: "", type: 0 };
-        console.log("idArray = " + idArray[0].id);
-        var length = idArray.length;
-        for (var i = 0; i < length; i++) {
-          tmpObj = idArray[i];
-          if (tmpObj.id == this.userId) this.userTypeInTeam = tmpObj.type;
-          console.log("tmpObj.type = " + tmpObj.id);
-          console.log("this.userTypeInTeam = " + this.userTypeInTeam);
-          tmpMemberInfo.memberId = tmpObj.id;
-          tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.id);
-          tmpMemberInfo.memberType = tmpObj.type;
-          GetUserInfo({ id: tmpObj.id }).then((res2) => {
-            tmpMemberInfo.memberUsername = res2.data.username;
-            tmpMemberInfo.memberAvatar = res2.data.avatar;
-          });
+        for (var i = 0; i < res.data.memberInfo.length; i++) {
+          tmpMemberInfo.memberId = res.data.memberInfo[i].memberId;
+          tmpMemberInfo.memberUrl = generateUserUrl(tmpMemberInfo.memberId);
+          tmpMemberInfo.memberUsername = res.data.memberInfo[i].memberUsername;
+          tmpMemberInfo.memberType = parseInt(
+            res.data.memberInfo[i].memberType
+          );
+          tmpMemberInfo.memberAvatar = res.data.memberInfo[i].memberAvatar;
           this.memberInfo.push(tmpMemberInfo);
         }
+        // var idArray = [{ id: res.data.creatorId, type: 0 }];
+        // for (var i = 0; i < res.data.adminId.length; i++) {
+        //   idArray.push({ id: res.data.adminId[i], type: 1 });
+        // }
+        // for (var i = 0; i < res.data.memberId.length; i++) {
+        //   idArray.push({ id: res.data.memberId[i], type: 2 });
+        // }
+        // // for (var i = 0; i < idArray.length; i++) console.log(idArray[i]);
+
+        // var tmpObj = { id: "", type: 0 };
+        // // console.log("idArray = " + idArray[0].id);
+        // var length = idArray.length;
+        // for (var i = 0; i < length; i++) {
+        //   tmpObj = idArray[i];
+        //   if (tmpObj.id == this.userId) this.userTypeInTeam = tmpObj.type;
+        //   tmpMemberInfo.memberId = tmpObj.id;
+        //   tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.id);
+        //   tmpMemberInfo.memberType = tmpObj.type;
+
+        //   GetUserInfo({ id: tmpObj.id }).then((res2) => {
+        //     tmpMemberInfo.memberUsername = res2.data.username;
+        //     tmpMemberInfo.memberAvatar = res2.data.avatar;
+        //     this.memberInfo.push(tmpMemberInfo);
+        //   });
+        // }
       } else {
         this.$message.error({
           message: "无法获取团队成员",
@@ -344,10 +360,6 @@ export default {
 <style scoped>
 .teamMember {
   margin: auto auto;
-  /* background: #fff;
-  box-shadow: 0 0 8px #b4bccc;
-  padding: 20px 30px 30px 30px;
-  border-radius: 10px; */
 }
 
 span {

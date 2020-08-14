@@ -224,12 +224,21 @@ export /**
 // {管理员id，管理员用户名，管理员头像}[]，
 // {成员id，成员用户名，成员头像}[]
 // 的形式
+// export /**
+//  * 查看团队成员
+//  * @param {teamId}
+//  * 团队id
+//  * @returns {result, creatorId, adminId[], memberId[]}
+//  * 是否成功，创建者id，管理员id[]，成员id[]
+//  */ const GetTeamMember = (params) => {
+//     return axios.post('/GetTeamMember', params);
+//   };
 export /**
  * 查看团队成员
  * @param {teamId}
  * 团队id
- * @returns {result, creatorId, adminId[], memberId[]}
- * 是否成功，创建者id，管理员id[]，成员id[]
+ * @returns {result, memberInfo[{memberId, memberUsername, memberAvatar, memberType}]}
+ * 是否成功，成员信息[成员id, 成员用户名，成员头像，成员类型（0 创建者/1 管理员/2 普通成员）（是字符串）]
  */ const GetTeamMember = (params) => {
   return axios.post('/GetTeamMember', params);
 };
