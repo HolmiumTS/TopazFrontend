@@ -16,6 +16,7 @@
       toolbarsBackground="#66ccff"
       :subfield="true"
       @imgAdd="imgAdd"
+      :ishljs="true"
     ></mavon-editor>
 
   </div>
