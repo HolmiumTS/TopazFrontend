@@ -7,15 +7,28 @@
     <p>
       <el-input v-model="title" placeholder="文件名" size="medium" style="width: 200px"></el-input>
     </p>
-    <mavon-editor :toolbars="toolbars" placeholder="oooooooo" defaultOpen="edit" toolbarsBackground="#66ccff"
-                  subfield="true"/>
+    <mavon-editor
+      ref="editor"
+      :toolbars="toolbars"
+      placeholder="oooooooo"
+      defaultOpen="edit"
+      toolbarsBackground="#66ccff"
+      subfield="true"
+      @imgAdd="imgAdd"
+    />
   </div>
 </template>
 
 <script>
+  import {genToken} from "../genToken";
+  import random from "string-random";
+  import axios from 'axios';
+
   export default {
     data() {
       return {
+        actionPath: "https://upload.qiniup.com", // 华东
+        photoUrl: "http://qexiy12gt.hd-bkt.clouddn.com/", //外链域名
         title: "未命名",
         value: "",
         editorOption: {
@@ -54,6 +67,46 @@
       };
     },
     methods: {
+      beforeUpload(file) {
+        const checkFileType =
+          file.type === "image/jpeg" ||
+          file.type === "image/jpg" ||
+          file.type === "image/png";
+        const checkFileSize = file.size / 1024 / 1024 < 5;
+        if (!checkFileType) {
+          this.$message.error("上传图片必须是 jpeg/jpg/png 格式！");
+        }
+        if (!checkFileSize) {
+          this.$message.error("上传图片大小不能超过 5MB！");
+        }
+        return checkFileType && checkFileSize;
+      },
+      imgAdd(pos, file) {
+        if (!this.beforeUpload(file)) {
+          return
+        }
+        let token;
+        const policy = {};
+        const bucketName = "domaint";
+        const AK = "K96MCAU7eCnSWz4XUbxIBe9Q9PUm_gBHfacmsAEf";
+        const SK = "g0eagx-yjztmAo0iVi-Nj8QrsCRGrKhdGKIjpVr9";
+        const deadline = 1599840000; // 2020-09-12
+        policy.scope = bucketName;
+        policy.deadline = deadline;
+        token = genToken(AK, SK, policy);
+        let $vm = this.$refs.editor
+
+        let form = new FormData()
+        form.append("file", file)
+        form.append("token", token)
+        form.append("key", random(16))
+        axios.post(
+          this.actionPath,
+          form
+        ).then((res) => {
+          $vm.$img2Url(pos, this.photoUrl + res.data.key)
+        })
+      },
       goBack() {
         this.$router.go(-1);
       },
