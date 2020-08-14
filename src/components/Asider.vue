@@ -171,7 +171,7 @@ export default {
               // this.$store.dispatch("commitChangeTeamId", "123456");
               this.$store.dispatch("commitChangeTeamId", res.data.teamId);
               this.$store.dispatch("commitChangeStatus", "1");
-              this.reload();
+              // this.mounted();
               this.$router.push({
                 path: "/team/info",
               });

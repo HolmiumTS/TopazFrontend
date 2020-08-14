@@ -18,7 +18,7 @@
           <td>团队创建者：</td>
           <td>
             <el-link :underline="false" :href="creatorInfo.creatorUrl">
-              <el-avatar :src="creatorInfo.creatorAvatar" :alt="creatorInfo.creatorUsername"></el-avatar>
+              <el-avatar :src="getAvatar(creatorInfo.creatorAvatar)" :alt="creatorInfo.creatorUsername"></el-avatar>
               <span>{{creatorInfo.creatorUsername}}</span>
             </el-link>
           </td>
@@ -92,21 +92,17 @@
 <script>
 import { GetTeamInfo } from "../../main";
 import { DissolveTeam } from "../../main";
-import { GetUserInfo, GetUserTeam, GetTeamMember, ChangeTeamInfo } from "../../main";
+import {
+  GetUserInfo,
+  GetUserTeam,
+  GetTeamMember,
+  ChangeTeamInfo,
+} from "../../main";
 
 export default {
   data() {
     return {
-      aboutTeam: {
-        // teamName: "Topaz Team", // for test
-        // teamId: "123",
-        // creatorId: "19260817",
-        // teamInfo: "955团队",
-         //teamName: "",
-         //teamId: "",
-         //creatorId: "",
-         //teamInfo: "",
-      },
+      aboutTeam: {},
       creatorInfo: {
         creatorUrl: "",
         creatorUsername: "",
@@ -134,6 +130,10 @@ export default {
     };
   },
   methods: {
+    getAvatar(avatar) {
+      return avatar || "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
+    },
+
     handleDissolve() {
       this.$confirm("确定要解散团队吗？这是不可逆转的操作", "警告", {
         confirmButtonText: "确定",
@@ -151,7 +151,7 @@ export default {
                 type: "success",
                 message: "成功解散团队",
               });
-              this.reload();
+              this.$store.dispatch("commitChangeStatus", "0");
               this.$router.push("/home"); // 返回到主页
             } else {
               this.$message.error({
@@ -184,7 +184,7 @@ export default {
     },
 
     getCreatorUsernameAndAvatar() {
-      console.log("creatorId: "+this.aboutTeam.creatorId);
+      console.log("creatorId: " + this.aboutTeam.creatorId);
       let params = {
         id: this.aboutTeam.creatorId,
       };
@@ -251,34 +251,33 @@ export default {
         this.aboutTeam.teamId = this.$store.state.teamId;
         this.aboutTeam.creatorId = res.data.creatorId;
         this.aboutTeam.teamInfo = res.data.teamInfo;
+        // console.log("teamName: " + this.aboutTeam.teamName);
+        this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
+        this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
+
+        this.getCreatorUsernameAndAvatar();
+        this.submitting = false;
+        this.dialogFormVisible = false;
+
+        GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
+          var userId = this.$store.state.userId;
+          if (
+            userId == this.aboutTeam.creatorId ||
+            res.data.adminId.includes(userId)
+          )
+            this.isCreatorOrAdmin = true;
+        });
+
+        GetUserTeam({ id: this.$store.state.userId }).then((res) => {
+          this.isInTeam = false;
+          for (var teamID in res.data.joinedTeam) {
+            if (teamID == this.aboutTeam.teamId) this.isInTeam = true;
+          }
+        });
       }
-      console.log("creatorId2: "+res.data.creatorId);
+      // console.log("creatorId2: " + res.data.creatorId);
     });
-    console.log("teamInfo: "+this.aboutTeam.teamName);
-    console.log("creatorId3: "+this.aboutTeam.creatorId);
-    this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
-    this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
-
-    this.getCreatorUsernameAndAvatar();
-    this.submitting = false;
-    this.dialogFormVisible = false;
-
-    GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
-      var userId = this.$store.state.userId;
-      if (
-        userId == this.aboutTeam.creatorId ||
-        res.data.adminId.includes(userId)
-      )
-        this.isCreatorOrAdmin = true;
-    });
-
-    GetUserTeam({ id: this.$store.state.userId }).then((res) => {
-      this.isInTeam = false;
-      for (var teamID in res.data.joinedTeam) {
-        if (teamID == this.aboutTeam.teamId) this.isInTeam = true;
-      }
-    });
-    console.log("creatorId3: "+this.aboutTeam.creatorId);
+    // console.log("creatorId3: " + this.aboutTeam.teamName);
   },
 };
 </script>

@@ -17,7 +17,7 @@ TODO:
         <el-table-column label="用户" width="400">
           <template slot-scope="scope">
             <el-link :underline="false" :href="scope.row.memberUrl">
-              <el-avatar :src="scope.row.memberAvatar" :alt="scope.row.memberUsername"></el-avatar>
+              <el-avatar :src="getAvatar(scope.row.memberAvatar)" :alt="scope.row.memberUsername"></el-avatar>
               <span>{{scope.row.memberUsername}}</span>
             </el-link>
           </template>
@@ -69,7 +69,7 @@ TODO:
           <el-table-column label="用户" width="350">
             <template slot-scope="scope">
               <el-link :underline="false" :href="scope.row.url">
-                <el-avatar :src="scope.row.avatar" :alt="scope.row.username"></el-avatar>
+                <el-avatar :src="getAvatar(scope.row.avatar)" :alt="scope.row.username"></el-avatar>
                 <span>{{scope.row.username}}</span>
               </el-link>
             </template>
@@ -158,6 +158,10 @@ export default {
     };
   },
   methods: {
+    getAvatar(avatar) {
+      return avatar || "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
+    },
+
     getAllApplication() {
       this.dialogTableVisible = true;
       let params = {
