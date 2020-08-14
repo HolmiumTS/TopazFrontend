@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <el-container style="height:95vh">
-      <el-header v-if="show&&refresh" style="z-index:1">
-        <headerly></headerly>
+      <el-header v-if="show" style="z-index:1">
+        <headerly :key="refresh"></headerly>
       </el-header>
       <el-container>
-        <el-aside v-if="show&&refresh" width="200px">
-          <asiderly class="asi"></asiderly>
+        <!--<el-aside v-if="show" width="200px" style="margin: 0px -3%;">-->
+        <el-aside v-if="show" width="200px">
+          <asiderly v-if="refresh" class="asi"></asiderly>
         </el-aside>
         <el-main>
           <transition name="el-zoom-in-center">
@@ -27,7 +28,7 @@ export default {
     asiderly,
   },
   data() {
-    return { refresh: true };
+    return { refresh: 1 };
   },
   computed: {
     show() {
@@ -37,8 +38,7 @@ export default {
   },
   methods: {
     reloadComponent() {
-      this.refresh = false;
-      this.$nextTick(() => (this.refresh = true));
+      this.refresh = 1 - this.refresh;
     },
   },
 };
@@ -58,7 +58,8 @@ export default {
   text-align: left;
 }
 .asi {
-  height: calc(90vh - 100px);
-  margin: 50px 0px;
+  /*height: calc(90vh - 100px);
+  margin: 50px 0px;*/
+  height: 85vh;
 }
 </style>

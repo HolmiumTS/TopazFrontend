@@ -102,7 +102,17 @@ import {
 export default {
   data() {
     return {
-      aboutTeam: {},
+      inject: ["reloadComponent"],
+      aboutTeam: {
+        // teamName: "Topaz Team", // for test
+        // teamId: "123",
+        // creatorId: "19260817",
+        // teamInfo: "955团队",
+        //teamName: "",
+        //teamId: "",
+        //creatorId: "",
+        //teamInfo: "",
+      },
       creatorInfo: {
         creatorUrl: "",
         creatorUsername: "",
@@ -151,7 +161,7 @@ export default {
                 type: "success",
                 message: "成功解散团队",
               });
-              this.$store.dispatch("commitChangeStatus", "0");
+              this.reloadComponent();
               this.$router.push("/home"); // 返回到主页
             } else {
               this.$message.error({

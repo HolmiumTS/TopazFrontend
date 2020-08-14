@@ -87,7 +87,7 @@
       </el-dialog>
       <el-dialog :visible.sync="dis2" title="上传头像" width="30%">
         <el-upload
-          :multiple="true"
+          :multiple="false"
           list-type="picture-card"
           :on-remove="handleRemove"
           :action="actionPath"
