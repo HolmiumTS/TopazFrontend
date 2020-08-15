@@ -130,7 +130,8 @@
           <h4>浏览:</h4>
         </span>
         <el-radio-group v-model="viewAuth">
-          <el-radio :label="'0'">仅创建者</el-radio>
+          <el-radio :label="'0'" v-if="selectFileTeam=='-1'">仅创建者</el-radio>
+          <el-radio :label="'0'" v-if="selectFileTeam!='-1'">文档所在团队成员</el-radio>
           <el-radio :label="'1'">所有人</el-radio>
         </el-radio-group>
       </p>
@@ -248,14 +249,18 @@ export default {
   computed: {},
   methods: {
     editAuthCheck(edit) {
-      if (this.viewAuth == "0") {
-        this.editAuth = "0";
-      }
-      if (this.viewAuth == "0" && edit != "0") {
-        return true;
-      }
-      if (this.selectFileTeam == "-1" && edit == "1") {
-        return true;
+      if (this.selectFileTeam == "-1") {
+        if (this.viewAuth == "0" && edit != "0") {
+          this.editAuth = "0";
+          return true;
+        }
+      } else {
+        if (this.viewAuth == "0" && edit == "2") {
+          if (this.editAuth == "2") {
+            this.editAuth = "1";
+          }
+          return true;
+        }
       }
       return false;
     },
