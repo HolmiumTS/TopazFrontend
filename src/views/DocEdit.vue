@@ -1,25 +1,36 @@
 <template>
-  <div id="main">
-    <el-header>
-      <el-page-header @back="goBack"></el-page-header>
-      <el-button @click.native.prevent="test" style="margin: -10% 50%;" type="success" plain>Test</el-button>
-    </el-header>
-    <p>
-      <el-input v-model="title" placeholder="文件名" size="medium" style="width: 200px"></el-input>
-    </p>
-    <mavon-editor
-      ref="editor"
-      :toolbars="toolbars"
-      placeholder="oooooooo"
-      defaultOpen="preview"
-      :editable="true"
-      toolbarsBackground="#66ccff"
-      :subfield="true"
-      @imgAdd="imgAdd"
-      :ishljs="true"
-    ></mavon-editor>
+  <el-main>
+    <el-row>
+      <el-col :span="8" :offset="8">
+        <div class="title">
+          {{doc.docName}}
+        </div>
+      </el-col>
+      <el-col :span="2" :offset="0">
+        <el-button type="success" icon="el-icon-check" circle plain></el-button>
+        <el-button type="warning" icon="el-icon-close" circle plain></el-button>
+      </el-col>
+    </el-row>
+    <p></p>
+    <el-row>
+      <el-col :span="12" :offset="6">
+        <mavon-editor
+          ref="editor"
+          :value="doc.content"
+          :toolbars="toolbars"
+          placeholder="oooooooo"
+          defaultOpen="preview"
+          :editable="true"
+          toolbarsBackground="#66ccff"
+          :subfield="false"
+          @imgAdd="imgAdd"
+          :ishljs="true"
+          :scrollStyle="true"
+        ></mavon-editor>
+      </el-col>
+    </el-row>
 
-  </div>
+  </el-main>
 </template>
 
 <script>
@@ -32,11 +43,15 @@
       return {
         actionPath: "https://upload.qiniup.com", // 华东
         photoUrl: "http://qexiy12gt.hd-bkt.clouddn.com/", //外链域名
-        title: "未命名",
-        value: "# test\n sss",
-        editorOption: {
-          placeholder: "编辑文章内容",
-        }, toolbars: {
+        doc: {
+          ownerName: "",
+          content: "# Test\n\\\\(>_<)/",
+          count: "",
+          createTime: "",
+          updateTime: "",
+          docName: "Wow~",
+        },
+        toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
           header: true, // 标题
@@ -54,17 +69,17 @@
           table: true, // 表格
           fullscreen: true, // 全屏编辑
           readmodel: true, // 沉浸式阅读
-          htmlcode: true, // 展示html源码
+          htmlcode: false, // 展示html源码
           help: false, // 帮助
           undo: true, // 上一步
           redo: true, // 下一步
-          trash: true, // 清空
-          save: true, // 保存（触发events中的save事件）
+          trash: false, // 清空
+          save: false, // 保存（触发events中的save事件）
           navigation: true, // 导航目录
           alignleft: true, // 左对齐
           aligncenter: true, // 居中
           alignright: true, // 右对齐
-          subfield: true, // 单双栏模式
+          subfield: false, // 单双栏模式
           preview: true // 预览
         },
       };
@@ -110,13 +125,7 @@
           $vm.$img2Url(pos, this.photoUrl + res.data.key)
         })
       },
-      goBack() {
-        this.$router.go(-1);
-      },
-      test() {
-        console.log(this.value);
-        console.log(typeof this.value);
-      },
+
     },
     mounted() {
     },
