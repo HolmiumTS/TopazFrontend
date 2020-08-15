@@ -431,6 +431,26 @@ export /**
   return axios.post('/GetFile', params);
 };
 
+/**
+ * Query to edit a file.
+ * @param {{did:string}} params
+ * did: doc id
+ * @returns {result}
+ * result: true if the file can be edited now, false if someone is editing it
+ */
+export const EditFile = (params) => {
+  return axios.post('/EditFile', params)
+};
+
+/**
+ * //todo
+ * @param params
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const SaveFile = (params) => {
+  return axios.post('/SaveFile', params)
+};
+
 export /**
  * 文档变更收藏
  * 已收藏变为未收藏,未收藏变为已收藏
