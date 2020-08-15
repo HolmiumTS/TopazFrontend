@@ -2,12 +2,12 @@
   <el-main>
     <!--Title-->
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :span="8" :offset="8">
         <div class="title">
           {{doc.docName}}
         </div>
       </el-col>
-      <el-col :span="3" :offset="0">
+      <el-col :span="2" :offset="0">
         <el-button type="success" icon="el-icon-edit-outline" circle plain></el-button>
         <el-button type="warning" icon="el-icon-share" circle plain></el-button>
         <el-button type="info" icon="el-icon-setting" circle plain></el-button>

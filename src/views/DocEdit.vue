@@ -1,21 +1,19 @@
 <template>
   <el-main>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col :span="8" :offset="8">
         <div class="title">
           {{doc.docName}}
         </div>
       </el-col>
-      <el-col :span="3" :offset="0">
-        <el-button type="success" icon="el-icon-edit-outline" circle plain></el-button>
-        <el-button type="warning" icon="el-icon-share" circle plain></el-button>
-        <el-button type="info" icon="el-icon-setting" circle plain></el-button>
-
+      <el-col :span="2" :offset="0">
+        <el-button type="success" icon="el-icon-check" circle plain></el-button>
+        <el-button type="warning" icon="el-icon-close" circle plain></el-button>
       </el-col>
     </el-row>
     <p></p>
     <el-row>
-      <el-col :span="18" :offset="3">
+      <el-col :span="12" :offset="6">
         <mavon-editor
           ref="editor"
           :value="doc.content"
@@ -24,7 +22,7 @@
           defaultOpen="preview"
           :editable="true"
           toolbarsBackground="#66ccff"
-          :subfield="true"
+          :subfield="false"
           @imgAdd="imgAdd"
           :ishljs="true"
           :scrollStyle="true"
