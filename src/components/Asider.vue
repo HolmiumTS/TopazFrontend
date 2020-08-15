@@ -97,7 +97,7 @@ import { GetUserTeam, CreateTeam } from "../main";
 export default {
   data() {
     return {
-      inject: ['reloadComponent'],
+      inject: ["reloadComponent"],
       /*teams: [
         { id: "01", name: "test1" },
         { id: "02", name: "test2" },
