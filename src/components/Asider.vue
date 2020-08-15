@@ -95,15 +95,15 @@
 <script>
 import { GetUserTeam, CreateTeam } from "../main";
 export default {
+  inject: ["reloadComponent"],
   data() {
     return {
-      inject: ["reloadComponent"],
       /*teams: [
         { id: "01", name: "test1" },
         { id: "02", name: "test2" },
       ],*/
-      //teams: [{ id: "-1", name: "空" }],
-      teams: [],
+      teams: [{ id: "-1", name: "空" }],
+      //teams: [],
       dialogFormVisible: false,
       submitting: false,
       createTeamInfoForm: {
@@ -151,7 +151,6 @@ export default {
       }
       this.$router.push(index.toString());
     },
-
     createTeam() {
       this.$refs.createTeamInfoForm.validate((valid) => {
         if (valid) {
@@ -193,13 +192,13 @@ export default {
   mounted() {
     GetUserTeam({ id: this.$store.state.userId }).then((res) => {
       this.teams = res.data.teams;
+      console.log("Asider.vue_teams");
+      console.log(this.teams.length);
+      console.log(this.teams);
+      if (this.teams.length < 1 || this.teams == []) {
+        this.teams = [{ id: "-1", name: "空" }];
+      }
     });
-    console.log("Asider.vue_teams");
-    console.log(this.teams.length);
-    console.log(this.teams);
-    if (this.teams.length < 1 || this.teams == []) {
-      this.teams = [{ id: "-1", name: "空" }];
-    }
   },
 };
 </script>

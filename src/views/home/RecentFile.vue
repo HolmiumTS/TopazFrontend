@@ -265,21 +265,23 @@ export default {
       return false;
     },
     collectFile(id) {
-      CollectFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("collectFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "收藏成功",
-          });
-          this.$router.go(0);
-        } else {
-          console.log("collectFile_Failed: " + id);
-          this.$message.error({
-            message: "收藏失败",
-          });
+      CollectFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("collectFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "收藏成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("collectFile_Failed: " + id);
+            this.$message.error({
+              message: "收藏失败",
+            });
+          }
         }
-      });
+      );
     },
     browseFile(id) {
       this.$router.push({
@@ -323,21 +325,23 @@ export default {
       });
     },
     templateFile(id) {
-      TemplateFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("templateFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "模板保存成功",
-          });
-          this.$router.go(0);
-        } else {
-          console.log("templateFile_Failed: " + id);
-          this.$message.error({
-            message: "模板保存失败",
-          });
+      TemplateFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("templateFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "模板保存成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("templateFile_Failed: " + id);
+            this.$message.error({
+              message: "模板保存失败",
+            });
+          }
         }
-      });
+      );
     },
     deleteFile(id) {
       DeleteFile({ id: id }).then((res) => {
@@ -360,20 +364,20 @@ export default {
   mounted() {
     GetRecentFile({ userId: this.$store.state.userId }).then((res) => {
       this.files = res.files;
-    });
-    for (let i = 0; i < this.files.length; ) {
-      //this.displayFiles[parseInt(i / this.rowWidth)] = [];
-      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
-      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
-        //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
-        this.$set(
-          this.displayFiles[parseInt(i / this.rowWidth)],
-          j,
-          this.files[i]
-        );
-        i++;
+      for (let i = 0; i < this.files.length; ) {
+        //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+          //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+          this.$set(
+            this.displayFiles[parseInt(i / this.rowWidth)],
+            j,
+            this.files[i]
+          );
+          i++;
+        }
       }
-    }
+    });
     console.log("displayFiles");
     console.log(this.displayFiles);
   },

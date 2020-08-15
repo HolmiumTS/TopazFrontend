@@ -320,22 +320,24 @@ export default {
       this.$router.push("/login");
     },
     deleteTemplate(id) {
-      DeleteTemplate({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("deleteTemplate_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "模板删除成功",
-          });
-          this.mounted();
-          this.$router.go(0);
-        } else {
-          console.log("deleteTemplate_Failed: " + id);
-          this.$message.error({
-            message: "模板删除失败",
-          });
+      DeleteTemplate({ userId: this.$store.state.userId, templateId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("deleteTemplate_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "模板删除成功",
+            });
+            this.mounted();
+            this.$router.go(0);
+          } else {
+            console.log("deleteTemplate_Failed: " + id);
+            this.$message.error({
+              message: "模板删除失败",
+            });
+          }
         }
-      });
+      );
     },
     newFile() {
       this.$refs.newFileForm.validate((valid) => {

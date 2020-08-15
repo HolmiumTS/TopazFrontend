@@ -201,20 +201,20 @@ export default {
   mounted() {
     GetDeletedFile({ userId: this.$store.state.userId }).then((res) => {
       this.files = res.files;
-    });
-    for (let i = 0; i < this.files.length; ) {
-      //this.displayFiles[parseInt(i / this.rowWidth)] = [];
-      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
-      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
-        //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
-        this.$set(
-          this.displayFiles[parseInt(i / this.rowWidth)],
-          j,
-          this.files[i]
-        );
-        i++;
+      for (let i = 0; i < this.files.length; ) {
+        //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+          //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+          this.$set(
+            this.displayFiles[parseInt(i / this.rowWidth)],
+            j,
+            this.files[i]
+          );
+          i++;
+        }
       }
-    }
+    });
     console.log("displayFiles");
     console.log(this.displayFiles);
   },

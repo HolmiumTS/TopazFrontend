@@ -455,8 +455,8 @@ export const SaveFile = (params) => {
 export /**
  * 文档变更收藏
  * 已收藏变为未收藏,未收藏变为已收藏
- * @param {id}
- * 文档id
+ * @param {userId,fileId}
+ * 用户id,文档id
  * @returns {result}
  * 是否成功
  */ const CollectFile = (params) => {
@@ -487,8 +487,8 @@ export /**
 
 export /**
  * 保存文档为模板
- * @param {id}
- * 文档id
+ * @param {userId,fileId}
+ * 用户id,文档id
  * @returns {result}
  * 是否成功
  */ const TemplateFile = (params) => {
@@ -497,8 +497,8 @@ export /**
 
 export /**
  * 删除模板
- * @param {id}
- * 模板id
+ * @param {userId,templateId}
+ * 用户id,模板id
  * @returns {result}
  * 是否成功
  */ const DeleteTemplate = (params) => {
