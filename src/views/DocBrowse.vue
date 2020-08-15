@@ -10,7 +10,7 @@
         <el-button type="success" icon="el-icon-edit-outline" circle plain></el-button>
         <el-button type="warning" icon="el-icon-share" circle plain></el-button>
         <el-button type="info" icon="el-icon-setting" circle plain></el-button>
-        
+
       </el-col>
     </el-row>
     <p></p>

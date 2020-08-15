@@ -245,7 +245,7 @@ export default {
       this.$router.push("/login");
     },
     newFile() {
-      //todo
+      //todo :按模板创建
       this.$refs.newFileForm.validate((valid) => {
         if (valid) {
           let params = {
@@ -296,6 +296,8 @@ export default {
             type: "success",
             message: "申请提交成功",
           });
+          this.teams = [];
+          this.dis1 = false;
         } else {
           this.$message.error("申请提交失败，请稍后再试");
         }

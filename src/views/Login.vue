@@ -107,10 +107,6 @@ export default {
 .submitBtn {
   width: 65%;
 }
-.to {
-  color: #67c23a;
-  cursor: pointer;
-}
 .plink {
   font-size: 10px;
 }

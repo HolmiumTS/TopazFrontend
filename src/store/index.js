@@ -7,7 +7,7 @@ const store = new Vuex.Store({
   //用status表示登录状态:-1为未登录,0为已登录主界面,1为团队界面
   state: JSON.parse(
     sessionStorage.getItem('state') ||
-    JSON.stringify({ status: '0', userId: '', username: '', avatar: '', teamId: '' })
+    JSON.stringify({ status: '-1', userId: '', username: '', avatar: '', teamId: '' })
   ),
   mutations: {
     Login(state, value) {

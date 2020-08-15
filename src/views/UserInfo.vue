@@ -442,4 +442,7 @@ export default {
   padding: 0 15px;
   transform: translateX(-50%) translateY(-50%);
 }
+.el-dialog {
+  border-radius: 10px;
+}
 </style>

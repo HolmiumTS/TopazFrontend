@@ -74,6 +74,10 @@ Vue.use(mavonEditor);
   8月14日:
     新增:
       查看个人消息通知
+  8月15日:
+    新增:
+      文档操作接口
+      模板操作接口
 */
 
 // ! === 个人 === (begin)
@@ -185,6 +189,16 @@ const ChangeMessageStatus = (params) => {
   return axios.post('/ChangeMessageStatus', params);
 };
 
+export /**
+ * 获取个人模板
+ * @param {id}
+ * 用户id
+ * @returns {template[{id,name}]}
+ * template[{模板id,模板名}]
+ */
+const GetUserTemplate = (params) => {
+  return axios.post('/GetUserTemplate', params);
+};
 // ! === 个人 === (end)
 
 // ! === 团队 === (begin)
@@ -352,8 +366,12 @@ export /**
  * 最近浏览的文档
  * @param {id}
  * 用户id
- * @returns {files[{id,name,username,time,collected}]}
- * files[{文档id,文档名,创建者名,最后修改/浏览时间,是否收藏:"已收藏" "未收藏"}]
+ * @returns {files[{id,name,username,team,time,collected,view,edit}]}
+ * files[{文档id,文档名,创建者名,最后编辑时间,是否收藏,浏览权限,编辑权限}]
+ * 团队id: '-1'为 不属于团队内
+ * 是否收藏:"已收藏"、"未收藏"
+ * 浏览权限:'0'为 私人, '1'为 公开
+ * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetRecentFile = (params) => {
   return axios.post('/GetRecentFile', params);
 };
@@ -362,8 +380,12 @@ export /**
  * 创建的文档
  * @param {id}
  * 用户id
- * @returns {files[{id,name,collected}]}
- * files[{文档id,文档名,是否收藏:"已收藏" "未收藏"}]
+ * @returns {files[{id,name,team,collected,view,edit}]}
+ * files[{文档id,文档名,团队id,是否收藏,浏览权限,编辑权限}]
+ * 团队id: '-1'为 不属于团队内
+ * 是否收藏:"已收藏"、"未收藏"
+ * 浏览权限:'0'为 私人, '1'为 公开
+ * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetMyFile = (params) => {
   return axios.post('/GetMyFile', params);
 };
@@ -372,8 +394,11 @@ export /**
  * 收藏的文档
  * @param {id}
  * 用户id
- * @returns {files[{id,name,username}]}
- * files[{文档id,文档名,创建者名}]
+ * @returns {files[{id,name,team,username,view,edit}]}
+ * files[{文档id,文档名,创建者名,浏览权限,编辑权限}]
+ * 团队id: '-1'为 不属于团队内
+ * 浏览权限:'0'为 私人, '1'为 公开
+ * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetCollectedFile = (params) => {
   return axios.post('/GetCollectedFile', params);
 };
@@ -447,6 +472,16 @@ export /**
  * 是否成功
  */ const TemplateFile = (params) => {
   return axios.post('/TemplateFile', params);
+};
+
+export /**
+ * 删除模板
+ * @param {id}
+ * 模板id
+ * @returns {result}
+ * 是否成功
+ */ const DeleteTemplate = (params) => {
+  return axios.post('/DeleteTemplate', params);
 };
 
 // ! === 文档 === (end)
