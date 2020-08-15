@@ -17,6 +17,7 @@
       :subfield="true"
       @imgAdd="imgAdd"
       :ishljs="true"
+      :scrollStyle="true"
     ></mavon-editor>
 
   </div>
