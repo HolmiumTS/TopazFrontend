@@ -17,7 +17,7 @@
           <el-button slot="append" icon="el-icon-search" circle @click.native.prevent="searchFiles"></el-button>
         </el-input>
       </el-col>-->
-      <el-col :span="4" :offset="13">
+      <el-col :span="4" :offset="12">
         <el-input
           style="margin: 10px 15%;width:100%;"
           v-model="sTeam"
@@ -28,17 +28,16 @@
           <el-button slot="append" icon="el-icon-search" circle @click.native.prevent="searchTeams"></el-button>
         </el-input>
       </el-col>
-      <el-col :span="2">
+      <el-col :span="3">
         <el-button
           style="margin: 10px 60%"
           type="info"
           size="small"
           @click.native.prevent="dis2=true"
-        >创建文档</el-button>
+        >创建文档和管理模板</el-button>
       </el-col>
-      <!-- todo:消息通知 -->
       <el-col :span="1">
-        <el-badge :value="UnreadMessages" style="margin: 18px 85%;" :hidden="UnreadMessages<1">
+        <el-badge :value="UnreadMessages" style="margin: 18px 125%;" :hidden="UnreadMessages<1">
           <el-popover
             placement="bottom-start"
             trigger="click"
@@ -83,7 +82,7 @@
       </el-col>
     </el-row>
     <el-dialog :visible.sync="dis0" title="文档搜索结果">
-      <!-- todo -->
+      <!-- 暂时不做 -->
     </el-dialog>
     <el-dialog
       :visible.sync="dis1"
@@ -102,6 +101,7 @@
         </el-table-column>
       </el-table>
     </el-dialog>
+    <!--
     <el-dialog
       :modal="false"
       style="width: 600px;margin :auto auto;"
@@ -117,6 +117,58 @@
         <el-button type="primary" @click.native.prevent="newFile" size="small">确认创建</el-button>
       </div>
     </el-dialog>
+    -->
+    <el-dialog :modal="false" style="width: 800px;margin :auto auto;" :visible.sync="dis2">
+      <el-tabs>
+        <el-tab-pane :label="newFileDialogTitle">
+          <el-form :model="newFileForm" ref="newFileForm" :rules="rule" label-width="0px">
+            <el-form-item prop="name" align="left">
+              <span style="margin:0px 20px;">文件名:</span>
+              <el-input
+                type="text"
+                v-model="newFileForm.name"
+                placeholder="文件名"
+                style="width: 200px"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="templateId" align="left">
+              <span style="margin:0px 27px;">模板:</span>
+              <el-select style="width: 200px" v-model="newFileForm.templateId" placeholder="选择模板">
+                <el-option
+                  v-for="template in templates"
+                  :key="template.id"
+                  :label="template.name"
+                  :value="template.id"
+                >
+                  <span style="float: left">{{ template.name }}</span>
+                  <span
+                    style="float: right; color: #8492a6; font-size: 10px"
+                  >{{ template.id!='-1'?template.id:"" }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div align="right">
+            <el-button type="primary" @click.native.prevent="newFile" size="medium">确认创建</el-button>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="管理模板">
+          <el-table :data="templatesData" :default-sort="{prop: 'id', order: 'ascending'}">
+            <el-table-column min-width="30%" label="模板编号" prop="id" sortable></el-table-column>
+            <el-table-column min-width="50%" label="模板名" prop="name" sortable></el-table-column>
+            <el-table-column min-width="20%" label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click.native.prevent="deleteTemplate(scope.row.id)"
+                >删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -125,7 +177,8 @@ import { ApplyToTeam } from "../main";
 import { NewFile } from "../main";
 import { GetUserMessage } from "../main";
 import { ChangeMessageStatus } from "../main";
-import { Message } from "element-ui";
+import { GetUserTemplate } from "../main";
+import { DeleteTemplate } from "../main";
 export default {
   data() {
     return {
@@ -134,7 +187,14 @@ export default {
       dis2: false,
       sFile: "",
       sTeam: "",
-      newFileForm: {},
+      newFileForm: { name: null, templateId: "-1" },
+      //templates: [],
+      templates: [
+        { id: "-1", name: "无" },
+        { id: "001", name: "模板1" },
+        { id: "002", name: "模板2" },
+        { id: "003", name: "模板3" },
+      ],
       /*teams: [
         { id: "001", name: "moyu", info: "955" },
         { id: "002", name: "baogan", info: "996" },
@@ -202,6 +262,13 @@ export default {
             trigger: "blur",
           },
         ],
+        templateId: [
+          {
+            required: true,
+            message: "请选择模板",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
@@ -209,11 +276,19 @@ export default {
     username() {
       return this.$store.state.username;
     },
+    templatesData() {
+      let temp = [];
+      for (let i = 1; i < this.templates.length; i++) {
+        temp[i - 1] = this.templates[i];
+      }
+      return temp;
+    },
     avatar() {
-      return (
+      return this.$store.state.avatar;
+      /*return (
         this.$store.state.avatar ||
-        "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png"
-      );
+        "http://qexiy12gt.hd-bkt.clouddn.com/%E9%BB%84%E7%8E%89.png"
+      );*/
       //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     },
@@ -244,15 +319,35 @@ export default {
       this.$store.dispatch("commitLogout");
       this.$router.push("/login");
     },
+    deleteTemplate(id) {
+      DeleteTemplate({ id: id }).then((res) => {
+        if (res.data.result == true) {
+          console.log("deleteTemplate_Succeed: " + id);
+          this.$message({
+            type: "success",
+            message: "模板删除成功",
+          });
+          this.mounted();
+          this.$router.go(0);
+        } else {
+          console.log("deleteTemplate_Failed: " + id);
+          this.$message.error({
+            message: "模板删除失败",
+          });
+        }
+      });
+    },
     newFile() {
-      //todo :按模板创建
       this.$refs.newFileForm.validate((valid) => {
         if (valid) {
           let params = {
             userId: this.$store.state.userId,
             teamId: "-1",
             name: this.newFileForm.name,
+            templateId: this.newFileForm.templateId,
           };
+          console.log("newFileForm");
+          console.log(params);
           if (this.$store.state.status == "1") {
             params.teamId = this.$store.state.teamId;
           }
@@ -283,10 +378,9 @@ export default {
       this.dis1 = true;
     },
     searchFiles() {
-      //todo
+      //暂时不做
     },
     applyToTeam(index) {
-      //todo
       ApplyToTeam({
         userId: this.$store.state.userId,
         teamId: this.teams[index].id,
@@ -328,6 +422,10 @@ export default {
         }
       }
     });
+    GetUserTemplate({ id: this.$store.state.userId }).then((res) => {
+      this.templates = res.data.templates;
+      this.templates.unshift({ id: "-1", name: "无" });
+    });
   },
 };
 </script>
@@ -344,5 +442,8 @@ export default {
 }
 .button {
   margin: 10px 0;
+}
+.el-dialog {
+  border-radius: 20px;
 }
 </style>

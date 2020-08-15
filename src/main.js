@@ -193,8 +193,8 @@ export /**
  * 获取个人模板
  * @param {id}
  * 用户id
- * @returns {template[{id,name}]}
- * template[{模板id,模板名}]
+ * @returns {templates[{id,name}]}
+ * templates[{模板id,模板名}]
  */
   const GetUserTemplate = (params) => {
     return axios.post('/GetUserTemplate', params);
@@ -353,9 +353,10 @@ export /**
 
 export /**
  * 创建文档
- * @param {userId, teamId, name}
- * 用户id, 团队id, 文件名
+ * @param {userId, teamId, name, templateId}
+ * 用户id, 团队id, 文件名, 模板id
  * 团队id为-1表示不属于团队
+ * 模板id为-1表示不从模板创建
  * @returns {result}
  * 是否成功
  */ const NewFile = (params) => {
