@@ -344,21 +344,23 @@ export default {
       );
     },
     deleteFile(id) {
-      DeleteFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("deleteFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "删除成功",
-          });
-          this.$router.go(0);
-        } else {
-          console.log("deleteFile_Failed: " + id);
-          this.$message.error({
-            message: "删除失败",
-          });
+      DeleteFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("deleteFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "删除成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("deleteFile_Failed: " + id);
+            this.$message.error({
+              message: "删除失败",
+            });
+          }
         }
-      });
+      );
     },
   },
   mounted() {

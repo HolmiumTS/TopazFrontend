@@ -162,22 +162,24 @@ export default {
     },
     restoreFile(id) {
       //todo
-      RestoreFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("restoreFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "恢复成功",
-          });
-          this.dis = false;
-          this.$router.go(0);
-        } else {
-          console.log("restoreFile_Failed: " + id);
-          this.$message.error({
-            message: "恢复失败",
-          });
+      RestoreFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("restoreFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "恢复成功",
+            });
+            this.dis = false;
+            this.$router.go(0);
+          } else {
+            console.log("restoreFile_Failed: " + id);
+            this.$message.error({
+              message: "恢复失败",
+            });
+          }
         }
-      });
+      );
     },
     perishFile(id) {
       //todo

@@ -477,7 +477,7 @@ export /**
 
 export /**
  * 删除文档
- * @param {id}
+ * @param {userId,fileId}
  * 文档id
  * @returns {result}
  * 是否成功
@@ -496,6 +496,17 @@ export /**
   };
 
 export /**
+  * 重命名模板
+  * @param {userId,templateId,name}
+  * 用户id,模板id,模板名
+  * @returns {result}
+  * 是否成功
+  */ const RenameTemplate = (params) => {
+    return axios.post('/RenameTemplate', params);
+  };
+
+
+export /**
  * 删除模板
  * @param {userId,templateId}
  * 用户id,模板id
@@ -508,7 +519,7 @@ export /**
 export /**
  * 恢复文档
  * 恢复回收站的文档
- * @param {id}
+ * @param {userId,fileId}
  * 文档id
  * @returns {result}
  * 是否成功

@@ -81,8 +81,25 @@
         </el-dropdown>
       </el-col>
     </el-row>
-    <el-dialog :visible.sync="dis0" title="文档搜索结果">
-      <!-- 暂时不做 -->
+    <el-dialog
+      :modal="false"
+      style="width: 600px;margin :auto auto;"
+      :visible.sync="dis0"
+      title="模板重命名"
+    >
+      <el-form
+        :model="renameTemplateForm"
+        ref="renameTemplateForm"
+        :rules="rule0"
+        label-width="0px"
+      >
+        <el-form-item prop="name" align="left">
+          <el-input type="text" v-model="renameTemplateForm.name" placeholder="新模板名"></el-input>
+        </el-form-item>
+      </el-form>
+      <div align="right">
+        <el-button type="primary" @click.native.prevent="renameTemplate()" size="medium">确认</el-button>
+      </div>
     </el-dialog>
     <el-dialog
       :visible.sync="dis1"
@@ -101,24 +118,7 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <!--
-    <el-dialog
-      :modal="false"
-      style="width: 600px;margin :auto auto;"
-      :visible.sync="dis2"
-      :title="newFileDialogTitle"
-    >
-      <el-form :model="newFileForm" ref="newFileForm" :rules="rule" label-width="0px">
-        <el-form-item prop="name">
-          <el-input type="text" v-model="newFileForm.name" placeholder="文件名"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click.native.prevent="newFile" size="small">确认创建</el-button>
-      </div>
-    </el-dialog>
-    -->
-    <el-dialog :modal="false" style="width: 800px;margin :auto auto;" :visible.sync="dis2">
+    <el-dialog :modal="false" style="width: 1000px;margin :auto auto;" :visible.sync="dis2">
       <el-tabs>
         <el-tab-pane :label="newFileDialogTitle">
           <el-form :model="newFileForm" ref="newFileForm" :rules="rule" label-width="0px">
@@ -128,12 +128,12 @@
                 type="text"
                 v-model="newFileForm.name"
                 placeholder="文件名"
-                style="width: 200px"
+                style="width: 300px"
               ></el-input>
             </el-form-item>
             <el-form-item prop="templateId" align="left">
               <span style="margin:0px 27px;">模板:</span>
-              <el-select style="width: 200px" v-model="newFileForm.templateId" placeholder="选择模板">
+              <el-select style="width: 300px" v-model="newFileForm.templateId" placeholder="选择模板">
                 <el-option
                   v-for="template in templates"
                   :key="template.id"
@@ -155,9 +155,14 @@
         <el-tab-pane label="管理模板">
           <el-table :data="templatesData" :default-sort="{prop: 'id', order: 'ascending'}">
             <el-table-column min-width="30%" label="模板编号" prop="id" sortable></el-table-column>
-            <el-table-column min-width="50%" label="模板名" prop="name" sortable></el-table-column>
-            <el-table-column min-width="20%" label="操作">
+            <el-table-column min-width="35%" label="模板名" prop="name" sortable></el-table-column>
+            <el-table-column min-width="35%" label="操作">
               <template slot-scope="scope">
+                <el-button
+                  type="primary"
+                  size="mini"
+                  @click.native.prevent="showRenameTemplateDialog(scope.row.id,scope.row.name)"
+                >重命名</el-button>
                 <el-button
                   type="danger"
                   size="mini"
@@ -179,6 +184,7 @@ import { GetUserMessage } from "../main";
 import { ChangeMessageStatus } from "../main";
 import { GetUserTemplate } from "../main";
 import { DeleteTemplate } from "../main";
+import { RenameTemplate } from "../main";
 export default {
   data() {
     return {
@@ -187,7 +193,9 @@ export default {
       dis2: false,
       sFile: "",
       sTeam: "",
+      selectTemplateId: null,
       newFileForm: { name: null, templateId: "-1" },
+      renameTemplateForm: { name: null },
       //templates: [],
       templates: [
         { id: "-1", name: "无" },
@@ -254,6 +262,15 @@ export default {
           status: "0",
         },
       ],
+      rule0: {
+        name: [
+          {
+            required: true,
+            message: "新模板名不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
       rule: {
         name: [
           {
@@ -318,6 +335,49 @@ export default {
     Logout() {
       this.$store.dispatch("commitLogout");
       this.$router.push("/login");
+    },
+    showRenameTemplateDialog(id, name) {
+      this.selectTemplateId = id;
+      this.renameTemplateForm.name = name;
+      this.dis0 = true;
+    },
+    renameTemplate() {
+      this.$refs.renameTemplateForm.validate((valid) => {
+        if (valid) {
+          let params = {
+            userId: this.$store.state.userId,
+            templateId: this.selectTemplateId,
+            name: this.renameTemplateForm.name,
+          };
+          RenameTemplate(params).then((res) => {
+            if (res.data.result == true) {
+              console.log(
+                "renameTemplate_Succeed: " +
+                  params.templateId +
+                  " " +
+                  params.name
+              );
+              this.$message({
+                type: "success",
+                message: "模板重命名成功",
+              });
+              this.dis0 = false;
+              this.mounted();
+              this.$router.go(0);
+            } else {
+              console.log(
+                "renameTemplate_Failed: " +
+                  params.templateId +
+                  " " +
+                  params.name
+              );
+              this.$message.error({
+                message: "模板重命名失败",
+              });
+            }
+          });
+        }
+      });
     },
     deleteTemplate(id) {
       DeleteTemplate({ userId: this.$store.state.userId, templateId: id }).then(
