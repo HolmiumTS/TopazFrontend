@@ -2,10 +2,11 @@
 <template>
   <el-container>
     <el-main>
-      <h2>团队文档</h2>
+      <!-- <h2>团队文档</h2> -->
       <el-button
         class="createTeamFile"
         type="primary"
+        icon="el-icon-plus"
         @click.native.prevent="showCreateDocDialog=true"
         plain
       >创建团队文档</el-button>
@@ -461,5 +462,6 @@ export default {
 
 .createTeamFile {
   margin: 20px;
+  float: left;
 }
 </style>
