@@ -419,10 +419,11 @@ export /**
  * @param {{id:string,did:string}} params
  * id: user id
  * did: doc id
- * @returns {admin,edit,view}
+ * @returns {admin,edit,view,lock}
  * admin: if user can delete and change doc settings
  * edit: if user can edit doc
  * view: if user can view, share and comment doc
+ * lock: if someone is editing doc
  */
 export const GetAuth = (params) => {
   return axios.post('/GetAuth', params);
