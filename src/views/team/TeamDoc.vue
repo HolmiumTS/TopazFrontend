@@ -228,7 +228,7 @@ export default {
       this.$router.push({
         path: "/docBrowse",
         query: {
-          id: id,
+          docId: id,
         },
       });
     },

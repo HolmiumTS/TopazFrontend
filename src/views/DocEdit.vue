@@ -39,7 +39,7 @@
   import {genToken} from "../genToken";
   import random from "string-random";
   import axios from 'axios';
-  import {AbortFile, EditFile, GetFile, GetUserInfo, SaveFile} from "../main";
+  import {AbortFile, EditFile, GetAuth, GetFile, GetUserInfo, SaveFile} from "../main";
 
   export default {
     data() {
@@ -163,12 +163,18 @@
       },
     },
     mounted() {
-      EditFile({
+      GetAuth({
         id: this.$store.userId.toString(),
         did: this.$route.query.docId.toString()
       }).then((res) => {
-        if (res.data.result === false) {
-          this.$message.error("文档正在被编辑或无权编辑")
+        if (res.data.edit === false) {
+          this.$message.error("无文档编辑权限")
+          this.$router.push({path: '/docBrowse', query: {docId: this.$route.query.docId}})
+          return
+        }
+        if (res.data.lock === false) {
+          this.$message.error("文档正在被他人编辑中，请稍后再试")
+          this.$router.push({path: '/docBrowse', query: {docId: this.$route.query.docId}})
           return
         }
         GetFile({id: this.$route.query.docId.toString()}).then((res) => {
