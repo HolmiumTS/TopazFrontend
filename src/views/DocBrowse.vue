@@ -203,8 +203,8 @@
         newComment: "",
         showSettings: true,
         setting: {
-          edit: 0,
-          view: 0,
+          edit: "0",
+          view: "0",
           ctl1: true,
           ctl2: true,
         },
