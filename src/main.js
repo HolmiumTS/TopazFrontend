@@ -413,7 +413,7 @@ export /**
  */ const GetDeletedFile = (params) => {
   return axios.post('/GetDeletedFile', params);
 };
- 
+
 /**
  * Query to browse a file
  * @param {{id:string,did:string}} params
@@ -430,9 +430,9 @@ export /**
  * 获取文档
  * @param {{id: string }} params
  * 文档id
- * @returns {result,ownerName,createTime,updateTime,content,count,name}
+ * @returns {result,owner,createTime,updateTime,content,count,name}
  * result: true (get doc successfully) or false (failed)
- * ownerName: owner name
+ * owner: owner id
  * createTime: format "yyyy-MM-dd HH:mm"
  * updateTime: the same format as createTime
  * content: doc content
