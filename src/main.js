@@ -484,6 +484,18 @@ export const CommitComment = (params) => {
   return axios.post('/CommitComment', params)
 };
 
+/**
+ *
+ * @param params
+ * @returns {result,comment}
+ * result: true
+ * comment: a list, elements of it are like {name,avatar,content,time}
+ * time: format "yyyy-MM-dd HH:mm"
+ */
+export const GetComment = (params) => {
+  return axios.post('/GetComment', params)
+};
+
 export /**
  * 文档变更收藏
  * 已收藏变为未收藏,未收藏变为已收藏
