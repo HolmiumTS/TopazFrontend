@@ -2,13 +2,10 @@
   <el-main>
     <!--Title-->
     <el-row>
-      <el-col :span="8" :offset="8">
+      <el-col :span="7" :offset="6">
         <div class="title">{{doc.docName}}</div>
       </el-col>
-    </el-row>
-    <p></p>
-    <el-row>
-      <el-col :span="8" :offset="8">
+      <el-col :span="4" :offset="2" style="font-size: xx-large;">
         <el-button type="success" icon="el-icon-edit-outline" circle plain @click="toEdit"></el-button>
         <!--edit-->
         <el-button type="warning" icon="el-icon-share" circle plain></el-button>
@@ -17,23 +14,27 @@
         <!--authority todo-->
       </el-col>
     </el-row>
+    <p></p>
     <!--Info-->
-    <el-row>
+    <el-row style="width: 75%;margin: auto auto">
       <!--todo 优化显示-->
-      <el-col :span="4" :offset="4">
+      <el-col :span="3" :offset="4">
         <div class="info info-left">创建者：{{doc.ownerName}}</div>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="5">
         <div class="info info-left">创建时间：{{doc.createTime}}</div>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="5">
         <div class="info info-right">上次修改时间：{{doc.updateTime}}</div>
       </el-col>
-      <el-col :span="4" :offset="0">
+      <el-col :span="3" :offset="0">
         <div class="info info-right">历史修改次数：{{doc.count}}</div>
       </el-col>
     </el-row>
     <!--Content-->
+    <div style="width: 50%;margin: auto auto">
+      <el-divider></el-divider>
+    </div>
     <el-row>
       <el-col :span="12" :offset="6">
         <mavon-editor
@@ -44,11 +45,18 @@
           :editable="false"
           :scrollStyle="true"
           :ishljs="true"
-          previewBackground="#eeeeff"
+          previewBackground="#ffffff"
+          style="min-height: 800px;"
         ></mavon-editor>
+        <!-- #eeeeff -->
       </el-col>
     </el-row>
     <!--Comment-->
+    <p style="width: 50%;margin: auto auto">
+      <el-divider>
+        <span>{{comment.length.toString()+" 条评论"}}</span>
+      </el-divider>
+    </p>
     <p v-for="(c) in comment" v-bind:key="c">
       <el-row>
         <el-col :span="1" :offset="6" class="comment-info">
@@ -74,7 +82,7 @@
         <el-col :span="12" :offset="6">
           <div>
             <mavon-editor
-              style="min-height: 30px"
+              style="min-height: 30px;box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1)"
               :value="c.content"
               :subfield="false"
               defaultOpen="preview"
@@ -82,8 +90,9 @@
               :editable="false"
               :scrollStyle="true"
               :ishljs="true"
-              previewBackground="#eeffff"
+              previewBackground="#FFFFFF"
             ></mavon-editor>
+            <!-- #eeffff -->
           </div>
         </el-col>
       </el-row>
@@ -120,7 +129,7 @@
           <mavon-editor
             ref="editor"
             :toolbars="toolbars"
-            style="min-height: 200px"
+            style="min-height: 200px;border-width:1px;border-color:#E6E6E6;border-style: solid;box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);"
             :subfield="false"
             defaultOpen="edit"
             :toolbarsFlag="true"
@@ -204,6 +213,12 @@ export default {
       },
     };
   },
+  computed: {
+    commentLength() {
+      console.log(this.comment.length.toString());
+      return this.comment.length.toString();
+    },
+  },
   methods: {
     toEdit() {
       this.$router.push({
@@ -266,22 +281,22 @@ export default {
     },
   },
   mounted() {
-    console.log("docId: " + this.$route.query.docId.toString());
+    console.log("docId: " + this.$route.query.docId);
     GetAuth({
-      id: this.$store.userId.toString(),
-      did: this.$route.query.docId.toString(),
+      id: this.$store.userId,
+      did: this.$route.query.docId,
     }).then((res) => {
       if (res.data.result === false) {
         this.$message.error("文档不存在或无权查看");
         return;
       }
-      GetFile({ id: this.$route.query.docId.toString() }).then((res) => {
+      GetFile({ id: this.$route.query.docId }).then((res) => {
         let d = res.data;
         if (d.result === false) {
           this.$message.error("请求文档失败！请稍后再试！");
           return;
         }
-        GetUserInfo({ id: d.owner.toString() }).then((res) => {
+        GetUserInfo({ id: d.owner }).then((res) => {
           this.doc.ownerName = res.data.username;
         });
         this.doc.createTime = d.createTime;
