@@ -425,7 +425,8 @@ export default {
     });
 
     GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
-      this.files = res.files;
+      let tmpFiles = res.files;
+      tmpFiles.forEach((item) => item.isDel != "true" && this.files.push(item));
       for (let i = 0; i < this.files.length; ) {
         // this.displayFiles[parseInt(i / this.rowWidth)] = [];
         this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
