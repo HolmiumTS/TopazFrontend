@@ -142,7 +142,7 @@
   </el-main>
 </template>
 <script>
-  import {BrowseFile, CommitComment, GetFile, GetUserInfo} from "../main";
+  import {BrowseFile, CommitComment, GetAuth, GetFile, GetUserInfo} from "../main";
   import {genToken} from "../genToken";
   import random from "string-random";
   import axios from "axios";
@@ -256,7 +256,7 @@
       }
     },
     mounted() {
-      BrowseFile({
+      GetAuth({
         id: this.$store.userId.toString(),
         did: this.$route.query.docId.toString()
       }).then((res) => {

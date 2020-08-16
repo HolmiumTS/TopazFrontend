@@ -419,7 +419,8 @@ export /**
  * @param {{id:string,did:string}} params
  * id: user id
  * did: doc id
- * @returns {admin,edit,view,lock}
+ * @returns {result,admin,edit,view,lock}
+ * result: if doc exists
  * admin: if user can delete and change doc settings
  * edit: if user can edit doc
  * view: if user can view, share and comment doc
