@@ -432,7 +432,7 @@ export /**
  * 获取文档
  * @param {{id: string }} params
  * 文档id
- * @returns {result,owner,createTime,updateTime,content,count,name}
+ * @returns {result,owner,createTime,updateTime,content,count,name,tid}
  * result: true (get doc successfully) or false (failed)
  * owner: owner id
  * createTime: format "yyyy-MM-dd HH:mm"
@@ -440,6 +440,7 @@ export /**
  * content: doc content
  * count: edit times count
  * name: doc name
+ * tid: team id
  * //todo 字段可能增加
  * 待定
  */ const GetFile = (params) => {
