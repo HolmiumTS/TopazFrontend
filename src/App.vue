@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container style="height:95vh">
-      <el-header v-if="show" style="z-index:1">
+      <el-header v-if="show" style="z-index:2000">
         <headerly :key="refresh"></headerly>
       </el-header>
       <el-container>
