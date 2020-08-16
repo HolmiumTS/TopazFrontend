@@ -415,15 +415,17 @@ export /**
 };
 
 /**
- * Query to browse a file
+ *
  * @param {{id:string,did:string}} params
  * id: user id
  * did: doc id
- * @returns {result}
- * true if the user can browse the doc
+ * @returns {admin,edit,view}
+ * admin: if user can delete and change doc settings
+ * edit: if user can edit doc
+ * view: if user can view, share and comment doc
  */
-export const BrowseFile = (params) => {
-  return axios.post('/BrowseFile', params)
+export const GetAuth = (params) => {
+  return axios.post('/GetAuth', params);
 }
 
 export /**
@@ -445,18 +447,6 @@ export /**
 };
 
 /**
- * Query to edit a file.
- * @param {{id:string,did:string}} params
- * id: user id
- * did: doc id
- * @returns {result}
- * result: true if the file can be edited by the user
- */
-export const EditFile = (params) => {
-  return axios.post('/EditFile', params)
-};
-
-/**
  * Commit the doc and save it
  * @param {{id:string,did:string,name:string,content:string}} params
  * id: user who edit it
@@ -469,6 +459,7 @@ export const EditFile = (params) => {
 export const SaveFile = (params) => {
   return axios.post('/SaveFile', params)
 };
+
 /**
  * Abort the try of editing doc
  * @param {{id:string,did:string}} params
@@ -478,7 +469,17 @@ export const SaveFile = (params) => {
  */
 export const AbortFile = (params) => {
   return axios.post('/AbortFile', params)
-}
+};
+
+/**
+ * Commit comment
+ * @param {{id:string,did:string,content:string}} params
+ * @returns {result}
+ * false if cannot comment
+ */
+export const CommitComment = (params) => {
+  return axios.post('/CommitComment', params)
+};
 
 export /**
  * 文档变更收藏

@@ -18,6 +18,7 @@
     </el-row>
     <!--Info-->
     <el-row>
+      <!--todo 优化显示-->
       <el-col :span="4" :offset="4">
         <div class="info info-left">
           创建者：{{doc.ownerName}}
@@ -99,15 +100,15 @@
           :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
           :size="30"
           fit="fill"
-        >我<!--todo-->
+        >我<!--todo 显示用户名-->
         </el-avatar>
       </el-col>
       <el-col :span="2" class="comment-info">
         <el-row>
-          <div class="comment-name">ddd<!--todo--></div>
+          <div class="comment-name">ddd<!--todo 显示用户名--></div>
         </el-row>
         <el-row>
-          <div class="comment-name"><!--todo--></div>
+          <div class="comment-name"><!--空着--></div>
         </el-row>
       </el-col>
     </el-row>
@@ -115,23 +116,36 @@
       <el-col :span="12" :offset="6">
         <div>
           <mavon-editor
+            ref="editor"
             :toolbars="toolbars"
-            style="min-height: 300px"
+            style="min-height: 200px"
             :subfield="false"
             defaultOpen="edit"
             :toolbarsFlag="true"
             :editable="true"
             :scrollStyle="true"
             :ishljs="true"
+            placeholder="说两句呗"
             previewBackground="#eeffff"
+            @imgAdd="imgAdd"
+            @change="change"
           ></mavon-editor>
         </div>
+      </el-col>
+    </el-row>
+    <p></p>
+    <el-row>
+      <el-col :span="14" :offset="6" class="info-right">
+        <el-button type="success" plain @click="commitComment">发表评论</el-button>
       </el-col>
     </el-row>
   </el-main>
 </template>
 <script>
-  import {BrowseFile, GetFile, GetUserInfo} from "../main";
+  import {BrowseFile, CommitComment, GetFile, GetUserInfo} from "../main";
+  import {genToken} from "../genToken";
+  import random from "string-random";
+  import axios from "axios";
 
   export default {
     data() {
@@ -146,6 +160,7 @@
         },
         comment: [{time: "2020-08-14 11:45", name: "www", content: "123"},
           {time: "2020-08-14 11:45", name: "ss", content: "ff"}],
+        newComment: "",
         toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
@@ -182,6 +197,62 @@
     methods: {
       toEdit() {
         this.$router.push({path: '/docEdit', query: {docId: this.$route.query.docId}})
+      },
+
+      beforeUpload(file) {
+        const checkFileType =
+          file.type === "image/jpeg" ||
+          file.type === "image/jpg" ||
+          file.type === "image/png";
+        const checkFileSize = file.size / 1024 / 1024 < 5;
+        if (!checkFileType) {
+          this.$message.error("上传图片必须是 jpeg/jpg/png 格式！");
+        }
+        if (!checkFileSize) {
+          this.$message.error("上传图片大小不能超过 5MB！");
+        }
+        return checkFileType && checkFileSize;
+      },
+
+      imgAdd(pos, file) {
+        if (!this.beforeUpload(file)) {
+          return
+        }
+        let token;
+        const policy = {};
+        const bucketName = "domaint";
+        const AK = "K96MCAU7eCnSWz4XUbxIBe9Q9PUm_gBHfacmsAEf";
+        const SK = "g0eagx-yjztmAo0iVi-Nj8QrsCRGrKhdGKIjpVr9";
+        const deadline = 1599840000; // 2020-09-12
+        policy.scope = bucketName;
+        policy.deadline = deadline;
+        token = genToken(AK, SK, policy);
+        let $vm = this.$refs.editor
+
+        let form = new FormData()
+        form.append("file", file)
+        form.append("token", token)
+        form.append("key", random(16))
+        axios.post(
+          this.actionPath,
+          form
+        ).then((res) => {
+          $vm.$img2Url(pos, this.photoUrl + res.data.key)
+        })
+      },
+
+      change(value, render) {
+        this.newComment = value
+      },
+
+      commitComment() {
+        console.log("[commitComment]")
+        console.log("this.newComment:" + this.newComment)
+        CommitComment({
+          id: this.$store.userId,
+          did: this.$route.query.docId,
+          content: this.newComment,
+        })
       }
     },
     mounted() {

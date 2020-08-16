@@ -131,6 +131,8 @@
       },
 
       save() {
+        console.log("[save]:")
+        console.log(this.doc.docName)
         console.log(this.doc.content)
         SaveFile({
           id: this.$store.userId,
