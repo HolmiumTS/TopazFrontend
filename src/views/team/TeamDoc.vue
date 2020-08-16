@@ -2,10 +2,11 @@
 <template>
   <el-container>
     <el-main>
-      <h2>团队文档</h2>
+      <!-- <h2>团队文档</h2> -->
       <el-button
         class="createTeamFile"
         type="primary"
+        icon="el-icon-plus"
         @click.native.prevent="showCreateDocDialog=true"
         plain
       >创建团队文档</el-button>
@@ -423,8 +424,13 @@ export default {
       }
     });
 
-    GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
-      this.files = res.files;
+    let params = {
+      id: this.$store.state.userId,
+      teamId: this.$store.state.teamId,
+    };
+    GetTeamFile(params).then((res) => {
+      let tmpFiles = res.files;
+      tmpFiles.forEach((item) => item.isDel != "true" && this.files.push(item));
       for (let i = 0; i < this.files.length; ) {
         // this.displayFiles[parseInt(i / this.rowWidth)] = [];
         this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
@@ -461,5 +467,6 @@ export default {
 
 .createTeamFile {
   margin: 20px;
+  float: left;
 }
 </style>
