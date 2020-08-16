@@ -312,7 +312,7 @@ export default {
         memberAvatar: "",
       };
       if (res.data.result == true) {
-        for (var i = 0; i < res.data.memberInfo.length; i++) {
+        for (let i = 0; i < res.data.memberInfo.length; i++) {
           tmpMemberInfo.memberId = res.data.memberInfo[i].memberId;
           tmpMemberInfo.memberUrl = generateUserUrl(tmpMemberInfo.memberId);
           tmpMemberInfo.memberUsername = res.data.memberInfo[i].memberUsername;
