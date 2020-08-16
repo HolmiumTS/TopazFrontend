@@ -274,7 +274,7 @@ export default {
       this.$router.push({
         path: "/docBrowse",
         query: {
-          id: id,
+          docId: id,
         },
       });
     },
@@ -361,21 +361,21 @@ export default {
 
     // GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
     //   this.files = res.files;
-      for (let i = 0; i < this.files.length; ) {
-        //this.displayFiles[parseInt(i / this.rowWidth)] = [];
-        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
-        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
-          //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
-          this.$set(
-            this.displayFiles[parseInt(i / this.rowWidth)],
-            j,
-            this.files[i]
-          );
-          i++;
-        }
+    for (let i = 0; i < this.files.length; ) {
+      //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+        //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+        this.$set(
+          this.displayFiles[parseInt(i / this.rowWidth)],
+          j,
+          this.files[i]
+        );
+        i++;
       }
-      console.log("displayFiles");
-      console.log(this.displayFiles);
+    }
+    console.log("displayFiles");
+    console.log(this.displayFiles);
     // });
   },
 };
