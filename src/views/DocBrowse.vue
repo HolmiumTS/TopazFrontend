@@ -5,16 +5,50 @@
       <el-col :span="7" :offset="6">
         <div class="title">{{doc.docName}}</div>
       </el-col>
-      <el-col :span="4" :offset="2" style="font-size: xx-large;">
-        <el-button type="success" icon="el-icon-edit-outline" circle plain @click="toEdit"></el-button>
+      <el-col :span="8" :offset="0">
+        <el-button
+          v-if="auth.edit===true"
+          type="success"
+          icon="el-icon-edit-outline"
+          circle
+          plain
+          @click="toEdit"
+        ></el-button>
         <!--edit-->
         <el-button type="warning" icon="el-icon-share" circle plain></el-button>
         <!--share todo-->
-        <el-button type="info" icon="el-icon-setting" circle plain></el-button>
+        <el-button
+          v-if="auth.admin===true"
+          type="info"
+          icon="el-icon-setting"
+          circle
+          plain
+          @click="show"
+        ></el-button>
         <!--authority todo-->
       </el-col>
     </el-row>
     <p></p>
+    <!--Settings of auth-->
+    <!-- 改不动 -->
+    <el-row v-if="showSettings" style="width: 70%;margin: auto auto;">
+      <el-col :span="9" :offset="3">
+        编辑权限：
+        <el-radio-group v-model="setting.edit" @change="updateSettings">
+          <el-radio label="0">仅创建者</el-radio>
+          <el-radio label="1">仅团队内</el-radio>
+          <el-radio label="2">所有人</el-radio>
+        </el-radio-group>
+      </el-col>
+      <el-col :span="9" :offset="0">
+        查看、分享、评论权限：
+        <el-radio-group v-model="setting.view">
+          <el-radio v-if="setting.ctl1" label="0">仅团队内</el-radio>
+          <el-radio v-if="setting.ctl2" label="1">所有人</el-radio>
+        </el-radio-group>
+      </el-col>
+    </el-row>
+
     <!--Info-->
     <el-row style="width: 75%;margin: auto auto">
       <!--todo 优化显示-->
@@ -60,11 +94,7 @@
     <p v-for="(c) in comment" v-bind:key="c">
       <el-row>
         <el-col :span="1" :offset="6" class="comment-info">
-          <el-avatar
-            :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
-            :size="30"
-            fit="fill"
-          >
+          <el-avatar :src="c.avatar" :size="30" fit="fill">
             {{c.name}}
             <!--todo-->
           </el-avatar>
@@ -154,9 +184,9 @@
 </template>
 <script>
 import {
-  BrowseFile,
   CommitComment,
   GetAuth,
+  GetComment,
   GetFile,
   GetUserInfo,
 } from "../main";
@@ -175,11 +205,34 @@ export default {
         updateTime: "2020-08-11 23:59",
         docName: "Wow~",
       },
+      auth: {
+        view: false,
+        admin: true,
+        edit: false,
+        lock: false,
+      },
       comment: [
-        { time: "2020-08-14 11:45", name: "www", content: "123" },
-        { time: "2020-08-14 11:45", name: "ss", content: "ff" },
+        {
+          time: "2020-08-14 11:45",
+          name: "www",
+          content: "123",
+          avatar: "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png",
+        },
+        {
+          time: "2020-08-14 11:45",
+          name: "ss",
+          content: "ff",
+          avatar: "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png",
+        },
       ],
       newComment: "",
+      showSettings: false,
+      setting: {
+        edit: "0",
+        view: "0",
+        ctl1: true,
+        ctl2: true,
+      },
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -212,12 +265,6 @@ export default {
         preview: true, // 预览
       },
     };
-  },
-  computed: {
-    commentLength() {
-      console.log(this.comment.length.toString());
-      return this.comment.length.toString();
-    },
   },
   methods: {
     toEdit() {
@@ -279,24 +326,43 @@ export default {
         content: this.newComment,
       });
     },
+
+    show() {
+      console.log("[show]");
+      this.showSettings = !this.showSettings;
+      console.log(this.showSettings);
+    },
+
+    updateSettings(value) {
+      this.setting.ctl1 = value !== "2";
+    },
   },
   mounted() {
-    console.log("docId: " + this.$route.query.docId);
     GetAuth({
-      id: this.$store.userId,
-      did: this.$route.query.docId,
+      id: this.$store.state.userId.toString(),
+      did: this.$route.query.docId.toString(),
     }).then((res) => {
-      if (res.data.result === false) {
+      if (res.data.result === false || res.data.view === false) {
         this.$message.error("文档不存在或无权查看");
         return;
       }
-      GetFile({ id: this.$route.query.docId }).then((res) => {
+      this.auth.admin = res.data.admin;
+      this.auth.edit = res.data.edit;
+      if (res.data.lock === true) {
+        this.$message.warning(
+          "此文件正在被他人编辑中，您看到的可能并不是最新内容"
+        );
+      }
+      GetComment({ id: this.$route.query.docId.toString() }).then((res) => {
+        this.comment = res.comment;
+      });
+      GetFile({ id: this.$route.query.docId.toString() }).then((res) => {
         let d = res.data;
         if (d.result === false) {
           this.$message.error("请求文档失败！请稍后再试！");
           return;
         }
-        GetUserInfo({ id: d.owner }).then((res) => {
+        GetUserInfo({ id: d.owner.toString() }).then((res) => {
           this.doc.ownerName = res.data.username;
         });
         this.doc.createTime = d.createTime;
