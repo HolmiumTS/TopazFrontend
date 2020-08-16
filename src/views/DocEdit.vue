@@ -39,7 +39,7 @@
   import {genToken} from "../genToken";
   import random from "string-random";
   import axios from 'axios';
-  import {AbortFile, EditFile, GetAuth, GetFile, GetUserInfo, SaveFile} from "../main";
+  import {AbortFile,  GetAuth, GetFile, GetUserInfo, SaveFile} from "../main";
 
   export default {
     data() {
