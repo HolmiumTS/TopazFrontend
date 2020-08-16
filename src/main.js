@@ -396,8 +396,8 @@ export /**
  * 获取团队文档
  * @param {teamId}
  * 团队id
- * @returns {result, files[{id,name,team,collected,view,edit}]}
- * 是否成功， files[{文档id,文档名,团队id,是否收藏,浏览权限,编辑权限}]
+ * @returns {result, files[{id,name,owner,team,collected,view,edit}]}
+ * 是否成功， files[{文档id,文档名,文档创建者id,团队id,是否收藏,浏览权限,编辑权限}]
  * 团队id: '-1'为 不属于团队内
  * 是否收藏:"已收藏"、"未收藏"
  * 浏览权限:'0'为 私人, '1'为 公开
@@ -443,7 +443,7 @@ export /**
  */
 export const GetAuth = (params) => {
   return axios.post('/GetAuth', params);
-}
+};
 
 export /**
  * 获取文档
@@ -475,7 +475,7 @@ export /**
  * true if successful
  */
 export const SaveFile = (params) => {
-  return axios.post('/SaveFile', params)
+  return axios.post('/SaveFile', params);
 };
 
 /**
@@ -486,7 +486,7 @@ export const SaveFile = (params) => {
  * @returns {result}
  */
 export const AbortFile = (params) => {
-  return axios.post('/AbortFile', params)
+  return axios.post('/AbortFile', params);
 };
 
 /**
@@ -496,7 +496,7 @@ export const AbortFile = (params) => {
  * false if cannot comment
  */
 export const CommitComment = (params) => {
-  return axios.post('/CommitComment', params)
+  return axios.post('/CommitComment', params);
 };
 
 export /**
@@ -551,7 +551,6 @@ export /**
  */ const RenameTemplate = (params) => {
   return axios.post('/RenameTemplate', params);
 };
-
 
 export /**
  * 删除模板

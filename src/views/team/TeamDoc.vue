@@ -1,162 +1,99 @@
 <!-- 权限相关尚未考虑 -->
 <template>
-  <el-main>
-    <h2>团队文档</h2>
-    <!-- <el-table
-      :data="files"
-      :default-sort="{prop: 'time', order: 'descending'}"
-      style="width:100%;margin: auto auto;"
-    >
-      <el-table-column min-width="10%" label="文档编号" prop="id" sortable></el-table-column>
-      <el-table-column min-width="15%" label="文档名" prop="name" sortable></el-table-column>
-      <el-table-column min-width="10%" label="创建者" prop="authorName" sortable></el-table-column>
-      <el-table-column min-width="15%" label="最后浏览时间" prop="time" sortable>
-        <template slot-scope="scope">
-          <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.time }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="10%" label="收藏" prop="collected" sortable>
-        <template slot-scope="scope">
-          <el-button
-            v-if="scope.row.collected =='已收藏'"
-            type="warning"
-            icon="el-icon-star-off"
-            @click.native.prevent="handleCollect(scope.row.id)"
-            circle
-            plain
-            size="medium"
-          ></el-button>
-          <el-button
-            v-if="scope.row.collected !='已收藏'"
-            icon="el-icon-star-off"
-            @click.native.prevent="handleCollect(scope.row.id)"
-            circle
-            plain
-            size="medium"
-          ></el-button>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="40%" label="操作">
-        <template slot-scope="scope">
-          <el-button
-            icon="el-icon-view"
-            type="info"
-            @click.native.prevent="browseFile(scope.row.id)"
-            round
-            size="medium"
-            plain
-          ></el-button>
-          <el-button
-            v-if="userTypeInTeam<=1||scope.row.authorId==userId"
-            icon="el-icon-s-operation"
-            type="primary"
-            @click.native.prevent="manageAuthority(scope.row.id)"
-            circle
-            size="medium"
-            plain
-          ></el-button>
-          <el-button
-            v-if="userTypeInTeam<=1||scope.row.authorId==userId"
-            icon="el-icon-delete"
-            type="danger"
-            @click.native.prevent="deleteFile(scope.row.id)"
-            circle
-            size="medium"
-            plain
-          ></el-button>
-          <el-button
-            icon="el-icon-share"
-            type="success"
-            @click.native.prevent="shareFile(scope.row.id)"
-            circle
-            size="medium"
-            plain
-          ></el-button>
-        </template>
-      </el-table-column>
-    </el-table>-->
-    <table cellspacing="20" style="margin: -20px">
-      <tr v-for="disFiles in displayFiles" :key="disFiles[0].id">
-        <td v-for="dFile in disFiles" :key="dFile.id">
-          <el-card class="cardFile" :dFile="dFile" shadow="always">
-            <el-row class="cardRow">
-              <el-col :span="2" style="margin: 0% 15%">
-                <el-image style="width:60px;height:60px" :src="fileIcon"></el-image>
-              </el-col>
-              <el-col :span="8" style="margin: px">
-                <div
-                  align="left"
-                  style="color:#777777;font-size: 150%;margin:15px auto;"
-                >{{dFile.name}}</div>
-              </el-col>
-              <el-col :span="1">
-                <i v-if="dFile.collected=='已收藏'" class="el-icon-star-on"></i>
-                <i
-                  v-if="dFile.collected!='已收藏'"
-                  class="el-icon-collection-tag"
-                  style="color:rgba(255,255,255,0)"
-                ></i>
-              </el-col>
-              <el-col :span="1" :offset="1">
-                <el-dropdown placement="bottom-end">
-                  <i class="el-icon-more"></i>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native.prevent="browseFile(dFile.id)">
-                      <i class="el-icon-search"></i>
-                      <span>浏览</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="collectFile(dFile.id)">
-                      <i :class="dFile.collected=='已收藏'?'el-icon-star-on':'el-icon-star-off'"></i>
-                      <span v-if="dFile.collected=='已收藏'">已收藏</span>
-                      <span v-if="dFile.collected!='已收藏'">收藏</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="ShowAuthorizeDialog(dFile.id)">
-                      <i class="el-icon-s-tools"></i>
-                      <span>管理权限</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="templateFile(dFile.id)">
-                      <i class="el-icon-s-tools" style="color:rgba(255,255,255,0)"></i>
-                      <span>存为模板</span>
-                    </el-dropdown-item>
-                    <el-dropdown-item divided @click.native.prevent="deleteFile(dFile.id)">
-                      <i class="el-icon-star-off" style="color:rgba(255,255,255,0)"></i>
-                      <span>删除</span>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </el-col>
-            </el-row>
-          </el-card>
-        </td>
-      </tr>
-    </table>
-    <el-dialog :visible.sync="showAuthorizeDialog" title="管理文档权限" width="400px">
-      <p align="left">
-        <span>
-          <h4>浏览:</h4>
-        </span>
-        <el-radio-group v-model="viewAuth">
-          <el-radio :label="'0'" v-if="selectFileTeam=='-1'">仅创建者</el-radio>
-          <el-radio :label="'0'" v-if="selectFileTeam!='-1'">文档所在团队成员</el-radio>
-          <el-radio :label="'1'">所有人</el-radio>
-        </el-radio-group>
-      </p>
-      <p align="left">
-        <span>
-          <h4>编辑:</h4>
-        </span>
-        <el-radio-group v-model="editAuth">
-          <el-radio :label="'0'" :disabled="editAuthCheck('0')">仅创建者</el-radio>
-          <el-radio :label="'1'" :disabled="editAuthCheck('1')">文档所在团队成员</el-radio>
-          <el-radio :label="'2'" :disabled="editAuthCheck('2')">所有人</el-radio>
-        </el-radio-group>
-      </p>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click.native.prevent="authorizeFile">确认</el-button>
-      </div>
-    </el-dialog>
-  </el-main>
+  <el-container>
+    <el-main>
+      <h2>团队文档</h2>
+      <el-button class="createTeamFile" type="primary" plain>创建团队文档</el-button>
+      <table cellspacing="20" style="margin: -20px">
+        <tr v-for="disFiles in displayFiles" :key="disFiles[0].id">
+          <td v-for="dFile in disFiles" :key="dFile.id">
+            <el-card class="cardFile" :dFile="dFile" shadow="always">
+              <el-row class="cardRow">
+                <el-col :span="2" style="margin: 0% 15%">
+                  <el-image style="width:60px;height:60px" :src="fileIcon"></el-image>
+                </el-col>
+                <el-col :span="8" style="margin: px">
+                  <div
+                    align="left"
+                    style="color:#777777;font-size: 150%;margin:15px auto;"
+                  >{{dFile.name}}</div>
+                </el-col>
+                <el-col :span="1">
+                  <i v-if="dFile.collected=='已收藏'" class="el-icon-star-on"></i>
+                  <i
+                    v-if="dFile.collected!='已收藏'"
+                    class="el-icon-collection-tag"
+                    style="color:rgba(255,255,255,0)"
+                  ></i>
+                </el-col>
+                <el-col :span="1" :offset="1">
+                  <el-dropdown placement="bottom-end">
+                    <i class="el-icon-more"></i>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item @click.native.prevent="browseFile(dFile.id)">
+                        <i class="el-icon-search"></i>
+                        <span>浏览</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item @click.native.prevent="collectFile(dFile.id)">
+                        <i :class="dFile.collected=='已收藏'?'el-icon-star-on':'el-icon-star-off'"></i>
+                        <span v-if="dFile.collected=='已收藏'">已收藏</span>
+                        <span v-if="dFile.collected!='已收藏'">收藏</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        @click.native.prevent="ShowAuthorizeDialog(dFile.id)"
+                        :disabled="checkAuthority(dFile.owner)"
+                      >
+                        <i class="el-icon-s-tools"></i>
+                        <span>管理权限</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item @click.native.prevent="templateFile(dFile.id)">
+                        <i class="el-icon-s-tools" style="color:rgba(255,255,255,0)"></i>
+                        <span>存为模板</span>
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        divided
+                        @click.native.prevent="deleteFile(dFile.id)"
+                        :disabled="checkAuthority(dFile.owner)"
+                      >
+                        <i class="el-icon-star-off" style="color:rgba(255,255,255,0)"></i>
+                        <span>删除</span>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
+              </el-row>
+            </el-card>
+          </td>
+        </tr>
+      </table>
+
+      <el-dialog :visible.sync="showAuthorizeDialog" title="管理文档权限" width="400px">
+        <p align="left">
+          <span>
+            <h4>浏览:</h4>
+          </span>
+          <el-radio-group v-model="viewAuth">
+            <el-radio :label="'0'" v-if="selectFileTeam=='-1'">仅创建者</el-radio>
+            <el-radio :label="'0'" v-if="selectFileTeam!='-1'">文档所在团队成员</el-radio>
+            <el-radio :label="'1'">所有人</el-radio>
+          </el-radio-group>
+        </p>
+        <p align="left">
+          <span>
+            <h4>编辑:</h4>
+          </span>
+          <el-radio-group v-model="editAuth">
+            <el-radio :label="'0'" :disabled="editAuthCheck('0')">仅创建者</el-radio>
+            <el-radio :label="'1'" :disabled="editAuthCheck('1')">文档所在团队成员</el-radio>
+            <el-radio :label="'2'" :disabled="editAuthCheck('2')">所有人</el-radio>
+          </el-radio-group>
+        </p>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click.native.prevent="authorizeFile">确认</el-button>
+        </div>
+      </el-dialog>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -178,6 +115,7 @@ export default {
         {
           id: "001",
           name: "testfile1",
+          owner: "",
           team: "-1",
           collected: "已收藏",
           view: "0",
@@ -186,6 +124,7 @@ export default {
         {
           id: "002",
           name: "testfile2",
+          owner: "",
           team: "001",
           collected: "未收藏",
           view: "1",
@@ -194,6 +133,7 @@ export default {
         {
           id: "003",
           name: "testfile2",
+          owner: "",
           team: "002",
           collected: "已收藏",
           view: "1",
@@ -202,6 +142,7 @@ export default {
         {
           id: "004",
           name: "testfile2",
+          owner: "123123",
           team: "-1",
           collected: "已收藏",
           view: "0",
@@ -210,6 +151,7 @@ export default {
         {
           id: "005",
           name: "testfile2",
+          owner: "2333",
           team: "-1",
           collected: "未收藏",
           view: "1",
@@ -218,6 +160,7 @@ export default {
         {
           id: "006",
           name: "testfile2",
+          owner: "",
           team: "-1",
           collected: "未收藏",
           view: "1",
@@ -226,6 +169,7 @@ export default {
         {
           id: "007",
           name: "testfile2",
+          owner: "",
           team: "-1",
           collected: "已收藏",
           view: "0",
@@ -253,8 +197,17 @@ export default {
       }
       return false;
     },
+
+    checkAuthority(owner) {
+      return this.userTypeInTeam == 2 && this.$store.state.userId != owner;
+    },
+
     collectFile(id) {
-      CollectFile({ id: id }).then((res) => {
+      let params = {
+        userId: this.$store.state.userId,
+        fileId: id,
+      };
+      CollectFile(params).then((res) => {
         if (res.data.result == true) {
           console.log("collectFile_Succeed: " + id);
           this.$message({
@@ -270,6 +223,7 @@ export default {
         }
       });
     },
+
     browseFile(id) {
       this.$router.push({
         path: "/docBrowse",
@@ -278,6 +232,7 @@ export default {
         },
       });
     },
+
     ShowAuthorizeDialog(id) {
       for (let i = 0; i < this.files.length; i++) {
         if (this.files[i].id == id) {
@@ -289,6 +244,7 @@ export default {
       }
       this.showAuthorizeDialog = true;
     },
+
     authorizeFile(id) {
       let params = {
         id: this.selectFileId,
@@ -311,8 +267,13 @@ export default {
         }
       });
     },
+
     templateFile(id) {
-      TemplateFile({ id: id }).then((res) => {
+      let params = {
+        userId: this.$store.state.userId,
+        fileId: id,
+      };
+      TemplateFile(params).then((res) => {
         if (res.data.result == true) {
           console.log("templateFile_Succeed: " + id);
           this.$message({
@@ -328,8 +289,13 @@ export default {
         }
       });
     },
+
     deleteFile(id) {
-      DeleteFile({ id: id }).then((res) => {
+      let params = {
+        userId: this.$store.state.userId,
+        fileId: id,
+      };
+      DeleteFile(params).then((res) => {
         if (res.data.result == true) {
           console.log("deleteFile_Succeed: " + id);
           this.$message({
@@ -347,36 +313,36 @@ export default {
     },
   },
   mounted() {
-    // this.userId = this.$store.state.userId;
-    // GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
-    //   let userId = this.$store.state.userId;
-    //   if (res.data.result === true) {
-    //     for (let i = 0; i < res.data.memberInfo.length; i++) {
-    //       let id = res.data.memberInfo[i].memberId;
-    //       let type = res.data.memberInfo[i].memberType;
-    //       if (id === userId) this.userTypeInTeam = parseInt(type);
-    //     }
-    //   }
-    // });
-
-    // GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
-    //   this.files = res.files;
-      for (let i = 0; i < this.files.length; ) {
-        //this.displayFiles[parseInt(i / this.rowWidth)] = [];
-        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
-        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
-          //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
-          this.$set(
-            this.displayFiles[parseInt(i / this.rowWidth)],
-            j,
-            this.files[i]
-          );
-          i++;
+    this.userId = this.$store.state.userId;
+    GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
+      let userId = this.$store.state.userId;
+      if (res.data.result === true) {
+        for (let i = 0; i < res.data.memberInfo.length; i++) {
+          let id = res.data.memberInfo[i].memberId;
+          let type = res.data.memberInfo[i].memberType;
+          if (id === userId) this.userTypeInTeam = parseInt(type);
         }
       }
-      console.log("displayFiles");
-      console.log(this.displayFiles);
-    // });
+    });
+
+    GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
+      this.files = res.files;
+    for (let i = 0; i < this.files.length; ) {
+      // this.displayFiles[parseInt(i / this.rowWidth)] = [];
+      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+        // this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+        this.$set(
+          this.displayFiles[parseInt(i / this.rowWidth)],
+          j,
+          this.files[i]
+        );
+        i++;
+      }
+    }
+    console.log("displayFiles");
+    console.log(this.displayFiles);
+    });
   },
 };
 </script>
@@ -393,5 +359,9 @@ export default {
 }
 .el-dialog {
   border-radius: 10px;
+}
+
+.createTeamFile {
+  margin: 20px;
 }
 </style>
