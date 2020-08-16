@@ -424,7 +424,11 @@ export default {
       }
     });
 
-    GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
+    let params = {
+      id: this.$store.state.userId,
+      teamId: this.$store.state.teamId,
+    };
+    GetTeamFile(params).then((res) => {
       let tmpFiles = res.files;
       tmpFiles.forEach((item) => item.isDel != "true" && this.files.push(item));
       for (let i = 0; i < this.files.length; ) {
