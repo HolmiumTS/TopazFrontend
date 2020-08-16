@@ -3,7 +3,12 @@
   <el-container>
     <el-main>
       <h2>团队文档</h2>
-      <el-button class="createTeamFile" type="primary" plain>创建团队文档</el-button>
+      <el-button
+        class="createTeamFile"
+        type="primary"
+        @click.native.prevent="showCreateDocDialog=true"
+        plain
+      >创建团队文档</el-button>
       <table cellspacing="20" style="margin: -20px">
         <tr v-for="disFiles in displayFiles" :key="disFiles[0].id">
           <td v-for="dFile in disFiles" :key="dFile.id">
@@ -67,6 +72,43 @@
         </tr>
       </table>
 
+      <el-dialog
+        :visible.sync="showCreateDocDialog"
+        title="创建团队文档"
+        style="width: 1000px;margin: auto auto;"
+      >
+        <el-form :model="newFileForm" ref="newFileForm" :rules="rule" label-width="0px">
+          <el-form-item prop="name" align="left">
+            <span style="margin:0px 20px;">文件名:</span>
+            <el-input type="text" v-model="newFileForm.name" placeholder="文件名" style="width: 300px"></el-input>
+          </el-form-item>
+          <el-form-item prop="templateId" align="left">
+            <span style="margin:0px 27px;">模板:</span>
+            <el-select style="width: 300px" v-model="newFileForm.templateId" placeholder="选择模板">
+              <el-option
+                v-for="template in templates"
+                :key="template.id"
+                :label="template.name"
+                :value="template.id"
+              >
+                <span style="float: left">{{ template.name }}</span>
+                <span
+                  style="float: right; color: #8492a6; font-size: 10px"
+                >{{ template.id!='-1'?template.id:"" }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div align="right">
+          <el-button
+            type="primary"
+            @click.native.prevent="newTeamFile"
+            size="medium"
+            :loading="submitting"
+          >确认创建</el-button>
+        </div>
+      </el-dialog>
+
       <el-dialog :visible.sync="showAuthorizeDialog" title="管理文档权限" width="400px">
         <p align="left">
           <span>
@@ -97,7 +139,7 @@
 </template>
 
 <script>
-import { GetTeamFile, GetTeamMember } from "../../main";
+import { GetTeamFile, GetTeamMember, NewFile } from "../../main";
 export default {
   data() {
     return {
@@ -105,11 +147,37 @@ export default {
         "http://qexiy12gt.hd-bkt.clouddn.com/%E6%96%87%E6%A1%A3%E5%9B%BE%E6%A0%87.png",
       rowWidth: 4,
       showAuthorizeDialog: false,
+      showCreateDocDialog: false,
+      submitting: false,
       viewAuth: null,
       editAuth: null,
       selectFileId: null,
       selectFileTeam: null,
       displayFiles: [],
+      rule: {
+        name: [
+          {
+            required: true,
+            message: "文件名不能为空",
+            trigger: "blur",
+          },
+        ],
+        templateId: [
+          {
+            required: true,
+            message: "请选择模板",
+            trigger: "blur",
+          },
+        ],
+      },
+      templates: [
+        { id: "-1", name: "无" },
+        { id: "001", name: "模板1" },
+        { id: "002", name: "模板2" },
+        { id: "003", name: "模板3" },
+      ],
+      newFileForm: { name: null, templateId: "-1" },
+      selectTemplateId: null,
       //files:[],
       files: [
         {
@@ -181,6 +249,36 @@ export default {
     };
   },
   methods: {
+    newTeamFile() {
+      this.$refs.newFileForm.validate((valid) => {
+        if (valid) {
+          let params = {
+            userId: this.$store.state.userId,
+            teamId: this.$store.state.teamId,
+            name: this.newFileForm.name,
+            templateId: this.newFileForm.templateId,
+          };
+          this.submitting = true;
+          console.log("newFileForm");
+          console.log(params);
+          NewFile(params).then((res) => {
+            if (res.data.result == true) {
+              this.$message({
+                type: "success",
+                message: "创建成功",
+              });
+              this.submitting = false;
+              this.showCreateDocDialog = false;
+              this.$router.go(0);
+            } else {
+              this.$message.error({
+                message: "创建失败,请稍后再试",
+              });
+            }
+          });
+        }
+      });
+    },
     editAuthCheck(edit) {
       if (this.selectFileTeam == "-1") {
         if (this.viewAuth == "0" && edit != "0") {
@@ -327,21 +425,21 @@ export default {
 
     GetTeamFile({ teamId: this.$store.state.teamId }).then((res) => {
       this.files = res.files;
-    for (let i = 0; i < this.files.length; ) {
-      // this.displayFiles[parseInt(i / this.rowWidth)] = [];
-      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
-      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
-        // this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
-        this.$set(
-          this.displayFiles[parseInt(i / this.rowWidth)],
-          j,
-          this.files[i]
-        );
-        i++;
+      for (let i = 0; i < this.files.length; ) {
+        // this.displayFiles[parseInt(i / this.rowWidth)] = [];
+        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+          // this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+          this.$set(
+            this.displayFiles[parseInt(i / this.rowWidth)],
+            j,
+            this.files[i]
+          );
+          i++;
+        }
       }
-    }
-    console.log("displayFiles");
-    console.log(this.displayFiles);
+      console.log("displayFiles");
+      console.log(this.displayFiles);
     });
   },
 };
