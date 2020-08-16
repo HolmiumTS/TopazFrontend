@@ -88,9 +88,9 @@ export /**
  * @returns {result, id, username, avatar}
  * 登录是否成功,用户id, 昵称, 头像url
  */
-  const Login = (params) => {
-    return axios.post('/Login', params);
-  };
+const Login = (params) => {
+  return axios.post('/Login', params);
+};
 
 export /**
  * 用户注册
@@ -99,9 +99,9 @@ export /**
  * @returns {result, id}
  * 注册是否成功,用户id
  */
-  const Register = (params) => {
-    return axios.post('/Register', params);
-  };
+const Register = (params) => {
+  return axios.post('/Register', params);
+};
 
 export /**
  * 查看个人所在团队
@@ -110,9 +110,9 @@ export /**
  * @returns {teams[{id, name}]}
  * 团队[{团队id, 团队名称}]
  */
-  const GetUserTeam = (params) => {
-    return axios.post('/GetUserTeam', params);
-  };
+const GetUserTeam = (params) => {
+  return axios.post('/GetUserTeam', params);
+};
 
 export /**
  * 查看个人信息
@@ -121,9 +121,9 @@ export /**
  * @returns {id, username, tel, email, avatar}
  * 用户id, 昵称, 手机, 邮箱, 头像url
  */
-  const GetUserInfo = (params) => {
-    return axios.post('/GetUserInfo', params);
-  };
+const GetUserInfo = (params) => {
+  return axios.post('/GetUserInfo', params);
+};
 
 export /**
  * 修改个人信息
@@ -132,9 +132,9 @@ export /**
  * @returns {result}
  * 是否成功
  */
-  const ChangeUserInfo = (params) => {
-    return axios.post('/ChangeUserInfo', params);
-  };
+const ChangeUserInfo = (params) => {
+  return axios.post('/ChangeUserInfo', params);
+};
 
 export /**
  * 修改头像
@@ -143,9 +143,9 @@ export /**
  * @returns {result}
  * 是否成功
  */
-  const ChangeUserAvatar = (params) => {
-    return axios.post('/ChangeUserAvatar', params);
-  };
+const ChangeUserAvatar = (params) => {
+  return axios.post('/ChangeUserAvatar', params);
+};
 
 export /**
  * 修改密码
@@ -154,9 +154,9 @@ export /**
  * @returns {result}
  * 是否成功
  */
-  const ChangeUserPassword = (params) => {
-    return axios.post('/ChangeUserPassword', params);
-  };
+const ChangeUserPassword = (params) => {
+  return axios.post('/ChangeUserPassword', params);
+};
 
 export /**
  * 查看个人消息通知
@@ -173,9 +173,9 @@ export /**
  * 用户的团队申请被接受: 加入团队 [团队名] 的申请已被 拒绝
  * 用户的文档被评论: 文档 [文档名] 有新评论
  */
-  const GetUserMessage = (params) => {
-    return axios.post('/GetUserMessage', params);
-  };
+const GetUserMessage = (params) => {
+  return axios.post('/GetUserMessage', params);
+};
 
 export /**
  * 标记消息为已读
@@ -185,9 +185,9 @@ export /**
  * @returns {result}
  * 是否成功
  */
-  const ChangeMessageStatus = (params) => {
-    return axios.post('/ChangeMessageStatus', params);
-  };
+const ChangeMessageStatus = (params) => {
+  return axios.post('/ChangeMessageStatus', params);
+};
 
 export /**
  * 获取个人模板
@@ -196,9 +196,9 @@ export /**
  * @returns {templates[{id,name}]}
  * templates[{模板id,模板名}]
  */
-  const GetUserTemplate = (params) => {
-    return axios.post('/GetUserTemplate', params);
-  };
+const GetUserTemplate = (params) => {
+  return axios.post('/GetUserTemplate', params);
+};
 // ! === 个人 === (end)
 
 // ! === 团队 === (begin)
@@ -209,8 +209,8 @@ export /**
  * @returns {result, creatorId, teamName, teamInfo}
  * 是否成功，创建者id，团队名称，团队简介
  */ const GetTeamInfo = (params) => {
-    return axios.post('/GetTeamInfo', params);
-  };
+  return axios.post('/GetTeamInfo', params);
+};
 
 export /**
  * 搜索团队
@@ -220,8 +220,8 @@ export /**
  * [{团队Id, 团队名称, 团队简介}]
  * 用户已经加入的和正在申请的不用返回
  */ const SearchTeams = (params) => {
-    return axios.post('/SearchTeams', params);
-  };
+  return axios.post('/SearchTeams', params);
+};
 
 export /**
  * 申请加入团队
@@ -230,8 +230,8 @@ export /**
  * @returns {result}
  * 申请提交是否成功
  */ const ApplyToTeam = (params) => {
-    return axios.post('/ApplyToTeam', params);
-  };
+  return axios.post('/ApplyToTeam', params);
+};
 
 // TODO: 考虑第二次迭代时换成
 // {创建者id, 创建者用户名，创建者头像},
@@ -254,8 +254,8 @@ export /**
  * @returns {result, memberInfo[{memberId, memberUsername, memberAvatar, memberType}]}
  * 是否成功，成员信息[成员id, 成员用户名，成员头像，成员类型（0 创建者/1 管理员/2 普通成员）（是字符串）]
  */ const GetTeamMember = (params) => {
-    return axios.post('/GetTeamMember', params);
-  };
+  return axios.post('/GetTeamMember', params);
+};
 
 export /**
  * 设置管理员
@@ -264,8 +264,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const SetAdmin = (params) => {
-    return axios.post('/SetAdmin', params);
-  };
+  return axios.post('/SetAdmin', params);
+};
 
 export /**
  * 取消管理员
@@ -274,8 +274,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const CancelAdmin = (params) => {
-    return axios.post('/CancelAdmin', params);
-  };
+  return axios.post('/CancelAdmin', params);
+};
 
 export /**
  * 获取团队所有申请
@@ -285,8 +285,8 @@ export /**
  * 其中 application 为 {id, username, avatar}[] 数组
  * 是否成功，{申请人id，申请人用户名，申请人头像}的数组
  */ const GetAllApplication = (params) => {
-    return axios.post('/GetAllApplication', params);
-  };
+  return axios.post('/GetAllApplication', params);
+};
 
 export /**
  * 审核加入团队申请
@@ -295,8 +295,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const JudgeApplication = (params) => {
-    return axios.post('/JudgeApplication', params);
-  };
+  return axios.post('/JudgeApplication', params);
+};
 
 export /**
  * 踢出团队
@@ -305,8 +305,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const KickOff = (params) => {
-    return axios.post('/KickOff', params);
-  };
+  return axios.post('/KickOff', params);
+};
 
 export /**
  * 解散团队
@@ -315,8 +315,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const DissolveTeam = (params) => {
-    return axios.post('/DissolveTeam', params);
-  };
+  return axios.post('/DissolveTeam', params);
+};
 
 export /**
  * 退出团队
@@ -325,8 +325,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const QuitTeam = (params) => {
-    return axios.post('/QuitTeam', params);
-  };
+  return axios.post('/QuitTeam', params);
+};
 
 export /**
  * 修改团队信息
@@ -335,8 +335,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const ChangeTeamInfo = (params) => {
-    return axios.post('/ChangeTeamInfo', params);
-  };
+  return axios.post('/ChangeTeamInfo', params);
+};
 
 export /**
  * 创建团队
@@ -345,8 +345,8 @@ export /**
  * @returns {result, teamId}
  * 是否成功，创建后团队id
  */ const CreateTeam = (params) => {
-    return axios.post('/CreateTeam', params);
-  };
+  return axios.post('/CreateTeam', params);
+};
 // ! === 团队 === (end)
 
 // ! === 文档 === (begin)
@@ -360,8 +360,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const NewFile = (params) => {
-    return axios.post('/NewFile', params);
-  };
+  return axios.post('/NewFile', params);
+};
 
 export /**
  * 最近浏览的文档
@@ -374,8 +374,8 @@ export /**
  * 浏览权限:'0'为 私人, '1'为 公开
  * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetRecentFile = (params) => {
-    return axios.post('/GetRecentFile', params);
-  };
+  return axios.post('/GetRecentFile', params);
+};
 
 export /**
  * 创建的文档
@@ -388,8 +388,8 @@ export /**
  * 浏览权限:'0'为 私人, '1'为 公开
  * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetMyFile = (params) => {
-    return axios.post('/GetMyFile', params);
-  };
+  return axios.post('/GetMyFile', params);
+};
 
 export /**
  * 收藏的文档
@@ -401,8 +401,8 @@ export /**
  * 浏览权限:'0'为 私人, '1'为 公开
  * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetCollectedFile = (params) => {
-    return axios.post('/GetCollectedFile', params);
-  };
+  return axios.post('/GetCollectedFile', params);
+};
 
 export /**
  * 回收站的文档
@@ -411,8 +411,19 @@ export /**
  * @returns {files[{id,name}]}
  * files[{文档id,文档名}]
  */ const GetDeletedFile = (params) => {
-    return axios.post('/GetDeletedFile', params);
-  };
+  return axios.post('/GetDeletedFile', params);
+};
+/**
+ * Query to browse a file
+ * @param {{id:string,did:string}} params
+ * id: user id
+ * did: doc id
+ * @returns {result}
+ * true if the user can browse the doc
+ */
+export const BrowseFile = (params) => {
+  return axios.post('/BrowseFile', params)
+}
 
 export /**
  * 获取文档
@@ -429,24 +440,30 @@ export /**
  * //todo 字段可能增加
  * 待定
  */ const GetFile = (params) => {
-    return axios.post('/GetFile', params);
-  };
+  return axios.post('/GetFile', params);
+};
 
 /**
  * Query to edit a file.
- * @param {{did:string}} params
+ * @param {{id:string,did:string}} params
+ * id: user id
  * did: doc id
  * @returns {result}
- * result: true if the file can be edited now, false if someone is editing it
+ * result: true if the file can be edited by the user
  */
 export const EditFile = (params) => {
   return axios.post('/EditFile', params)
 };
 
 /**
- * //todo
- * @param params
- * @returns {Promise<AxiosResponse<any>>}
+ * Commit the doc and save it
+ * @param {{id:string,did:string,name:string,content:string}} params
+ * id: user who edit it
+ * did: doc id
+ * name: the name of the doc
+ * content: the content of the doc
+ * @returns {result}
+ * true if successful
  */
 export const SaveFile = (params) => {
   return axios.post('/SaveFile', params)
@@ -460,8 +477,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const CollectFile = (params) => {
-    return axios.post('/CollectFile', params);
-  };
+  return axios.post('/CollectFile', params);
+};
 
 export /**
  * 管理文档权限
@@ -472,8 +489,8 @@ export /**
  * @returns {}
  * 待定
  */ const AuthorizeFile = (params) => {
-    return axios.post('/AuthorizeFile', params);
-  };
+  return axios.post('/AuthorizeFile', params);
+};
 
 export /**
  * 删除文档
@@ -482,8 +499,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const DeleteFile = (params) => {
-    return axios.post('/DeleteFile', params);
-  };
+  return axios.post('/DeleteFile', params);
+};
 
 export /**
  * 保存文档为模板
@@ -492,18 +509,18 @@ export /**
  * @returns {result}
  * 是否成功
  */ const TemplateFile = (params) => {
-    return axios.post('/TemplateFile', params);
-  };
+  return axios.post('/TemplateFile', params);
+};
 
 export /**
-  * 重命名模板
-  * @param {userId,templateId,name}
-  * 用户id,模板id,模板名
-  * @returns {result}
-  * 是否成功
-  */ const RenameTemplate = (params) => {
-    return axios.post('/RenameTemplate', params);
-  };
+ * 重命名模板
+ * @param {userId,templateId,name}
+ * 用户id,模板id,模板名
+ * @returns {result}
+ * 是否成功
+ */ const RenameTemplate = (params) => {
+  return axios.post('/RenameTemplate', params);
+};
 
 
 export /**
@@ -513,8 +530,8 @@ export /**
  * @returns {result}
  * 是否成功
  */ const DeleteTemplate = (params) => {
-    return axios.post('/DeleteTemplate', params);
-  };
+  return axios.post('/DeleteTemplate', params);
+};
 
 export /**
  * 恢复文档
@@ -524,19 +541,19 @@ export /**
  * @returns {result}
  * 是否成功
  */ const RestoreFile = (params) => {
-    return axios.post('/RestoreFile', params);
-  };
+  return axios.post('/RestoreFile', params);
+};
 
 export /**
-  * 彻底文档
-  * 彻底删除回收站的文档
-  * @param {id}
-  * 文档id
-  * @returns {result}
-  * 是否成功
-  */ const PerishFile = (params) => {
-    return axios.post('/PerishFile', params);
-  };
+ * 彻底文档
+ * 彻底删除回收站的文档
+ * @param {id}
+ * 文档id
+ * @returns {result}
+ * 是否成功
+ */ const PerishFile = (params) => {
+  return axios.post('/PerishFile', params);
+};
 
 // ! === 文档 === (end)
 
