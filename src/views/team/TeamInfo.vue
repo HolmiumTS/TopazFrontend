@@ -103,9 +103,9 @@ import {
 } from "../../main";
 
 export default {
+  inject: ["reloadComponent"],
   data() {
     return {
-      inject: ["reloadComponent"],
       aboutTeam: {
         // teamName: "Topaz Team", // for test
         // teamId: "123",
@@ -164,7 +164,7 @@ export default {
                 type: "success",
                 message: "成功解散团队",
               });
-              // this.reloadComponent();
+              this.reloadComponent();
               this.$store.dispatch("commitChangeStatus", "0");
               this.$router.push("/home"); // 返回到主页
             } else {

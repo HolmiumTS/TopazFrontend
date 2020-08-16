@@ -2,13 +2,14 @@
   <el-main>
     <el-row>
       <el-col :span="8" :offset="8">
-        <div class="title">
-          {{doc.docName}}
-        </div>
+        <el-input v-model="doc.docName"></el-input>
+        <!--        <div class="title">-->
+        <!--          {{doc.docName}}-->
+        <!--        </div>-->
       </el-col>
       <el-col :span="2" :offset="0">
-        <el-button type="success" icon="el-icon-check" circle plain></el-button>
-        <el-button type="warning" icon="el-icon-close" circle plain></el-button>
+        <el-button type="success" icon="el-icon-check" circle plain @click="save"></el-button><!--save-->
+        <el-button type="warning" icon="el-icon-close" circle plain @click="abort"></el-button><!--abort-->
       </el-col>
     </el-row>
     <p></p>
@@ -19,13 +20,14 @@
           :value="doc.content"
           :toolbars="toolbars"
           placeholder="oooooooo"
-          defaultOpen="preview"
+          defaultOpen="edit"
           :editable="true"
           toolbarsBackground="#66ccff"
           :subfield="false"
           @imgAdd="imgAdd"
           :ishljs="true"
           :scrollStyle="true"
+          @change="change"
         ></mavon-editor>
       </el-col>
     </el-row>
@@ -37,6 +39,7 @@
   import {genToken} from "../genToken";
   import random from "string-random";
   import axios from 'axios';
+  import {AbortFile, EditFile, GetFile, GetUserInfo, SaveFile} from "../main";
 
   export default {
     data() {
@@ -99,6 +102,7 @@
         }
         return checkFileType && checkFileSize;
       },
+
       imgAdd(pos, file) {
         if (!this.beforeUpload(file)) {
           return
@@ -126,8 +130,63 @@
         })
       },
 
+      save() {
+        console.log("[save]:")
+        console.log(this.doc.docName)
+        console.log(this.doc.content)
+        SaveFile({
+          id: this.$store.userId,
+          did: this.$route.query.docId,
+          name: this.doc.docName,
+          content: this.doc.content,
+        }).then((res) => {
+          if (res.data.result === false) {
+            this.$message.error("保存失败，请稍后再试")
+            return
+          } else {
+            this.$message("保存成功")
+            this.$router.push({path: '/docBrowse', query: {docId: this.$route.query.docId}})
+          }
+        })
+      },
+
+      abort() {
+        AbortFile({
+          id: this.$store.userId,
+          did: this.$route.query.docId,
+        })
+        this.$router.push({path: '/docBrowse', query: {docId: this.$route.query.docId}})
+      },
+
+      change(value, render) {
+        this.doc.content = value
+      },
     },
     mounted() {
+      EditFile({
+        id: this.$store.userId.toString(),
+        did: this.$route.query.docId.toString()
+      }).then((res) => {
+        if (res.data.result === false) {
+          this.$message.error("文档正在被编辑或无权编辑")
+          return
+        }
+        GetFile({id: this.$route.query.docId.toString()}).then((res) => {
+          let d = res.data
+          if (d.result === false) {
+            this.$message.error("请求文档失败！请稍后再试！")
+            return
+          }
+          GetUserInfo({id: d.owner.toString()}).then((res) => {
+            this.doc.ownerName = res.data.username
+          })
+          this.doc.createTime = d.createTime
+          this.doc.updateTime = d.updateTime
+          this.doc.content = d.content
+          this.doc.docName = d.docName
+        })
+      })
+
     },
   };
 </script>

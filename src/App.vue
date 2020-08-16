@@ -7,7 +7,7 @@
       <el-container>
         <!--<el-aside v-if="show" width="200px" style="margin: 0px -3%;">-->
         <el-aside v-if="show" width="200px">
-          <asiderly v-if="refresh" class="asi"></asiderly>
+          <asiderly :key="refresh" class="asi"></asiderly>
         </el-aside>
         <el-main>
           <transition name="el-zoom-in-center">
@@ -21,11 +21,17 @@
 <script>
 import headerly from "@/components/Header.vue";
 import asiderly from "@/components/Asider.vue";
+import { Message } from "element-ui";
 export default {
   name: "app",
   components: {
     headerly,
     asiderly,
+  },
+  provide: function () {
+    return {
+      reloadComponent: this.reloadComponent,
+    };
   },
   data() {
     return { refresh: 1 };
@@ -39,6 +45,7 @@ export default {
   methods: {
     reloadComponent() {
       this.refresh = 1 - this.refresh;
+      console.log("reloaded: Asider Header");
     },
   },
 };

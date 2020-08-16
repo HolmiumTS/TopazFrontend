@@ -241,21 +241,23 @@ export default {
       return false;
     },
     collectFile(id) {
-      CollectFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("collectFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "收藏成功",
-          });
-          this.$router.go(0);
-        } else {
-          console.log("collectFile_Failed: " + id);
-          this.$message.error({
-            message: "收藏失败",
-          });
+      CollectFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("collectFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "收藏成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("collectFile_Failed: " + id);
+            this.$message.error({
+              message: "收藏失败",
+            });
+          }
         }
-      });
+      );
     },
     browseFile(id) {
       this.$router.push({
@@ -299,38 +301,42 @@ export default {
       });
     },
     templateFile(id) {
-      TemplateFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("templateFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "模板保存成功",
-          });
-          this.$router.go(0);
-        } else {
-          console.log("templateFile_Failed: " + id);
-          this.$message.error({
-            message: "模板保存失败",
-          });
+      TemplateFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("templateFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "模板保存成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("templateFile_Failed: " + id);
+            this.$message.error({
+              message: "模板保存失败",
+            });
+          }
         }
-      });
+      );
     },
     deleteFile(id) {
-      DeleteFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("deleteFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "删除成功",
-          });
-          this.$router.go(0);
-        } else {
-          console.log("deleteFile_Failed: " + id);
-          this.$message.error({
-            message: "删除失败",
-          });
+      DeleteFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("deleteFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "删除成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("deleteFile_Failed: " + id);
+            this.$message.error({
+              message: "删除失败",
+            });
+          }
         }
-      });
+      );
     },
   },
   mounted() {
@@ -349,9 +355,9 @@ export default {
           i++;
         }
       }
-      console.log("displayFiles");
-      console.log(this.displayFiles);
     });
+    console.log("displayFiles");
+    console.log(this.displayFiles);
   },
 };
 </script>
@@ -363,7 +369,7 @@ export default {
   border: white;
 }
 .cardRow {
-  margin: -50px;  
+  margin: -50px;
 }
 .el-dialog {
   border-radius: 10px;

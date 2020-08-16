@@ -162,22 +162,24 @@ export default {
     },
     restoreFile(id) {
       //todo
-      RestoreFile({ id: id }).then((res) => {
-        if (res.data.result == true) {
-          console.log("restoreFile_Succeed: " + id);
-          this.$message({
-            type: "success",
-            message: "恢复成功",
-          });
-          this.dis = false;
-          this.$router.go(0);
-        } else {
-          console.log("restoreFile_Failed: " + id);
-          this.$message.error({
-            message: "恢复失败",
-          });
+      RestoreFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("restoreFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "恢复成功",
+            });
+            this.dis = false;
+            this.$router.go(0);
+          } else {
+            console.log("restoreFile_Failed: " + id);
+            this.$message.error({
+              message: "恢复失败",
+            });
+          }
         }
-      });
+      );
     },
     perishFile(id) {
       //todo
@@ -201,20 +203,20 @@ export default {
   mounted() {
     GetDeletedFile({ userId: this.$store.state.userId }).then((res) => {
       this.files = res.files;
-    });
-    for (let i = 0; i < this.files.length; ) {
-      //this.displayFiles[parseInt(i / this.rowWidth)] = [];
-      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
-      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
-        //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
-        this.$set(
-          this.displayFiles[parseInt(i / this.rowWidth)],
-          j,
-          this.files[i]
-        );
-        i++;
+      for (let i = 0; i < this.files.length; ) {
+        //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+          //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+          this.$set(
+            this.displayFiles[parseInt(i / this.rowWidth)],
+            j,
+            this.files[i]
+          );
+          i++;
+        }
       }
-    }
+    });
     console.log("displayFiles");
     console.log(this.displayFiles);
   },

@@ -429,11 +429,27 @@ export /**
   return axios.post('/GetDeletedFile', params);
 };
 
+/**
+ *
+ * @param {{id:string,did:string}} params
+ * id: user id
+ * did: doc id
+ * @returns {result,admin,edit,view,lock}
+ * result: if doc exists
+ * admin: if user can delete and change doc settings
+ * edit: if user can edit doc
+ * view: if user can view, share and comment doc
+ * lock: if someone is editing doc
+ */
+export const GetAuth = (params) => {
+  return axios.post('/GetAuth', params);
+}
+
 export /**
  * 获取文档
  * @param {{id: string }} params
  * 文档id
- * @returns {result,owner,createTime,updateTime,content,count,name}
+ * @returns {result,owner,createTime,updateTime,content,count,name,tid}
  * result: true (get doc successfully) or false (failed)
  * owner: owner id
  * createTime: format "yyyy-MM-dd HH:mm"
@@ -441,6 +457,7 @@ export /**
  * content: doc content
  * count: edit times count
  * name: doc name
+ * tid: team id
  * //todo 字段可能增加
  * 待定
  */ const GetFile = (params) => {
@@ -448,30 +465,45 @@ export /**
 };
 
 /**
- * Query to edit a file.
- * @param {{did:string}} params
+ * Commit the doc and save it
+ * @param {{id:string,did:string,name:string,content:string}} params
+ * id: user who edit it
  * did: doc id
+ * name: the name of the doc
+ * content: the content of the doc
  * @returns {result}
- * result: true if the file can be edited now, false if someone is editing it
+ * true if successful
  */
-export const EditFile = (params) => {
-  return axios.post('/EditFile', params);
+export const SaveFile = (params) => {
+  return axios.post('/SaveFile', params)
 };
 
 /**
- * //todo
- * @param params
- * @returns {Promise<AxiosResponse<any>>}
+ * Abort the try of editing doc
+ * @param {{id:string,did:string}} params
+ * id: user id
+ * did: doc id
+ * @returns {result}
  */
-export const SaveFile = (params) => {
-  return axios.post('/SaveFile', params);
+export const AbortFile = (params) => {
+  return axios.post('/AbortFile', params)
+};
+
+/**
+ * Commit comment
+ * @param {{id:string,did:string,content:string}} params
+ * @returns {result}
+ * false if cannot comment
+ */
+export const CommitComment = (params) => {
+  return axios.post('/CommitComment', params)
 };
 
 export /**
  * 文档变更收藏
  * 已收藏变为未收藏,未收藏变为已收藏
- * @param {id}
- * 文档id
+ * @param {userId,fileId}
+ * 用户id,文档id
  * @returns {result}
  * 是否成功
  */ const CollectFile = (params) => {
@@ -492,7 +524,7 @@ export /**
 
 export /**
  * 删除文档
- * @param {id}
+ * @param {userId,fileId}
  * 文档id
  * @returns {result}
  * 是否成功
@@ -502,8 +534,8 @@ export /**
 
 export /**
  * 保存文档为模板
- * @param {id}
- * 文档id
+ * @param {userId,fileId}
+ * 用户id,文档id
  * @returns {result}
  * 是否成功
  */ const TemplateFile = (params) => {
@@ -511,9 +543,20 @@ export /**
 };
 
 export /**
+ * 重命名模板
+ * @param {userId,templateId,name}
+ * 用户id,模板id,模板名
+ * @returns {result}
+ * 是否成功
+ */ const RenameTemplate = (params) => {
+  return axios.post('/RenameTemplate', params);
+};
+
+
+export /**
  * 删除模板
- * @param {id}
- * 模板id
+ * @param {userId,templateId}
+ * 用户id,模板id
  * @returns {result}
  * 是否成功
  */ const DeleteTemplate = (params) => {
@@ -523,7 +566,7 @@ export /**
 export /**
  * 恢复文档
  * 恢复回收站的文档
- * @param {id}
+ * @param {userId,fileId}
  * 文档id
  * @returns {result}
  * 是否成功
