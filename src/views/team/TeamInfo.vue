@@ -275,11 +275,14 @@ export default {
 
         GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
           var userId = this.$store.state.userId;
-          if (
-            userId == this.aboutTeam.creatorId ||
-            res.data.adminId.includes(userId)
-          )
-            this.isCreatorOrAdmin = true;
+          if (res.data.result === true) {
+            for (let i = 0; i < res.data.memberInfo.length; i++) {
+              let id = res.data.memberInfo[i].memberId;
+              let type = res.data.memberInfo[i].memberType;
+              if (id == userId && (type === "0" || type === "1"))
+                this.isCreatorOrAdmin = true;
+            }
+          }
         });
 
         GetUserTeam({ id: this.$store.state.userId }).then((res) => {

@@ -16,7 +16,7 @@ import 'quill/dist/quill.bubble.css';
 
 // Vue.use(VueQuillEditor);
 
-Vue.use(mavonEditor)
+Vue.use(mavonEditor);
 
 Vue.config.productionTip = false;
 
@@ -78,6 +78,7 @@ Vue.use(mavonEditor);
     新增:
       文档操作接口
       模板操作接口
+      获取团队文档
 */
 
 // ! === 个人 === (begin)
@@ -389,6 +390,20 @@ export /**
  * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
  */ const GetMyFile = (params) => {
   return axios.post('/GetMyFile', params);
+};
+
+export /**
+ * 获取团队文档
+ * @param {teamId}
+ * 团队id
+ * @returns {result, files[{id,name,team,collected,view,edit}]}
+ * 是否成功， files[{文档id,文档名,团队id,是否收藏,浏览权限,编辑权限}]
+ * 团队id: '-1'为 不属于团队内
+ * 是否收藏:"已收藏"、"未收藏"
+ * 浏览权限:'0'为 私人, '1'为 公开
+ * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
+ */ const GetTeamFile = (params) => {
+  return axios.post('/GetTeamFile', params);
 };
 
 export /**
