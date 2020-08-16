@@ -7,10 +7,13 @@
           {{doc.docName}}
         </div>
       </el-col>
-      <el-col :span="2" :offset="0">
-        <el-button type="success" icon="el-icon-edit-outline" circle plain></el-button>
-        <el-button type="warning" icon="el-icon-share" circle plain></el-button>
-        <el-button type="info" icon="el-icon-setting" circle plain></el-button>
+    </el-row>
+    <p></p>
+    <el-row>
+      <el-col :span="8" :offset="8">
+        <el-button type="success" icon="el-icon-edit-outline" circle plain @click="toEdit"></el-button><!--edit-->
+        <el-button type="warning" icon="el-icon-share" circle plain></el-button><!--share todo-->
+        <el-button type="info" icon="el-icon-setting" circle plain></el-button><!--authority todo-->
       </el-col>
     </el-row>
     <!--Info-->
@@ -59,10 +62,10 @@
             :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
             :size="30"
             fit="fill"
-          >{{c.name}}
+          >{{c.name}}<!--todo-->
           </el-avatar>
         </el-col>
-        <el-col :span="2" class="comment-info">
+        <el-col :span="6" class="comment-info">
           <el-row>
             <div class="comment-name">{{c.name}}</div>
           </el-row>
@@ -96,7 +99,7 @@
           :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
           :size="30"
           fit="fill"
-        ><!--todo-->
+        >我<!--todo-->
         </el-avatar>
       </el-col>
       <el-col :span="2" class="comment-info">
@@ -128,7 +131,7 @@
   </el-main>
 </template>
 <script>
-  import {GetFile, GetUserInfo} from "../main";
+  import {BrowseFile, GetFile, GetUserInfo} from "../main";
 
   export default {
     data() {
@@ -176,21 +179,34 @@
         },
       };
     },
-    methods: {},
+    methods: {
+      toEdit() {
+        this.$router.push({path: '/docEdit', query: {docId: this.$route.query.docId}})
+      }
+    },
     mounted() {
-      GetFile({id: this.$route.query.docId.toString()}).then((res) => {
-        let d = res.data
-        if (d.result === false) {
-          this.$message.error("请求文档失败！请稍后再试！")
+      BrowseFile({
+        id: this.$store.userId.toString(),
+        did: this.$route.query.docId.toString()
+      }).then((res) => {
+        if (res.data.result === false) {
+          this.$message.error("文档不存在或无权查看")
           return
         }
-        GetUserInfo({id: d.owner.toString()}).then((res) => {
-          this.doc.ownerName = res.data.username
+        GetFile({id: this.$route.query.docId.toString()}).then((res) => {
+          let d = res.data
+          if (d.result === false) {
+            this.$message.error("请求文档失败！请稍后再试！")
+            return
+          }
+          GetUserInfo({id: d.owner.toString()}).then((res) => {
+            this.doc.ownerName = res.data.username
+          })
+          this.doc.createTime = d.createTime
+          this.doc.updateTime = d.updateTime
+          this.doc.content = d.content
+          this.doc.docName = d.docName
         })
-        this.doc.createTime = d.createTime
-        this.doc.updateTime = d.updateTime
-        this.doc.content = d.content
-        this.doc.docName = d.docName
       })
     },
   };

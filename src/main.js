@@ -469,6 +469,16 @@ export const EditFile = (params) => {
 export const SaveFile = (params) => {
   return axios.post('/SaveFile', params)
 };
+/**
+ * Abort the try of editing doc
+ * @param {{id:string,did:string}} params
+ * id: user id
+ * did: doc id
+ * @returns {result}
+ */
+export const AbortFile = (params) => {
+  return axios.post('/AbortFile', params)
+}
 
 export /**
  * 文档变更收藏
