@@ -3,9 +3,7 @@
     <!--Title-->
     <el-row>
       <el-col :span="8" :offset="8">
-        <div class="title">
-          {{doc.docName}}
-        </div>
+        <div class="title">{{doc.docName}}</div>
       </el-col>
     </el-row>
     <p></p>
@@ -45,24 +43,16 @@
     <el-row>
       <!--todo 优化显示-->
       <el-col :span="4" :offset="4">
-        <div class="info info-left">
-          创建者：{{doc.ownerName}}
-        </div>
+        <div class="info info-left">创建者：{{doc.ownerName}}</div>
       </el-col>
       <el-col :span="4">
-        <div class="info info-left">
-          创建时间：{{doc.createTime}}
-        </div>
+        <div class="info info-left">创建时间：{{doc.createTime}}</div>
       </el-col>
       <el-col :span="4">
-        <div class="info info-right">
-          上次修改时间：{{doc.updateTime}}
-        </div>
+        <div class="info info-right">上次修改时间：{{doc.updateTime}}</div>
       </el-col>
       <el-col :span="4" :offset="0">
-        <div class="info info-right">
-          历史修改次数：{{doc.count}}
-        </div>
+        <div class="info info-right">历史修改次数：{{doc.count}}</div>
       </el-col>
     </el-row>
     <!--Content-->
@@ -88,7 +78,9 @@
             :src="c.avatar"
             :size="30"
             fit="fill"
-          >{{c.name}}
+          >
+            {{c.name}}
+            <!--todo-->
           </el-avatar>
         </el-col>
         <el-col :span="6" class="comment-info">
@@ -125,15 +117,22 @@
           :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
           :size="30"
           fit="fill"
-        >我<!--todo 显示用头像-->
+        >
+          我
+          <!--todo 显示用户名-->
         </el-avatar>
       </el-col>
       <el-col :span="2" class="comment-info">
         <el-row>
-          <div class="comment-name">ddd<!--todo 显示用户名--></div>
+          <div class="comment-name">
+            ddd
+            <!--todo 显示用户名-->
+          </div>
         </el-row>
         <el-row>
-          <div class="comment-name"><!--空着--></div>
+          <div class="comment-name">
+            <!--空着-->
+          </div>
         </el-row>
       </el-col>
     </el-row>
@@ -264,7 +263,7 @@
 
       imgAdd(pos, file) {
         if (!this.beforeUpload(file)) {
-          return
+          return;
         }
         let token;
         const policy = {};
@@ -310,11 +309,7 @@
       },
 
       updateSettings(value) {
-        if (value === "2") {
-          this.setting.ctl1 = false
-        } else {
-          this.setting.ctl1 = true
-        }
+        this.setting.ctl1 = value !== "2";
       },
     },
     mounted() {
@@ -349,6 +344,7 @@
           this.doc.docName = d.docName
         })
       })
+
     },
   };
 </script>
