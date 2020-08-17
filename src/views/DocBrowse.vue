@@ -93,10 +93,8 @@
       </el-col>
     </el-row>
     <!--Comment-->
-    <p style="width: 50%;margin: auto auto">
-      <el-divider>
-        <span>{{comment.length.toString()+" 条评论"}}</span>
-      </el-divider>
+    <p style="width: 50%;margin: auto auto;">
+      <el-divider></el-divider>
     </p>
     <p v-for="(c) in comment" v-bind:key="c">
       <el-row>
@@ -108,7 +106,7 @@
             <div class="comment-name">{{c.name}}</div>
           </el-row>
           <el-row>
-            <div class="comment-name">{{c.time}}</div>
+            <div class="comment-name" style="font-size: 60%;color:#888888;">{{c.time}}</div>
           </el-row>
         </el-col>
       </el-row>
@@ -124,8 +122,9 @@
               :editable="false"
               :scrollStyle="true"
               :ishljs="true"
-              previewBackground="#FFFFFF"
+              previewBackground="#F5F5F5"
             ></mavon-editor>
+            <!-- style="background:#F5F5F5;" -->
             <!-- #eeffff -->
           </div>
         </el-col>
@@ -134,11 +133,7 @@
     <!--Add Comment-->
     <el-row>
       <el-col :span="1" :offset="6" class="comment-info">
-        <el-avatar
-          :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
-          :size="30"
-          fit="fill"
-        >
+        <el-avatar :src="this.$store.state.avatar" :size="30" fit="fill">
           我
           <!--todo 显示用户名-->
         </el-avatar>
@@ -403,7 +398,7 @@ export default {
   font-size: xx-large;
   font-weight: bold;
   /*box-shadow: 0 0 8px #eeeeee;*/
-  background-color: #eeeeee;
+  background-color: #bbbbbb;
 }
 
 .info {

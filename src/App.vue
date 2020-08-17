@@ -9,7 +9,7 @@
         <el-aside v-if="show" width="200px">
           <asiderly :key="refresh" class="asi"></asiderly>
         </el-aside>
-        <el-main>
+        <el-main style="background:#F5F5F5;height:100%;">
           <transition name="el-zoom-in-center">
             <router-view />
           </transition>
