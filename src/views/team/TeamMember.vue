@@ -103,6 +103,7 @@ import {
   CancelAdmin,
   GetAllApplication,
   JudgeApplication,
+  KickOff
 } from "../../main";
 export default {
   data() {
@@ -304,49 +305,22 @@ export default {
       teamId: this.aboutTeam.teamId,
     };
     GetTeamMember(params).then((res) => {
-      var tmpMemberInfo = {
-        memberId: "",
-        memberUrl: "",
-        memberUsername: "",
-        memberType: 0,
-        memberAvatar: "",
-      };
       if (res.data.result == true) {
         for (let i = 0; i < res.data.memberInfo.length; i++) {
-          tmpMemberInfo.memberId = res.data.memberInfo[i].memberId;
-          tmpMemberInfo.memberUrl = generateUserUrl(tmpMemberInfo.memberId);
-          tmpMemberInfo.memberUsername = res.data.memberInfo[i].memberUsername;
-          tmpMemberInfo.memberType = parseInt(
+          this.memberInfo.push({});
+          this.memberInfo[i].memberId = res.data.memberInfo[i].memberId;
+          this.memberInfo[i].memberUrl = generateUserUrl(
+            this.memberInfo[i].memberId
+          );
+          this.memberInfo[i].memberUsername =
+            res.data.memberInfo[i].memberUsername;
+          this.memberInfo[i].memberType = parseInt(
             res.data.memberInfo[i].memberType
           );
-          tmpMemberInfo.memberAvatar = res.data.memberInfo[i].memberAvatar;
-          this.memberInfo.push(tmpMemberInfo);
+          this.memberInfo[i].memberAvatar = res.data.memberInfo[i].memberAvatar;
+          if (this.memberInfo[i].memberId === this.$store.state.userId)
+            this.userTypeInTeam = this.memberInfo[i].memberType;
         }
-        // var idArray = [{ id: res.data.creatorId, type: 0 }];
-        // for (var i = 0; i < res.data.adminId.length; i++) {
-        //   idArray.push({ id: res.data.adminId[i], type: 1 });
-        // }
-        // for (var i = 0; i < res.data.memberId.length; i++) {
-        //   idArray.push({ id: res.data.memberId[i], type: 2 });
-        // }
-        // // for (var i = 0; i < idArray.length; i++) console.log(idArray[i]);
-
-        // var tmpObj = { id: "", type: 0 };
-        // // console.log("idArray = " + idArray[0].id);
-        // var length = idArray.length;
-        // for (var i = 0; i < length; i++) {
-        //   tmpObj = idArray[i];
-        //   if (tmpObj.id == this.userId) this.userTypeInTeam = tmpObj.type;
-        //   tmpMemberInfo.memberId = tmpObj.id;
-        //   tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.id);
-        //   tmpMemberInfo.memberType = tmpObj.type;
-
-        //   GetUserInfo({ id: tmpObj.id }).then((res2) => {
-        //     tmpMemberInfo.memberUsername = res2.data.username;
-        //     tmpMemberInfo.memberAvatar = res2.data.avatar;
-        //     this.memberInfo.push(tmpMemberInfo);
-        //   });
-        // }
       } else {
         this.$message.error({
           message: "无法获取团队成员",
