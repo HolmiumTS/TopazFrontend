@@ -25,7 +25,7 @@
           placeholder="oooooooo"
           defaultOpen="edit"
           :editable="true"
-          toolbarsBackground="#66ccff"
+          toolbarsBackground="#E6E6E6"
           :subfield="false"
           @imgAdd="imgAdd"
           :ishljs="true"
