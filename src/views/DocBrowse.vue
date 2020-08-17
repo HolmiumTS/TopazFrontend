@@ -3,7 +3,7 @@
     <!--Title-->
     <el-row>
       <el-col :span="7" :offset="6">
-        <div class="title">{{doc.docName}}</div>
+        <div class="tt">{{doc.docName}}</div>
       </el-col>
       <el-col :span="8" :offset="0">
         <el-button
@@ -92,7 +92,7 @@
           :editable="false"
           :scrollStyle="true"
           :ishljs="true"
-          previewBackground="#ffffff"
+          previewBackground="#e9ece5"
           style="min-height: 800px;"
         ></mavon-editor>
         <!-- #eeeeff -->
@@ -403,14 +403,14 @@ export default {
 };
 </script>
 <style>
-.title {
+.tt {
   /*margin: 1% auto;*/
   padding: 5px 5px 5px 5px;
   border-radius: 10px;
   font-size: xx-large;
   font-weight: bold;
-  /*box-shadow: 0 0 8px #eeeeee;*/
-  background-color: #bbbbbb;
+  box-shadow: 0 0 8px #bfbfbf;
+  background-color: #e9ece5;
 }
 
 .info {
