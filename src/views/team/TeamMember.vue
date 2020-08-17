@@ -32,7 +32,7 @@ TODO:
         </el-table-column>
         <el-table-column label="操作" width="300">
           <template slot-scope="scope">
-            <el-button
+            <!-- <el-button
               type="primary"
               plain
               v-if="scope.row.memberType == 2 && userTypeInTeam == 0"
@@ -44,7 +44,13 @@ TODO:
               plain
               v-if="scope.row.memberType == 1 && userTypeInTeam == 0"
               @click.native.prevent="cancelAdmin(scope.$index, scope.row)"
-            >取消管理员</el-button>
+            >取消管理员</el-button>-->
+            <el-button
+              v-if="userTypeInTeam == 0 && scope.row.memberType != 0"
+              plain
+              :type="scope.row.buttonType"
+              @click.native.prevent="changeAdmin(scope.$index, scope.row)"
+            >{{scope.row.buttonText}}</el-button>
 
             <el-button
               type="success"
@@ -237,6 +243,11 @@ export default {
       });
     },
 
+    changeAdmin(index, row) {
+      if (row.memberType == 1) this.cancelAdmin(index, row);
+      else this.setAdmin(index, row);
+    },
+
     setAdmin(index, row) {
       console.log(row.memberId + " is set as Admin.");
       let params = {
@@ -253,8 +264,10 @@ export default {
             memberId: row.memberId,
             memberUrl: row.memberUrl,
             memberUsername: row.memberUsername,
-            memberType: 2,
+            memberType: 1,
             memberAvatar: row.memberAvatar,
+            buttonType: "warning",
+            buttonText: "取消管理员",
           });
         } else {
           this.$message.error({
@@ -276,8 +289,15 @@ export default {
             type: "success",
             message: "管理员取消成功",
           });
-          row.memberType = 2;
-          this.mounted();
+          this.memberInfo.splice(index, 1, {
+            memberId: row.memberId,
+            memberUrl: row.memberUrl,
+            memberUsername: row.memberUsername,
+            memberType: 2,
+            memberAvatar: row.memberAvatar,
+            buttonType: "primary",
+            buttonText: "设为管理员",
+          });
         } else {
           this.$message.error({
             message: "管理员取消失败，请稍后再试",
@@ -342,6 +362,17 @@ export default {
           this.memberInfo[i].memberAvatar = res.data.memberInfo[i].memberAvatar;
           if (this.memberInfo[i].memberId === this.$store.state.userId)
             this.userTypeInTeam = this.memberInfo[i].memberType;
+        }
+        if (this.userTypeInTeam == 0) {
+          for (let i = 0; i < this.memberInfo.length; i++) {
+            if (this.memberInfo[i].memberType == 1) {
+              this.memberInfo[i].buttonText = "取消管理员";
+              this.memberInfo[i].buttonType = "warning";
+            } else if (this.memberInfo[i].memberType == 2) {
+              this.memberInfo[i].buttonText = "设为管理员";
+              this.memberInfo[i].buttonType = "primary";
+            }
+          }
         }
       } else {
         this.$message.error({
