@@ -15,7 +15,7 @@
           @click="toEdit"
         ></el-button>
         <!--edit-->
-        <el-button type="warning" icon="el-icon-share" circle plain></el-button>
+        <el-button type="warning" icon="el-icon-share" circle plain @click="share"></el-button>
         <!--share todo-->
         <el-button
           v-if="auth.admin===true"
@@ -25,7 +25,6 @@
           plain
           @click="show"
         ></el-button>
-        <!--authority todo-->
       </el-col>
     </el-row>
     <p></p>
@@ -135,19 +134,17 @@
     <el-row>
       <el-col :span="1" :offset="6" class="comment-info">
         <el-avatar
-          :src="'https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png'"
+          :src="this.$store.state.avatar"
           :size="30"
           fit="fill"
         >
-          我
-          <!--todo 显示用户名-->
+          {{this.$store.state.username}}
         </el-avatar>
       </el-col>
       <el-col :span="2" class="comment-info">
         <el-row>
           <div class="comment-name">
-            ddd
-            <!--todo 显示用户名-->
+            {{this.$store.state.username}}
           </div>
         </el-row>
         <el-row>
@@ -171,7 +168,7 @@
             :scrollStyle="true"
             :ishljs="true"
             placeholder="说两句呗"
-            previewBackground="#eeffff"
+            previewBackground="#ffffff"
             @imgAdd="imgAdd"
             @change="change"
           ></mavon-editor>
@@ -272,6 +269,10 @@ export default {
     };
   },
   methods: {
+    share() {
+      this.$alert("http://60.205.189.66/docBrowse?docId=" + this.$route.query.docId, '复制下面的链接来分享吧');
+    },
+
     toEdit() {
       this.$router.push({
         path: "/docEdit",
@@ -374,7 +375,7 @@ export default {
           "此文件正在被他人编辑中，您看到的可能并不是最新内容"
         );
       }
-      GetComment({ id: this.$route.query.docId.toString() }).then((res) => {
+      GetComment({ did: this.$route.query.docId.toString() }).then((res) => {
         this.comment = res.comment;
       });
       GetFile({ id: this.$route.query.docId.toString() }).then((res) => {
