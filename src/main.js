@@ -395,9 +395,9 @@ export /**
 
 export /**
  * 获取团队文档
- * @param {teamId}
- * 团队id
- * @returns {result, files[{id,name,owner,team,collected,view,edit}]}
+ * @param {id, teamId}
+ * 用户id, 团队id
+ * @returns {result, files[{id,name,owner,isDel,team,collected,view,edit}]}
  * 是否成功， files[{文档id,文档名,文档创建者id,团队id,是否收藏,浏览权限,编辑权限}]
  * 团队id: '-1'为 不属于团队内
  * 是否收藏:"已收藏"、"未收藏"

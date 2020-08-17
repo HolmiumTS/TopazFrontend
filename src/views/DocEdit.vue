@@ -37,6 +37,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import { genToken } from "../genToken";
 import random from "string-random";
 import axios from "axios";
@@ -48,6 +49,12 @@ import {
   GetUserInfo,
   SaveFile,
 } from "../main";
+=======
+  import {genToken} from "../genToken";
+  import random from "string-random";
+  import axios from 'axios';
+  import {AbortFile,  GetAuth, GetFile, GetUserInfo, SaveFile} from "../main";
+>>>>>>> origin/dev
 
 export default {
   data() {
