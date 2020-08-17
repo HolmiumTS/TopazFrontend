@@ -27,7 +27,7 @@ TODO:
             <div v-if="scope.row.memberType==0">创建者</div>
             <div v-else-if="scope.row.memberType==1">管理员</div>
             <div v-else-if="scope.row.memberType==2">普通成员</div>
-            <div v-else>ERROR</div>
+            <!-- <div v-else>ERROR</div> -->
           </template>
         </el-table-column>
         <el-table-column label="操作" width="300">
@@ -35,15 +35,15 @@ TODO:
             <el-button
               type="primary"
               plain
-              v-if="userTypeInTeam==0&&scope.row.memberType==2"
-              @click.native.prevent="setAdmin(scope.row.memberId)"
+              v-if="scope.row.memberType == 2 && userTypeInTeam == 0"
+              @click.native.prevent="setAdmin(scope.$index, scope.row)"
             >设为管理员</el-button>
 
             <el-button
               type="warning"
               plain
-              v-if="userTypeInTeam==0&&scope.row.memberType==1"
-              @click.native.prevent="cancelAdmin(scope.row.memberId)"
+              v-if="scope.row.memberType == 1 && userTypeInTeam == 0"
+              @click.native.prevent="cancelAdmin(scope.$index, scope.row)"
             >取消管理员</el-button>
 
             <el-button
@@ -58,7 +58,7 @@ TODO:
               type="danger"
               plain
               v-if="userTypeInTeam<scope.row.memberType"
-              @click.native.prevent="confirmKickOff(scope.row.memberId, scope.row.memberUsername)"
+              @click.native.prevent="confirmKickOff(scope.$index, scope.row.memberId, scope.row.memberUsername)"
             >踢出团队</el-button>
           </template>
         </el-table-column>
@@ -103,8 +103,10 @@ import {
   CancelAdmin,
   GetAllApplication,
   JudgeApplication,
-  KickOff
+  KickOff,
+  GetUserInfo,
 } from "../../main";
+
 export default {
   data() {
     return {
@@ -216,6 +218,16 @@ export default {
             type: "success",
             message: "审核成功",
           });
+          // this.$router.go(0);
+          GetUserInfo({ id: id }).then((res) => {
+            this.memberInfo.push({
+              memberId: id,
+              memberUrl: generateUserUrl(id),
+              memberUsername: res.data.username,
+              memberType: 2,
+              memberAvatar: res.data.avatar,
+            });
+          });
           this.applicationInfo.splice(index, 1);
         } else {
           this.$message.error({
@@ -225,17 +237,24 @@ export default {
       });
     },
 
-    setAdmin(id) {
-      console.log(id + " is set as Admin.");
+    setAdmin(index, row) {
+      console.log(row.memberId + " is set as Admin.");
       let params = {
         teamId: this.aboutTeam.teamId,
-        id: id,
+        id: row.memberId,
       };
       SetAdmin(params).then((res) => {
         if (res.data.result == true) {
           this.$message({
             type: "success",
             message: "管理员设置成功",
+          });
+          this.memberInfo.splice(index, 1, {
+            memberId: row.memberId,
+            memberUrl: row.memberUrl,
+            memberUsername: row.memberUsername,
+            memberType: 2,
+            memberAvatar: row.memberAvatar,
           });
         } else {
           this.$message.error({
@@ -245,11 +264,11 @@ export default {
       });
     },
 
-    cancelAdmin(id) {
-      console.log(id + " is cancelled.");
+    cancelAdmin(index, row) {
+      console.log(row.memberId + " is cancelled.");
       let params = {
         teamId: this.aboutTeam.teamId,
-        id: id,
+        id: row.memberId,
       };
       CancelAdmin(params).then((res) => {
         if (res.data.result == true) {
@@ -257,6 +276,8 @@ export default {
             type: "success",
             message: "管理员取消成功",
           });
+          row.memberType = 2;
+          this.mounted();
         } else {
           this.$message.error({
             message: "管理员取消失败，请稍后再试",
@@ -265,19 +286,19 @@ export default {
       });
     },
 
-    confirmKickOff(id, username) {
+    confirmKickOff(index, id, username) {
       this.$confirm("确定要将" + username + "踢出团队吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.kickOff(id);
+          this.kickOff(index, id);
         })
         .catch(() => {});
     },
 
-    kickOff(id) {
+    kickOff(index, id) {
       console.log(id + " is kicked off.");
       let params = {
         teamId: this.aboutTeam.teamId,
@@ -289,6 +310,7 @@ export default {
             type: "success",
             message: "踢出成员成功",
           });
+          this.memberInfo.splice(index, 1);
         } else {
           this.$message.error({
             message: "踢出成员失败，请稍后再试",
