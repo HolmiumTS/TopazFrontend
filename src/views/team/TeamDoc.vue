@@ -3,13 +3,15 @@
   <el-container>
     <el-main>
       <!-- <h2>团队文档</h2> -->
-      <el-button
-        class="createTeamFile"
-        type="primary"
-        icon="el-icon-plus"
-        @click.native.prevent="showCreateDocDialog=true"
-        plain
-      >创建团队文档</el-button>
+      <p>
+        <el-button
+          class="createTeamFile"
+          type="primary"
+          icon="el-icon-plus"
+          @click.native.prevent="showCreateDocDialog=true"
+          plain
+        >创建团队文档</el-button>
+      </p>
       <table cellspacing="20" style="margin: -20px">
         <tr v-for="disFiles in displayFiles" :key="disFiles[0].id">
           <td v-for="dFile in disFiles" :key="dFile.id">
@@ -429,7 +431,7 @@ export default {
       teamId: this.$store.state.teamId,
     };
     GetTeamFile(params).then((res) => {
-      let tmpFiles = res.files;
+      let tmpFiles = res.data.files;
       tmpFiles.forEach((item) => item.isDel != "true" && this.files.push(item));
       for (let i = 0; i < this.files.length; ) {
         // this.displayFiles[parseInt(i / this.rowWidth)] = [];
