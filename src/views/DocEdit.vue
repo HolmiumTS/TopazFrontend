@@ -1,8 +1,8 @@
 <template>
   <el-main>
-    <el-row>
+    <el-row v-if="this.showData===true">
       <el-col :span="8" :offset="8">
-        <el-input v-model="doc.docName"></el-input>
+        <el-input id="tt" v-model="doc.docName"></el-input>
         <!--        <div class="title">-->
         <!--          {{doc.docName}}-->
         <!--        </div>-->
@@ -18,6 +18,7 @@
     <el-row>
       <el-col :span="12" :offset="6">
         <mavon-editor
+          v-if="this.showData===true"
           style="min-height: 1000px;"
           ref="editor"
           :value="doc.content"
@@ -57,12 +58,13 @@
         photoUrl: "http://qexiy12gt.hd-bkt.clouddn.com/", //外链域名
         doc: {
           ownerName: "",
-          content: "# Test\n\\\\(>_<)/",
+          content: "",
           count: "",
           createTime: "",
           updateTime: "",
-          docName: "Wow~",
+          docName: "",
         },
+        showData: false,
         toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
@@ -140,6 +142,10 @@
         console.log("[save]:");
         console.log(this.doc.docName);
         console.log(this.doc.content);
+        if (this.doc.docName === "" || this.doc.docName === undefined) {
+          this.$message.error("文档名不能为空！")
+          return
+        }
         SaveFile({
           id: this.$store.state.userId,
           did: this.$route.query.docId,
@@ -193,7 +199,7 @@
           });
           return;
         }
-        if (res.data.lock === false) {
+        if (res.data.lock === true) {
           this.$message.error("文档正在被他人编辑中，请稍后再试");
           this.$router.push({
             path: "/docBrowse",
@@ -217,7 +223,9 @@
           this.doc.createTime = d.createTime;
           this.doc.updateTime = d.updateTime;
           this.doc.content = d.content;
-          this.doc.docName = d.docName;
+          this.doc.docName = d.name;
+          this.showData = true;
+          console.log(this.doc.docName)
         });
       });
     },
