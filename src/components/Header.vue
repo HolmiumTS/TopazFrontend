@@ -362,7 +362,6 @@ export default {
                 message: "模板重命名成功",
               });
               this.dis0 = false;
-              this.mounted();
               this.$router.go(0);
             } else {
               console.log(
@@ -388,7 +387,6 @@ export default {
               type: "success",
               message: "模板删除成功",
             });
-            this.mounted();
             this.$router.go(0);
           } else {
             console.log("deleteTemplate_Failed: " + id);

@@ -495,7 +495,7 @@ export default {
 }
 .el-icon-plus {
   color: #777777;
-  margin:15px auto;
+  margin: 15px auto;
   transform: scale(2);
 }
 </style>

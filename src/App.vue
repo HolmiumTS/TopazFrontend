@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <el-container style="height:98vh;width:100%">
+    <div class="background" v-if="!show">
+      <transition name="el-zoom-in-center">
+        <router-view />
+      </transition>
+    </div>
+    <el-container style="height:100vh;width:100%" v-if="show">
       <el-header v-if="show" style="z-index:2000;height:50px">
         <headerly :key="refresh"></headerly>
       </el-header>
@@ -67,6 +72,12 @@ export default {
 .asi {
   /*height: calc(90vh - 100px);
   margin: 50px 0px;*/
-  height: calc(98vh - 50px);
+  height: calc(100vh - 50px);
+}
+.background {
+  background: url(assets/theatre.png) no-repeat fixed;
+  background-position: top left;
+  height: 100vh;
+  width: 100%;
 }
 </style>

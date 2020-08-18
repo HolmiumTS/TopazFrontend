@@ -236,7 +236,6 @@ export default {
               this.aboutTeam.teamInfo = this.changeTeamInfoForm.teamInfo;
               this.submitting = false;
               this.dialogFormVisible = false;
-              this.mounted();
               this.$router.push({
                 path: "/team/info",
               });

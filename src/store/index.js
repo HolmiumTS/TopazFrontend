@@ -11,6 +11,7 @@ const store = new Vuex.Store({
   ),
   mutations: {
     Login(state, value) {
+      console.log("Login")
       console.log(value);
       state.status = '0';
       state.userId = value.userId;
@@ -20,11 +21,13 @@ const store = new Vuex.Store({
       sessionStorage.setItem('state', JSON.stringify(state));
     },
     Logout(state) {
+      console.log("Logout")
       state.status = '-1';
       state.userId = state.username = state.avatar = '';
       sessionStorage.removeItem('state');
     },
     ChangeStatus(state, status) {
+      console.log("ChangeStatus")
       console.log(status);
       state.status = status;
       //sessionStorage.removeItem('state');
@@ -32,26 +35,31 @@ const store = new Vuex.Store({
       console.log(state.status);
     },
     ChangeTeamId(state, teamId) {
+      console.log("ChangeTeamId")
       console.log(teamId);
       state.teamId = teamId;
-      //sessionStorage.removeItem('state');
+      sessionStorage.removeItem('state');
       sessionStorage.setItem('state', JSON.stringify(state));
       console.log(state.teamId);
     },
   },
   actions: {
     commitLogin({ commit }, value) {
+      console.log("commitLogin")
       console.log(value);
       commit('Login', value);
     },
     commitLogout({ commit }) {
+      console.log("commitLogout")
       commit('Logout');
     },
     commitChangeStatus({ commit }, status) {
+      console.log("commitChangeStatus")
       console.log(status);
       commit('ChangeStatus', status);
     },
     commitChangeTeamId({ commit }, teamId) {
+      console.log("commitChangeTeamId")
       console.log(teamId);
       commit('ChangeTeamId', teamId);
     },

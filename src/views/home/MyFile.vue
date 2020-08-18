@@ -148,7 +148,12 @@
 </template>
 <script>
 import { GetMyFile } from "../../main";
-import { CollectFile, AuthorizeFile, DeleteFile, TemplateFile } from "../../main";
+import {
+  CollectFile,
+  AuthorizeFile,
+  DeleteFile,
+  TemplateFile,
+} from "../../main";
 export default {
   data() {
     return {
@@ -339,7 +344,7 @@ export default {
   },
   mounted() {
     GetMyFile({ id: this.$store.state.userId }).then((res) => {
-      this.files = res.files;
+      this.files = res.data.files;
       for (let i = 0; i < this.files.length; ) {
         //this.displayFiles[parseInt(i / this.rowWidth)] = [];
         this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
