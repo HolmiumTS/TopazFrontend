@@ -148,7 +148,7 @@
 </template>
 <script>
 import { GetMyFile } from "../../main";
-import { CollectFile, AuthorizeFile, DeleteFile } from "../../main";
+import { CollectFile, AuthorizeFile, DeleteFile, TemplateFile } from "../../main";
 export default {
   data() {
     return {

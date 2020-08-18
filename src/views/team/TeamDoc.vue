@@ -140,7 +140,15 @@
 </template>
 
 <script>
-import { GetTeamFile, GetTeamMember, NewFile } from "../../main";
+import {
+  GetTeamFile,
+  GetTeamMember,
+  NewFile,
+  CollectFile,
+  AuthorizeFile,
+  TemplateFile,
+  DeleteFile,
+} from "../../main";
 export default {
   data() {
     return {
@@ -179,72 +187,72 @@ export default {
       ],
       newFileForm: { name: null, templateId: "-1" },
       selectTemplateId: null,
-      //files:[],
-      files: [
-        {
-          id: "001",
-          name: "testfile1",
-          owner: "",
-          team: "-1",
-          collected: "已收藏",
-          view: "0",
-          edit: "0",
-        },
-        {
-          id: "002",
-          name: "testfile2",
-          owner: "",
-          team: "001",
-          collected: "未收藏",
-          view: "1",
-          edit: "1",
-        },
-        {
-          id: "003",
-          name: "testfile2",
-          owner: "",
-          team: "002",
-          collected: "已收藏",
-          view: "1",
-          edit: "2",
-        },
-        {
-          id: "004",
-          name: "testfile2",
-          owner: "123123",
-          team: "-1",
-          collected: "已收藏",
-          view: "0",
-          edit: "0",
-        },
-        {
-          id: "005",
-          name: "testfile2",
-          owner: "2333",
-          team: "-1",
-          collected: "未收藏",
-          view: "1",
-          edit: "1",
-        },
-        {
-          id: "006",
-          name: "testfile2",
-          owner: "",
-          team: "-1",
-          collected: "未收藏",
-          view: "1",
-          edit: "2",
-        },
-        {
-          id: "007",
-          name: "testfile2",
-          owner: "",
-          team: "-1",
-          collected: "已收藏",
-          view: "0",
-          edit: "0",
-        },
-      ],
+      files: [],
+      // files: [
+      //   {
+      //     id: "001",
+      //     name: "testfile1",
+      //     owner: "",
+      //     team: "-1",
+      //     collected: "已收藏",
+      //     view: "0",
+      //     edit: "0",
+      //   },
+      //   {
+      //     id: "002",
+      //     name: "testfile2",
+      //     owner: "",
+      //     team: "001",
+      //     collected: "未收藏",
+      //     view: "1",
+      //     edit: "1",
+      //   },
+      //   {
+      //     id: "003",
+      //     name: "testfile2",
+      //     owner: "",
+      //     team: "002",
+      //     collected: "已收藏",
+      //     view: "1",
+      //     edit: "2",
+      //   },
+      //   {
+      //     id: "004",
+      //     name: "testfile2",
+      //     owner: "123123",
+      //     team: "-1",
+      //     collected: "已收藏",
+      //     view: "0",
+      //     edit: "0",
+      //   },
+      //   {
+      //     id: "005",
+      //     name: "testfile2",
+      //     owner: "2333",
+      //     team: "-1",
+      //     collected: "未收藏",
+      //     view: "1",
+      //     edit: "1",
+      //   },
+      //   {
+      //     id: "006",
+      //     name: "testfile2",
+      //     owner: "",
+      //     team: "-1",
+      //     collected: "未收藏",
+      //     view: "1",
+      //     edit: "2",
+      //   },
+      //   {
+      //     id: "007",
+      //     name: "testfile2",
+      //     owner: "",
+      //     team: "-1",
+      //     collected: "已收藏",
+      //     view: "0",
+      //     edit: "0",
+      //   },
+      // ],
       userTypeInTeam: 2, //  0 创建者，1 管理员，2 成员
       userId: "",
     };
@@ -280,6 +288,7 @@ export default {
         }
       });
     },
+
     editAuthCheck(edit) {
       if (this.selectFileTeam == "-1") {
         if (this.viewAuth == "0" && edit != "0") {
@@ -429,8 +438,12 @@ export default {
       teamId: this.$store.state.teamId,
     };
     GetTeamFile(params).then((res) => {
-      let tmpFiles = res.files;
-      tmpFiles.forEach((item) => item.isDel != "true" && this.files.push(item));
+      // let tmpFiles = res.files;
+      res.data.files.forEach(
+        (item) => item.isDel != "true" && this.files.push(item)
+      );
+      console.log("this.files = ");
+      console.log(this.files);
       for (let i = 0; i < this.files.length; ) {
         // this.displayFiles[parseInt(i / this.rowWidth)] = [];
         this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
