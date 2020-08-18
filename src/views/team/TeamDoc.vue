@@ -2,14 +2,24 @@
 <template>
   <el-container>
     <el-main>
-      <!-- <h2>团队文档</h2> -->
-      <el-button
+      <h2>团队文档</h2>
+      <!-- <el-button
         class="createTeamFile"
         type="primary"
         icon="el-icon-plus"
         @click.native.prevent="showCreateDocDialog=true"
         plain
-      >创建团队文档</el-button>
+      >创建团队文档</el-button>-->
+      <el-card
+        class="cardFile"
+        style="margin-bottom: 30px; background-color: #F7F7F7; cursor: pointer;"
+        shadow="always"
+        @click.native.prevent="showCreateDocDialog=true"
+      >
+        <div>
+          <i class="el-icon-plus"></i>
+        </div>
+      </el-card>
       <table cellspacing="20" style="margin: -20px">
         <tr v-for="disFiles in displayFiles" :key="disFiles[0].id">
           <td v-for="dFile in disFiles" :key="dFile.id">
@@ -477,9 +487,9 @@ export default {
 .el-dialog {
   border-radius: 10px;
 }
-
-.createTeamFile {
-  margin: 20px;
-  float: left;
+.el-icon-plus {
+  color: #777777;
+  margin:15px auto;
+  transform: scale(2);
 }
 </style>
