@@ -231,12 +231,11 @@ export default {
                 message: "信息修改成功",
               });
               this.submitting = false;
-              this.$store.dispatch(
-                "commitLogin",
-                this.userId,
-                this.changeUserInfoForm.username,
-                this.userInfo.avatar
-              );
+              this.$store.dispatch("commitLogin", {
+                userId: this.userId,
+                username: this.changeUserInfoForm.username,
+                avatar: this.userInfo.avatar,
+              });
               this.dis0 = false;
               this.$router.push({
                 path: "/userInfo",
@@ -307,12 +306,11 @@ export default {
               message: "头像修改成功",
             });
             this.submitting = false;
-            this.$store.dispatch(
-              "commitLogin",
-              this.userId,
-              this.$store.state.username,
-              this.avatar[0]
-            );
+            this.$store.dispatch("commitLogin", {
+              userId: this.userId,
+              username: this.$store.state.username,
+              avatar: this.avatar[0],
+            });
             this.dis2 = false;
             this.$router.push({
               path: "/userInfo",
