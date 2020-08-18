@@ -197,12 +197,7 @@ export default {
       newFileForm: { name: null, templateId: "-1" },
       renameTemplateForm: { name: null },
       //templates: [],
-      templates: [
-        { id: "-1", name: "无" },
-        { id: "001", name: "模板1" },
-        { id: "002", name: "模板2" },
-        { id: "003", name: "模板3" },
-      ],
+      templates: [{ id: "-1", name: "无" }],
       /*teams: [
         { id: "001", name: "moyu", info: "955" },
         { id: "002", name: "baogan", info: "996" },
