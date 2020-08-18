@@ -82,7 +82,7 @@
     <div style="width: 50%;margin: auto auto">
       <el-divider></el-divider>
     </div>
-    <el-row>
+    <el-row v-if="this.showContent===true">
       <el-col :span="12" :offset="6">
         <mavon-editor
           :value="doc.content"
@@ -216,6 +216,7 @@
           edit: false,
           lock: false,
         },
+        showContent: false,
         comment: [
           // {
           //   time: "2020-08-14 11:45",
@@ -397,9 +398,10 @@
           this.doc.createTime = d.createTime;
           this.doc.updateTime = d.updateTime;
           this.doc.content = d.content;
-          this.doc.docName = d.docName;
+          this.doc.docName = d.name;
           this.doc.count = d.count;
           console.log(this.doc)
+          this.showContent = true
         });
       });
     },
