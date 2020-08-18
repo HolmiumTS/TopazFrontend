@@ -193,7 +193,7 @@
           });
           return;
         }
-        if (res.data.lock === false) {
+        if (res.data.lock === true) {
           this.$message.error("文档正在被他人编辑中，请稍后再试");
           this.$router.push({
             path: "/docBrowse",
