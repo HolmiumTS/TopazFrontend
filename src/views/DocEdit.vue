@@ -2,7 +2,7 @@
   <el-main>
     <el-row>
       <el-col :span="8" :offset="8">
-        <el-input v-if="showData===true" v-model="doc.docName"></el-input>
+        <el-input v-if="showData===true" id="tt" v-model="doc.docName"></el-input>
         <!--        <div class="title">-->
         <!--          {{doc.docName}}-->
         <!--        </div>-->
@@ -221,6 +221,7 @@
           this.doc.content = d.content;
           this.doc.docName = d.name;
           this.showData = true;
+          $("#tt").val(this.doc.docName);
         });
       });
     },
