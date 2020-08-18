@@ -31,15 +31,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 Vue.use(ElementUI);
 
-// TODO: 待定
 export const generateUserUrl = (id) => {
-  // return 'http://60.205.189.66/userInfo?userId=' + id;
-  return 'http://localhost:8080/userInfo?userId=' + id;
-};
-
-export const generateTeamUrl = (id) => {
-  // return 'http://60.205.189.66/team/info?teamId=' + id;
-  return 'http://localhost:8080/team/info?teamId=' + id;
+  return 'http://60.205.189.66:8080/userInfo?userId=' + id;
+  // return 'http://localhost:8080/userInfo?userId=' + id;
 };
 
 Vue.use(mavonEditor);
