@@ -231,6 +231,8 @@ export default {
               memberUsername: res.data.username,
               memberType: 2,
               memberAvatar: res.data.avatar,
+              buttonType: "primary",
+              buttonText: "设为管理员"
             });
           });
           this.applicationInfo.splice(index, 1);
