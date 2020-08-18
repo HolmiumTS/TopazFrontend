@@ -233,6 +233,11 @@ export default {
                 message: "信息修改成功",
               });
               this.submitting0 = false;
+
+              this.userInfo.username = this.changeUserInfoForm.username;
+              this.userInfo.tel = this.changeUserInfoForm.tel.toString();
+              this.userInfo.email = this.changeUserInfoForm.email;
+
               this.$store.dispatch("commitLogin", {
                 userId: this.userId,
                 username: this.changeUserInfoForm.username,

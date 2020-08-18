@@ -2,7 +2,7 @@
 <template>
   <el-container>
     <el-main>
-      <h2>团队文档</h2>
+      <!-- <h2>团队文档</h2> -->
       <!-- <el-button
         class="createTeamFile"
         type="primary"
