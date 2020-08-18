@@ -2,7 +2,7 @@
   <el-main>
     <el-row>
       <el-col :span="8" :offset="8">
-        <el-input v-if="showData===true" id="tt" v-model="doc.docName"></el-input>
+        <el-input v-if="this.showData===true" id="tt" v-model="doc.docName"></el-input>
         <!--        <div class="title">-->
         <!--          {{doc.docName}}-->
         <!--        </div>-->
@@ -18,7 +18,7 @@
     <el-row>
       <el-col :span="12" :offset="6">
         <mavon-editor
-          v-if="showData===true"
+          v-if="this.showData===true"
           style="min-height: 1000px;"
           ref="editor"
           :value="doc.content"
@@ -142,6 +142,10 @@
         console.log("[save]:");
         console.log(this.doc.docName);
         console.log(this.doc.content);
+        if (this.doc.docName === "") {
+          this.$message.error("文档名不能为空！")
+          return
+        }
         SaveFile({
           id: this.$store.state.userId,
           did: this.$route.query.docId,
