@@ -262,7 +262,7 @@ export default {
         if (valid) {
           this.submitting = true;
           let changePasswordParams = {
-            userId: this.userId,
+            id: this.userId,
             oldPassword: this.changeUserPasswordForm.PasswordOld,
             newPassword: this.changeUserPasswordForm.password,
           };
