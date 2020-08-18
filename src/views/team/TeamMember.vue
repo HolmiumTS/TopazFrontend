@@ -221,20 +221,23 @@ export default {
         if (res.data.result == true) {
           this.$message({
             type: "success",
-            message: "审核成功",
+            message:
+              params.isAccept === "true" ? "成功通过申请" : "成功拒绝申请",
           });
           // this.$router.go(0);
-          GetUserInfo({ id: id }).then((res) => {
-            this.memberInfo.push({
-              memberId: id,
-              memberUrl: generateUserUrl(id),
-              memberUsername: res.data.username,
-              memberType: 2,
-              memberAvatar: res.data.avatar,
-              buttonType: "primary",
-              buttonText: "设为管理员"
+          if (params.isAccept === "true") {
+            GetUserInfo({ id: id }).then((res) => {
+              this.memberInfo.push({
+                memberId: id,
+                memberUrl: generateUserUrl(id),
+                memberUsername: res.data.username,
+                memberType: 2,
+                memberAvatar: res.data.avatar,
+                buttonType: "primary",
+                buttonText: "设为管理员",
+              });
             });
-          });
+          }
           this.applicationInfo.splice(index, 1);
         } else {
           this.$message.error({
