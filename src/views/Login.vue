@@ -120,7 +120,10 @@ export default {
 }
 .background {
   background: url(../assets/theatre.png) no-repeat center 0px;
-  background-size: cover;
+  background-size: 100% 100%;
+  height: 100%;
+  position: fixed;
+  width: 100%;
   background-position: center 0;
   background-repeat: no-repeat;
   background-attachment: fixed;

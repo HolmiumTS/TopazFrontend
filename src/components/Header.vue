@@ -46,7 +46,7 @@
           >
             <el-link :underline="false" @click="changeMessageStatus">全部标记为已读</el-link>
             <el-tabs>
-              <el-tab-pane label="全部通知" style="overflow:auto;height:400px">
+              <el-tab-pane label="全部通知" style="overflow:auto;max-height:400px">
                 <div v-for="message in messages" :key="message.id">
                   <el-card shadow="hover" style="margin:0px 0px 5px 0px;height:80px">
                     <p style="font-size:130%;margin:-2% 0px;">{{message.content}}</p>
@@ -54,7 +54,7 @@
                   </el-card>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="未读">
+              <el-tab-pane label="未读" style="overflow:auto;max-height:400px">
                 <div v-for="message in unReadMessages" :key="message.id">
                   <el-card shadow="hover" style="margin:0px 0px 5px 0px;height:80px">
                     <p style="font-size:130%;margin:-2% 0px;">{{message.content}}</p>
@@ -208,7 +208,7 @@ export default {
         { id: "002", name: "baogan", info: "996" },
       ],*/
       teams: null,
-      messages: [
+      /*messages: [
         {
           id: "001",
           content: "张三 退出了团队 Test",
@@ -251,17 +251,17 @@ export default {
           time: "8月13日 12:43",
           status: "0",
         },
-      ],
-      //messages: [],
-      //unReadMessages: [],
-      unReadMessages: [
+      ],*/
+      messages: [],
+      unReadMessages: [],
+      /*unReadMessages: [
         {
           id: "001",
           content: "李四 申请加入团队 ff",
           time: "8月13日 12:43",
           status: "0",
         },
-      ],
+      ],*/
       rule0: {
         name: [
           {
