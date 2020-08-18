@@ -1,8 +1,8 @@
 <template>
   <el-main>
-    <el-row>
+    <el-row v-if="this.showData===true">
       <el-col :span="8" :offset="8">
-        <el-input v-if="this.showData===true" id="tt" v-model="doc.docName"></el-input>
+        <el-input id="tt" v-model="doc.docName"></el-input>
         <!--        <div class="title">-->
         <!--          {{doc.docName}}-->
         <!--        </div>-->
@@ -142,7 +142,7 @@
         console.log("[save]:");
         console.log(this.doc.docName);
         console.log(this.doc.content);
-        if (this.doc.docName === "") {
+        if (this.doc.docName === "" || this.doc.docName === undefined) {
           this.$message.error("文档名不能为空！")
           return
         }
@@ -225,7 +225,7 @@
           this.doc.content = d.content;
           this.doc.docName = d.name;
           this.showData = true;
-          $("#tt").val(this.doc.docName);
+          console.log(this.doc.docName)
         });
       });
     },
