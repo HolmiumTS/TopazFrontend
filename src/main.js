@@ -613,7 +613,26 @@ export /**
 
 //todo: 导航守卫
 router.beforeEach((to, from, next) => {
-  next();
+  document.querySelector('body').setAttribute('style', 'margin:0;padding:0')
+  let user = JSON.parse(sessionStorage.getItem('state')) || JSON.stringify({ userId: '' })
+  let userId = user.userId;
+  if (to.path == '/login' || to.path == '/register') {
+    if (!(userId == '' || typeof (userId) == "undefined")) {
+      next({ path: '/home' })
+    } else {
+      next()
+    }
+  }
+  else {
+    if (userId == '' || typeof (userId) == "undefined") {
+      //alert('请登录')
+      ElementUI.Message.error('请登录')
+      next({ path: '/login' })
+    }
+    else {
+      next()
+    }
+  }
 })
 
 new Vue({
