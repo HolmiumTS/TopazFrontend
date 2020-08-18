@@ -611,7 +611,9 @@ export /**
 
 // ! === 文档 === (end)
 
-//todo: 导航守卫
+//导航守卫
+//debug时候注释掉
+/*
 router.beforeEach((to, from, next) => {
   document.querySelector('body').setAttribute('style', 'margin:0;padding:0')
   let user = JSON.parse(sessionStorage.getItem('state')) || JSON.stringify({ userId: '' })
@@ -634,7 +636,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-
+*/
 new Vue({
   router,
   store,

@@ -7,16 +7,16 @@
       <h2>团队信息</h2>
       <table border="0" cellspacing="20" style="margin:0 auto;">
         <tr>
-          <td>团队名称：</td>
-          <td>{{aboutTeam.teamName}}</td>
+          <td align="left">团队名称：</td>
+          <td align="left">{{aboutTeam.teamName}}</td>
         </tr>
         <tr>
-          <td>团队编号：</td>
-          <td>{{aboutTeam.teamId}}</td>
+          <td align="left">团队编号：</td>
+          <td align="left">{{aboutTeam.teamId}}</td>
         </tr>
         <tr>
-          <td>团队创建者：</td>
-          <td>
+          <td align="left">团队创建者：</td>
+          <td align="left">
             <el-link :underline="false" :href="creatorInfo.creatorUrl">
               <el-avatar
                 :src="getAvatar(creatorInfo.creatorAvatar)"
@@ -27,10 +27,34 @@
           </td>
         </tr>
         <tr>
-          <td>团队简介：</td>
-          <td>{{aboutTeam.teamInfo}}</td>
+          <td align="left">团队简介：</td>
+          <td align="left">{{aboutTeam.teamInfo}}</td>
         </tr>
       </table>
+
+      <el-button
+        type="primary"
+        v-if="isCreatorOrAdmin"
+        plain
+        round
+        @click.native.prevent="dialogFormVisible=true"
+      >修改团队信息</el-button>
+
+      <el-button
+        type="danger"
+        v-if="aboutTeam.creatorId == this.$store.state.userId"
+        plain
+        round
+        @click.native.prevent="handleDissolve"
+      >解散团队</el-button>
+
+      <el-button
+        type="danger"
+        v-if="isInTeam && (aboutTeam.creatorId != this.$store.state.userId)"
+        plain
+        round
+        @click.native.prevent="handleQuit"
+      >退出团队</el-button>
 
       <el-dialog :visible.sync="dialogFormVisible" title="修改团队信息" width="50%">
         <el-form
@@ -64,30 +88,6 @@
           <el-button type="primary" :loading="submitting" @click.native.prevent="submitTeamInfo">确认</el-button>
         </div>
       </el-dialog>
-
-      <el-button
-        type="primary"
-        v-if="isCreatorOrAdmin"
-        plain
-        round
-        @click.native.prevent="dialogFormVisible=true"
-      >修改团队信息</el-button>
-
-      <el-button
-        type="danger"
-        v-if="aboutTeam.creatorId == this.$store.state.userId"
-        plain
-        round
-        @click.native.prevent="handleDissolve"
-      >解散团队</el-button>
-
-      <el-button
-        type="danger"
-        v-if="isInTeam && (aboutTeam.creatorId != this.$store.state.userId)"
-        plain
-        round
-        @click.native.prevent="handleQuit"
-      >退出团队</el-button>
     </el-main>
   </el-container>
 </template>
@@ -300,15 +300,18 @@ export default {
 
 <style scoped>
 .teamInfo {
-  margin: auto auto;
+  margin: 2% auto;
   background: #fff;
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;
   border-radius: 10px;
+  max-width: 600px;
 }
-
 span {
   margin-left: 10px;
   vertical-align: middle;
+}
+.el-dialog {
+  border-radius: 15px;
 }
 </style>
