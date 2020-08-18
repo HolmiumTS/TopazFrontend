@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container style="height:98vh">
+    <el-container style="height:98vh;width:100%">
       <el-header v-if="show" style="z-index:2000;height:50px">
         <headerly :key="refresh"></headerly>
       </el-header>
@@ -9,7 +9,7 @@
         <el-aside v-if="show" width="200px">
           <asiderly :key="refresh" class="asi"></asiderly>
         </el-aside>
-        <el-main style="background:#F5F5F5;height:100%;">
+        <el-main style="background:#F5F5F5;height:100%;width:100%;">
           <transition name="el-zoom-in-center">
             <router-view />
           </transition>

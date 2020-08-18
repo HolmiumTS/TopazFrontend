@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;weight:100%">
+  <div class="background" style="height:100%;weight:100%;">
     <el-main>
       <el-form
         :model="LoginForm"
@@ -119,8 +119,10 @@ export default {
   font-size: 10px;
 }
 .background {
-  backgroundimage: "url(" + require("../assets/polymagnet.png") + ")";
-  backgroundrepeat: "no-repeat";
-  backgroundposition: "center";
+  background: url(../assets/theatre.png) no-repeat center 0px;
+  background-size: cover;
+  background-position: center 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 </style>
