@@ -10,11 +10,10 @@ TODO:
       <el-table
         height="600"
         :data="memberInfo"
-        stripe
-        style="width: 100%"
+        style="width: 1000px;margin:auto auto;border-radius: 20px;box-shadow: 0 0 5px #b4bccc;padding: 20px 30px 30px 30px;"
         :default-sort="{prop: 'memberType', order: 'ascending'}"
       >
-        <el-table-column label="用户" width="400">
+        <el-table-column label="用户" min-width="40%">
           <template slot-scope="scope">
             <el-link :underline="false" :href="scope.row.memberUrl">
               <el-avatar :src="getAvatar(scope.row.memberAvatar)" :alt="scope.row.memberUsername"></el-avatar>
@@ -22,7 +21,7 @@ TODO:
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column label="权限" width="300">
+        <el-table-column label="权限" min-width="30%">
           <template slot-scope="scope">
             <div v-if="scope.row.memberType==0">创建者</div>
             <div v-else-if="scope.row.memberType==1">管理员</div>
@@ -30,7 +29,7 @@ TODO:
             <!-- <div v-else>ERROR</div> -->
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column label="操作" min-width="30%">
           <template slot-scope="scope">
             <!-- <el-button
               type="primary"

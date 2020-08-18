@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <el-container style="height:95vh">
-      <el-header v-if="show" style="z-index:2000">
+    <el-container style="height:98vh">
+      <el-header v-if="show" style="z-index:2000;height:50px">
         <headerly :key="refresh"></headerly>
       </el-header>
       <el-container>
@@ -67,6 +67,6 @@ export default {
 .asi {
   /*height: calc(90vh - 100px);
   margin: 50px 0px;*/
-  height: 85vh;
+  height: calc(98vh - 50px);
 }
 </style>

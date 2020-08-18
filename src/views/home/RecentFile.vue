@@ -364,7 +364,7 @@ export default {
     },
   },
   mounted() {
-    GetRecentFile({ userId: this.$store.state.userId }).then((res) => {
+    GetRecentFile({ id: this.$store.state.userId }).then((res) => {
       this.files = res.files;
       for (let i = 0; i < this.files.length; ) {
         //this.displayFiles[parseInt(i / this.rowWidth)] = [];

@@ -201,7 +201,7 @@ export default {
     },
   },
   mounted() {
-    GetDeletedFile({ userId: this.$store.state.userId }).then((res) => {
+    GetDeletedFile({ id: this.$store.state.userId }).then((res) => {
       this.files = res.files;
       for (let i = 0; i < this.files.length; ) {
         //this.displayFiles[parseInt(i / this.rowWidth)] = [];
