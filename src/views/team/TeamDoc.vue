@@ -1,8 +1,8 @@
 <!-- 权限相关尚未考虑 -->
 <template>
   <el-container>
-    <el-main>
-      <!-- <h2>团队文档</h2> -->
+    <el-main class="teamDoc">
+      <h2>团队文档</h2>
       <!-- <el-button
         class="createTeamFile"
         type="primary"
@@ -158,7 +158,6 @@ import {
   AuthorizeFile,
   TemplateFile,
   DeleteFile,
-  GetUserTemplate,
 } from "../../main";
 export default {
   data() {
@@ -480,7 +479,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.teamDoc {
+  min-height: 300px;
+}
 .cardFile {
   height: 80px;
   width: 300px;
