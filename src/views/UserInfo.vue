@@ -238,7 +238,6 @@ export default {
                 this.userInfo.avatar
               );
               this.dis0 = false;
-              this.mounted();
               this.$router.push({
                 path: "/userInfo",
                 query: {
@@ -315,7 +314,6 @@ export default {
               this.avatar[0]
             );
             this.dis2 = false;
-            this.mounted();
             this.$router.push({
               path: "/userInfo",
               query: {
