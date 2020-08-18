@@ -158,6 +158,7 @@ import {
   AuthorizeFile,
   TemplateFile,
   DeleteFile,
+  GetUserTemplate,
 } from "../../main";
 export default {
   data() {
@@ -190,10 +191,10 @@ export default {
         ],
       },
       templates: [
-        { id: "-1", name: "无" },
-        { id: "001", name: "模板1" },
-        { id: "002", name: "模板2" },
-        { id: "003", name: "模板3" },
+        // { id: "-1", name: "无" },
+        // { id: "001", name: "模板1" },
+        // { id: "002", name: "模板2" },
+        // { id: "003", name: "模板3" },
       ],
       newFileForm: { name: null, templateId: "-1" },
       selectTemplateId: null,
@@ -441,6 +442,11 @@ export default {
           if (id === userId) this.userTypeInTeam = parseInt(type);
         }
       }
+    });
+
+    GetUserTemplate({ id: this.$store.state.userId }).then((res) => {
+      this.templates = res.data.templates;
+      this.templates.unshift({ id: "-1", name: "无" });
     });
 
     let params = {
