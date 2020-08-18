@@ -265,7 +265,7 @@ export default {
           this.submitting1 = true;
           let changePasswordParams = {
             id: this.userId,
-            oldPassword: this.changeUserPasswordForm.PasswordOld,
+            oldPassword: this.changeUserPasswordForm.passwordOld,
             newPassword: this.changeUserPasswordForm.password,
           };
           ChangeUserPassword(changePasswordParams).then((res) => {
