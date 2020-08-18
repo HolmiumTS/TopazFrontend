@@ -1,7 +1,7 @@
 <!-- 权限相关尚未考虑 -->
 <template>
   <el-container>
-    <el-main>
+    <el-main class="teamDoc">
       <h2>团队文档</h2>
       <!-- <el-button
         class="createTeamFile"
@@ -158,7 +158,6 @@ import {
   AuthorizeFile,
   TemplateFile,
   DeleteFile,
-  GetUserTemplate,
 } from "../../main";
 export default {
   data() {
@@ -191,10 +190,10 @@ export default {
         ],
       },
       templates: [
-        // { id: "-1", name: "无" },
-        // { id: "001", name: "模板1" },
-        // { id: "002", name: "模板2" },
-        // { id: "003", name: "模板3" },
+        { id: "-1", name: "无" },
+        { id: "001", name: "模板1" },
+        { id: "002", name: "模板2" },
+        { id: "003", name: "模板3" },
       ],
       newFileForm: { name: null, templateId: "-1" },
       selectTemplateId: null,
@@ -444,11 +443,6 @@ export default {
       }
     });
 
-    GetUserTemplate({ id: this.$store.state.userId }).then((res) => {
-      this.templates = res.data.templates;
-      this.templates.unshift({ id: "-1", name: "无" });
-    });
-
     let params = {
       id: this.$store.state.userId,
       teamId: this.$store.state.teamId,
@@ -480,7 +474,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.teamDoc {
+  min-height: 300px;
+}
 .cardFile {
   height: 80px;
   width: 300px;
