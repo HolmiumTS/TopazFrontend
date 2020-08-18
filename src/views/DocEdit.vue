@@ -2,7 +2,7 @@
   <el-main>
     <el-row>
       <el-col :span="8" :offset="8">
-        <el-input v-model="doc.docName"></el-input>
+        <el-input v-if="showData===true" v-model="doc.docName"></el-input>
         <!--        <div class="title">-->
         <!--          {{doc.docName}}-->
         <!--        </div>-->
@@ -18,6 +18,7 @@
     <el-row>
       <el-col :span="12" :offset="6">
         <mavon-editor
+          v-if="showData===true"
           style="min-height: 1000px;"
           ref="editor"
           :value="doc.content"
@@ -57,12 +58,13 @@
         photoUrl: "http://qexiy12gt.hd-bkt.clouddn.com/", //外链域名
         doc: {
           ownerName: "",
-          content: "# Test\n\\\\(>_<)/",
+          content: "",
           count: "",
           createTime: "",
           updateTime: "",
-          docName: "Wow~",
+          docName: "",
         },
+        showData: false,
         toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
@@ -217,7 +219,8 @@
           this.doc.createTime = d.createTime;
           this.doc.updateTime = d.updateTime;
           this.doc.content = d.content;
-          this.doc.docName = d.docName;
+          this.doc.docName = d.name;
+          this.showData = true;
         });
       });
     },
