@@ -460,10 +460,12 @@ export default {
       ChangeMessageStatus({ id: id }).then((res) => {
         if (res.data.result == true) {
           this.unReadMessages = [];
-          console.log(changeMessageStatus_Succeed);
+          console.log("changeMessageStatus_Succeed");
+          console.log(id);
         } else {
           this.$message.error("无法标记消息为已读");
-          console.log(changeMessageStatus_Failed);
+          console.log("changeMessageStatus_Failed");
+          console.log(id);
         }
       });
     },
@@ -471,11 +473,15 @@ export default {
   mounted() {
     GetUserMessage({ id: this.$store.state.userId }).then((res) => {
       this.messages = res.data.messages;
+      console.log("messages");
+      console.log(this.messages);
       for (let message in this.messages) {
         if (message.status == "0") {
           this.unReadMessages.push(message);
         }
       }
+      console.log("unReadMessages");
+      console.log(this.unReadMessages);
     });
     GetUserTemplate({ id: this.$store.state.userId }).then((res) => {
       this.templates = res.data.templates;

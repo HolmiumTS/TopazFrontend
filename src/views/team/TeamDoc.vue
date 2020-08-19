@@ -158,6 +158,7 @@ import {
   AuthorizeFile,
   TemplateFile,
   DeleteFile,
+  GetUserTemplate,
 } from "../../main";
 export default {
   data() {
