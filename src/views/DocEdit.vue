@@ -186,12 +186,12 @@ export default {
     },
   },
   mounted() {
-    window.onunload = () => {
+    window.onbeforeunload = () => {
       AbortFile({
         id: this.$store.state.userId.toString(),
         did: this.$route.query.docId.toString(),
       });
-    };
+    }
     GetAuth({
       id: this.$store.state.userId.toString(),
       did: this.$route.query.docId.toString(),

@@ -67,7 +67,7 @@
     <el-dialog :modal="false" :visible.sync="showSettings" title="管理文档权限" width="400px">
       <p align="left">
         <span>
-          <h4>浏览:</h4>
+          <h4>编辑:</h4>
         </span>
         <el-radio-group v-if="showSettings" v-model="setting.edit" @change="updateSettings">
           <el-radio label="0">仅创建者</el-radio>
@@ -77,7 +77,7 @@
       </p>
       <p align="left">
         <span>
-          <h4>编辑:</h4>
+          <h4>浏览:</h4>
         </span>
         <el-radio-group v-if="showSettings" v-model="setting.view">
           <el-radio :disabled="this.setting.edit==='2'" label="0">{{teamId!='-1'?'仅团队内':'仅创建者'}}</el-radio>
@@ -213,6 +213,7 @@
             :editable="true"
             :scrollStyle="true"
             :ishljs="true"
+            :autofocus="false"
             placeholder="说两句呗"
             previewBackground="#ffffff"
             @imgAdd="imgAdd"
