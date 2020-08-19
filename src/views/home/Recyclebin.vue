@@ -107,7 +107,7 @@
       <div style="font-size:150%;">{{"彻底删除文档 "+ selectedName +"?"}}</div>
       <div slot="footer" class="dialog-footer">
         <el-button type="danger" @click.native.prevent="dis = false" size="mini">取消</el-button>
-        <el-button type="primary" @click.native.prevent="PerishFile()" size="mini">确认</el-button>
+        <el-button type="primary" @click.native.prevent="perishFile" size="mini">确认</el-button>
       </div>
     </el-dialog>
   </el-main>
@@ -175,7 +175,6 @@ export default {
               type: "success",
               message: "恢复成功",
             });
-            this.dis = false;
             this.$router.go(0);
           } else {
             console.log("restoreFile_Failed: " + id);
@@ -186,18 +185,22 @@ export default {
         }
       );
     },
-    perishFile(id) {
+    perishFile() {
       //todo
-      PerishFile({ id: id }).then((res) => {
+      console.log("perishingFile");
+      console.log(this.selectedId);
+      PerishFile({ id: this.selectedId }).then((res) => {
         if (res.data.result == true) {
-          console.log("perishFile_Succeed: " + id);
+          console.log("perishFile_Succeed: " + this.selectedId);
           this.$message({
             type: "success",
             message: "彻底删除成功",
           });
+          this.dis = false;
           this.$router.go(0);
         } else {
-          console.log("perishFile_Failed: " + id);
+          console.log("perishFile_Failed: " + this.selectedId);
+          this.dis = false;
           this.$message.error({
             message: "彻底删除失败",
           });
