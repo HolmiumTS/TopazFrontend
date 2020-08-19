@@ -203,6 +203,7 @@ export default {
         { id: "002", name: "baogan", info: "996" },
       ],*/
       teams: null,
+      messages: [],
       /*messages: [
         {
           id: "001",
@@ -247,7 +248,6 @@ export default {
           status: "0",
         },
       ],*/
-      messages: [],
       unReadMessages: [],
       /*unReadMessages: [
         {
@@ -455,7 +455,7 @@ export default {
     },
     changeMessageStatus() {
       let id = [];
-      for (let message in this.unReadMessages) {
+      for (let message of this.unReadMessages) {
         id.push(message.id);
       }
       ChangeMessageStatus({ id: id }).then((res) => {
@@ -472,11 +472,24 @@ export default {
     },
   },
   mounted() {
+    /*console.log("messages");
+    console.log(this.messages);
+    for (let message of this.messages) {
+      console.log("message");
+      console.log(message);
+      if (message.status == "0") {
+        console.log("unRead!");
+        console.log(message);
+        this.unReadMessages.push(message);
+      }
+    }
+    console.log("unReadMessages");
+    console.log(this.unReadMessages);*/
     GetUserMessage({ id: this.$store.state.userId }).then((res) => {
       this.messages = res.data.messages;
       console.log("messages");
       console.log(this.messages);
-      for (let message in this.messages) {
+      for (let message of this.messages) {
         if (message.status == "0") {
           this.unReadMessages.push(message);
         }
