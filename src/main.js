@@ -499,7 +499,7 @@ export const CommitComment = (params) => {
  * did: doc id
  * @returns {result,comment}
  * result: true
- * comment: a list, elements of it are like {name,avatar,content,time}
+ * comment: a list, elements of it are like {id,name,avatar,content,time}
  * time: format "yyyy-MM-dd HH:mm"
  */
 export const GetComment = (params) => {
