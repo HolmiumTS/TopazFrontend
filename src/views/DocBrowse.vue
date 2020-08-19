@@ -396,6 +396,8 @@
         }
         this.setting.te = res.data.edit;
         this.setting.tv = res.data.view;
+        this.setting.edit = this.setting.te;
+        this.setting.view = this.setting.tv;
         GetComment({did: this.$route.query.docId.toString()}).then((res) => {
           this.comment = res.data.comment;
         });
