@@ -323,12 +323,13 @@ export default {
               avatar: this.avatar[0],
             });
             this.dis2 = false;
-            this.$router.push({
+            /*this.$router.push({
               path: "/userInfo",
               query: {
                 userId: this.$store.state.userId,
               },
-            });
+            });*/
+            this.$router.go(0);
           } else {
             this.submitting2 = false;
             this.$message.error("修改头像失败, 请稍后再试");
