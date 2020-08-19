@@ -75,6 +75,7 @@ export default {
                 type: "success",
                 message: "登录成功",
               });
+              console.log("logining");
               console.log(res.data.id);
               console.log(res.data.username);
               console.log(res.data.avatar);
