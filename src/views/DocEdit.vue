@@ -23,7 +23,7 @@
           ref="editor"
           :value="doc.content"
           :toolbars="toolbars"
-          placeholder="oooooooo"
+          placeholder="在这里输入文档内容"
           defaultOpen="edit"
           :editable="true"
           toolbarsBackground="#E6E6E6"
