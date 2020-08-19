@@ -119,6 +119,10 @@
         </td>
       </tr>
     </table>
+    <div v-if="files.length<1" style="margin:20% auto">
+      <div style="font-size:500%;color:#999999">無</div>
+      <div style="font-size:80%;color:#999999">没有文件</div>
+    </div>
     <el-dialog :visible.sync="showAuthorizeDialog" title="管理文档权限" width="400px">
       <p align="left">
         <span>
@@ -166,8 +170,8 @@ export default {
       selectFileId: null,
       selectFileTeam: null,
       displayFiles: [],
-      //files:[],
-      files: [
+      files: [],
+      /*files: [
         {
           id: "001",
           name: "testfile1",
@@ -224,7 +228,7 @@ export default {
           view: "0",
           edit: "0",
         },
-      ],
+      ],*/
     };
   },
   computed: {},

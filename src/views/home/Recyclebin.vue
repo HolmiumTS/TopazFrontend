@@ -98,6 +98,10 @@
         </td>
       </tr>
     </table>
+    <div v-if="files.length<1" style="margin:20% auto">
+      <div style="font-size:500%;color:#999999">無</div>
+      <div style="font-size:80%;color:#999999">没有文件</div>
+    </div>
     <el-dialog style="width: 600px;margin: 40px auto;" :visible.sync="dis">
       <div style="font-size:150%;">{{"彻底删除文档 "+ selectedName +"?"}}</div>
       <div slot="footer" class="dialog-footer">
@@ -120,8 +124,8 @@ export default {
       selectedId: null,
       selectedName: null,
       displayFiles: [],
-      //files:[],
-      files: [
+      files: [],
+      /*files: [
         {
           id: "001",
           name: "testfile1",
@@ -150,7 +154,7 @@ export default {
           id: "007",
           name: "testfile2",
         },
-      ],
+      ],*/
     };
   },
   computed: {},
