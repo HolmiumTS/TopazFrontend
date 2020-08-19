@@ -71,7 +71,7 @@
         </span>
         <el-radio-group v-if="showSettings" v-model="setting.edit" @change="updateSettings">
           <el-radio label="0">仅创建者</el-radio>
-          <el-radio label="1">仅团队内</el-radio>
+          <el-radio label="1" v-if="this.teamId!='-1'">仅团队内</el-radio>
           <el-radio label="2">所有人</el-radio>
         </el-radio-group>
       </p>
@@ -80,7 +80,7 @@
           <h4>编辑:</h4>
         </span>
         <el-radio-group v-if="showSettings" v-model="setting.view">
-          <el-radio :disabled="this.setting.edit==='2'" label="0">仅团队内</el-radio>
+          <el-radio :disabled="this.setting.edit==='2'" label="0">{{teamId!='-1'?'仅团队内':'仅创建者'}}</el-radio>
           <el-radio label="1">所有人</el-radio>
         </el-radio-group>
       </p>
@@ -245,6 +245,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      teamId: "1",
       doc: {
         ownerName: "",
         content: "",
@@ -452,6 +453,7 @@ export default {
         this.setting.tv = res.data.view;
         this.setting.edit = this.setting.te;
         this.setting.view = this.setting.tv;
+        this.teamId = res.data.tid.toString();
         GetUserInfo({ id: d.owner.toString() }).then((res) => {
           this.doc.ownerName = res.data.username;
         });
