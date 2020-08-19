@@ -49,7 +49,7 @@
               <el-tab-pane label="全部通知" style="overflow:auto;max-height:400px">
                 <div v-for="message in messages" :key="message.id">
                   <el-card shadow="hover" style="margin:0px 0px 5px 0px;height:80px">
-                    <p style="font-size:130%;margin:-2% 0px;">{{message.content}}</p>
+                    <p style="font-size:100%;margin:-1% 0px;">{{message.content}}</p>
                     <p style="color:#C0C0C0">{{message.time}}</p>
                   </el-card>
                 </div>
@@ -57,7 +57,7 @@
               <el-tab-pane label="未读" style="overflow:auto;max-height:400px">
                 <div v-for="message in unReadMessages" :key="message.id">
                   <el-card shadow="hover" style="margin:0px 0px 5px 0px;height:80px">
-                    <p style="font-size:130%;margin:-2% 0px;">{{message.content}}</p>
+                    <p style="font-size:100%;margin:-1% 0px;">{{message.content}}</p>
                     <p style="color:#C0C0C0">{{message.time}}</p>
                   </el-card>
                 </div>
@@ -203,11 +203,11 @@ export default {
         { id: "002", name: "baogan", info: "996" },
       ],*/
       teams: null,
-      messages: [],
-      /*messages: [
+      //messages: [],
+      messages: [
         {
           id: "001",
-          content: "张三 退出了团队 Test",
+          content: "张三 退出了团队 Testaaaaaaaaaaaaaaa",
           time: "8月14日 11:43",
           status: "1",
         },
@@ -247,7 +247,7 @@ export default {
           time: "8月13日 12:43",
           status: "0",
         },
-      ],*/
+      ],
       unReadMessages: [],
       /*unReadMessages: [
         {
@@ -270,8 +270,8 @@ export default {
         name: [
           {
             required: true,
-            message: "文件名不能为空,最多20个字",
-            max: 18,
+            message: "文件名不能为空,最多16个字",
+            max: 16,
             trigger: "blur",
           },
         ],
@@ -472,7 +472,7 @@ export default {
     },
   },
   mounted() {
-    /*console.log("messages");
+    console.log("messages");
     console.log(this.messages);
     for (let message of this.messages) {
       console.log("message");
@@ -484,7 +484,7 @@ export default {
       }
     }
     console.log("unReadMessages");
-    console.log(this.unReadMessages);*/
+    console.log(this.unReadMessages);
     GetUserMessage({ id: this.$store.state.userId }).then((res) => {
       this.messages = res.data.messages;
       console.log("messages");

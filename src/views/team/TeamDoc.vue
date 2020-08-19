@@ -184,8 +184,8 @@ export default {
         name: [
           {
             required: true,
-            message: "文件名不能为空,最多20个字",
-            max: 18,
+            message: "文件名不能为空,最多16个字",
+            max: 16,
             trigger: "blur",
           },
         ],
