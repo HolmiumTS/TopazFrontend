@@ -34,7 +34,7 @@
       <el-row style="width: 70%;margin: auto auto;">
         <el-col :span="9" :offset="3">
           编辑权限：
-          <el-radio-group v-model="setting.edit" @change="updateSettings">
+          <el-radio-group v-if="showSettings" v-model="setting.edit" @change="updateSettings">
             <el-radio label="0">仅创建者</el-radio>
             <el-radio label="1">仅团队内</el-radio>
             <el-radio label="2">所有人</el-radio>
@@ -42,7 +42,7 @@
         </el-col>
         <el-col :span="9" :offset="0">
           查看、分享、评论权限：
-          <el-radio-group v-model="setting.view">
+          <el-radio-group v-if="showSettings" v-model="setting.view">
             <el-radio :disabled="this.setting.edit==='2'" label="0">仅团队内</el-radio>
             <el-radio label="1">所有人</el-radio>
           </el-radio-group>
