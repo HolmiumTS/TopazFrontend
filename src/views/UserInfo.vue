@@ -389,7 +389,8 @@ export default {
   },
   computed: {
     ava() {
-      return this.$store.state.avatar;
+      //return this.$store.state.avatar;
+      return this.userInfo.avatar;
       /*return (
         this.$store.state.avatar ||
         "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png"
