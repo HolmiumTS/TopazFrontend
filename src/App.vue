@@ -6,7 +6,7 @@
       </transition>
     </div>
     <el-container style="height:100vh;width:100%" v-if="show">
-      <el-header v-if="show" style="z-index:2000;height:50px">
+      <el-header v-if="show" style="z-index:2000;height:44px">
         <headerly :key="refresh"></headerly>
       </el-header>
       <el-container>
@@ -70,9 +70,7 @@ export default {
   text-align: left;
 }
 .asi {
-  /*height: calc(90vh - 100px);
-  margin: 50px 0px;*/
-  height: calc(100vh - 50px);
+  height: calc(100vh - 44px);
 }
 .background {
   background: url(assets/theatre.png) no-repeat fixed;
