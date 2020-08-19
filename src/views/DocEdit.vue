@@ -146,6 +146,10 @@
           this.$message.error("文档名不能为空！")
           return
         }
+        if (this.doc.docName.length > 20) {
+          this.$message.error("文档名长度不能超过20！")
+          return
+        }
         SaveFile({
           id: this.$store.state.userId,
           did: this.$route.query.docId,
