@@ -1,5 +1,5 @@
 <template>
-  <el-main>
+  <el-main v-if="showContent">
     <!--Title-->
     <el-row>
       <el-col :span="7" :offset="6">
@@ -384,7 +384,12 @@
         did: this.$route.query.docId.toString(),
       }).then((res) => {
         if (res.data.result === false || res.data.view === false) {
-          this.$message.error("文档不存在或无权查看");
+          this.$alert('文档不存在或无权查看', '出错啦', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.go(-1)
+            }
+          });
           return;
         }
         this.auth.admin = res.data.admin;
