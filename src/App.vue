@@ -11,7 +11,7 @@
       </el-header>
       <el-container>
         <!--<el-aside v-if="show" width="200px" style="margin: 0px -3%;">-->
-        <el-aside v-if="show" width="200px">
+        <el-aside v-if="show" width="200px" style="background:#EEEEEE">
           <asiderly :key="refresh" class="asi"></asiderly>
         </el-aside>
         <el-main style="background:#F5F5F5;height:100%;width:100%;">
