@@ -5,6 +5,9 @@
       class="el-menu-vertical-demo"
       @select="handleSelect"
       v-if="this.$store.state.status == '0'"
+      background-color="#EEEEEE"
+      text-color="#808080"
+      active-text-color="#000000"
     >
       <el-submenu index="sub1">
         <template slot="title">

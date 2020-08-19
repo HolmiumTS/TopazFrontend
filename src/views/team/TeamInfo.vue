@@ -209,7 +209,7 @@ export default {
       GetUserInfo(params).then((res) => {
         if (res.data.result == true) {
           this.creatorInfo.creatorUrl =
-            "http://localhost:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
+            "http://60.205.189.66:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
           this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
         } else {
