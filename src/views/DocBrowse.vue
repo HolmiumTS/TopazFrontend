@@ -105,11 +105,16 @@
     <p v-for="(c) in comment" v-bind:key="c">
       <el-row>
         <el-col :span="1" :offset="6" class="comment-info">
-          <el-avatar :src="c.avatar" :size="30" fit="fill">{{c.name}}</el-avatar>
+          <el-link :underline="false" :href="'http://60.205.189.66:8080/userInfo?userId='+c.id.toString()">
+            <el-avatar :src="c.avatar" :size="30" fit="fill">{{c.name}}</el-avatar>
+          </el-link>
         </el-col>
         <el-col :span="6" class="comment-info">
           <el-row>
-            <div class="comment-name">{{c.name}}</div>
+            <el-link class="comment-name" :underline="false"
+                     :href="'http://60.205.189.66:8080/userInfo?userId='+c.id.toString()">
+              <div>{{c.name}}</div>
+            </el-link>
           </el-row>
           <el-row>
             <div class="comment-name" style="font-size: 60%;color:#888888;">{{c.time}}</div>
@@ -384,7 +389,7 @@
           );
         }
         GetComment({did: this.$route.query.docId.toString()}).then((res) => {
-          this.comment = res.comment;
+          this.comment = res.data.comment;
         });
         GetFile({id: this.$route.query.docId.toString()}).then((res) => {
           let d = res.data;

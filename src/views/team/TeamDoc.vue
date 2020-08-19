@@ -2,7 +2,7 @@
 <template>
   <el-container>
     <el-main class="teamDoc">
-      <h2>团队文档</h2>
+      <!-- <h2>团队文档</h2> -->
       <!-- <el-button
         class="createTeamFile"
         type="primary"
