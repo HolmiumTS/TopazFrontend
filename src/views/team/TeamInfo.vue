@@ -19,9 +19,9 @@
           <td align="left">
             <el-link :underline="false" :href="creatorInfo.creatorUrl">
               <el-avatar
-                :src="getAvatar(creatorInfo.creatorAvatar)"
+                :src="creatorInfo.creatorAvatar"
                 :alt="creatorInfo.creatorUsername"
-              ></el-avatar>
+              >{{creatorInfo.creatorUsername}}</el-avatar>
               <span>{{creatorInfo.creatorUsername}}</span>
             </el-link>
           </td>
@@ -106,24 +106,8 @@ export default {
   inject: ["reloadComponent"],
   data() {
     return {
-      aboutTeam: {
-        // teamName: "Topaz Team", // for test
-        // teamId: "123",
-        // creatorId: "19260817",
-        // teamInfo: "955团队",
-        //teamName: "",
-        //teamId: "",
-        //creatorId: "",
-        //teamInfo: "",
-      },
-      creatorInfo: {
-        creatorUrl: "",
-        creatorUsername: "",
-        creatorAvatar: "",
-        // creatorUrl: "https://www.baidu.com",
-        // creatorUsername: "一个普通的创建者",
-        // creatorAvatar: "https://i.loli.net/2020/08/11/mfBdpDUIsJChLGM.png",
-      },
+      aboutTeam: {},
+      creatorInfo: {},
       changeTeamInfoForm: {
         teamName: "",
         teamInfo: "",
@@ -143,10 +127,6 @@ export default {
     };
   },
   methods: {
-    getAvatar(avatar) {
-      return avatar || "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
-    },
-
     handleDissolve() {
       this.$confirm("确定要解散团队吗？这是不可逆转的操作", "警告", {
         confirmButtonText: "确定",
@@ -209,9 +189,13 @@ export default {
       GetUserInfo(params).then((res) => {
         if (res.data.result == true) {
           this.creatorInfo.creatorUrl =
-            "http://60.205.189.66:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
+            "http://60.205.189.66:8080/userInfo?userId=" +
+            this.creatorInfo.creatorId;
           this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
+          console.log(
+            "creatorInfo.creatorAvatar: " + this.creatorInfo.creatorAvatar
+          );
         } else {
           this.$message.error({
             message: "获取团队创建者信息失败",

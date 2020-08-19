@@ -353,7 +353,7 @@
         console.log("[commitComment]");
         console.log("this.newComment:" + this.newComment);
         CommitComment({
-          id: this.$store.userId,
+          id: this.$store.state.userId,
           did: this.$route.query.docId,
           content: this.newComment,
         });
