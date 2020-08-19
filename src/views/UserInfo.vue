@@ -10,9 +10,8 @@
             :src="ava"
             :size="100"
             fit="fill"
-            v-bind:username="this.$store.state.username"
             style="margin:50% 20%"
-          >{{username}}</el-avatar>
+          >{{this.$store.state.username}}</el-avatar>
           <p v-if="this.$store.state.userId == this.userId" style="margin: -16% 22%">
             <el-button @click.native.prevent="dis2=true">修改头像</el-button>
           </p>
@@ -235,7 +234,7 @@ export default {
               this.submitting0 = false;
 
               this.userInfo.username = this.changeUserInfoForm.username;
-              this.userInfo.tel = this.changeUserInfoForm.tel.toString();
+              this.userInfo.tel = this.changeUserInfoForm.tel;
               this.userInfo.email = this.changeUserInfoForm.email;
 
               this.$store.dispatch("commitLogin", {

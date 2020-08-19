@@ -166,7 +166,7 @@ export /**
  * 用户被踢出团队:  已被踢出 团队 [团队名]
  * 用户的团队申请被接受: 加入团队 [团队名] 的申请已被 接受
  * 用户的团队申请被接受: 加入团队 [团队名] 的申请已被 拒绝
- * 用户的文档被评论: 文档 [文档名] 有新评论
+ * 用户的文档被评论: [文档名] 有新评论
  */
   const GetUserMessage = (params) => {
     return axios.post('/GetUserMessage', params);
@@ -607,7 +607,7 @@ export /**
 
 //导航守卫
 //debug时候注释掉
-/*
+
 router.beforeEach((to, from, next) => {
   document.querySelector('body').setAttribute('style', 'margin:0;padding:0')
   let user = JSON.parse(sessionStorage.getItem('state')) || JSON.stringify({ userId: '' })
@@ -630,7 +630,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
-*/
+
 
 new Vue({
   router,
