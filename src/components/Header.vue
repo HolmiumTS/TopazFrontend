@@ -261,7 +261,8 @@ export default {
         name: [
           {
             required: true,
-            message: "新模板名不能为空",
+            message: "新模板名不能为空,最多16个字",
+            max: 16,
             trigger: "blur",
           },
         ],
