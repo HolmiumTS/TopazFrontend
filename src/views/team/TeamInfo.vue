@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { GetTeamInfo } from "../../main";
+import { GetTeamInfo, QuitTeam } from "../../main";
 import { DissolveTeam } from "../../main";
 import {
   GetUserInfo,
@@ -189,6 +189,10 @@ export default {
             type: "success",
             message: "成功退出团队！",
           });
+          this.isInTeam = false;
+          this.reloadComponent();
+          this.$store.dispatch("commitChangeStatus", "0");
+          this.$router.push("/home"); // 返回到主页
         } else {
           this.$message.error({
             message: "退出团队失败，请稍后再试",
@@ -286,8 +290,9 @@ export default {
 
         GetUserTeam({ id: this.$store.state.userId }).then((res) => {
           this.isInTeam = false;
-          for (var teamID in res.data.joinedTeam) {
-            if (teamID == this.aboutTeam.teamId) this.isInTeam = true;
+          for (let i = 0; i < res.data.teams.length; i++) {
+            if (res.data.teams[i].id == this.aboutTeam.teamId)
+              this.isInTeam = true;
           }
         });
       }

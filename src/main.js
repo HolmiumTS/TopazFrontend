@@ -23,8 +23,8 @@ Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
 //后端地址
-axios.defaults.baseURL = 'http://60.205.189.66:18888';
-// axios.defaults.baseURL = 'http://localhost:18888';
+// axios.defaults.baseURL = 'http://60.205.189.66:18888';
+axios.defaults.baseURL = 'http://localhost:18888';
 axios.defaults.timeout = 5000;
 //UTF-8编码的json格式
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
@@ -32,8 +32,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 Vue.use(ElementUI);
 
 export const generateUserUrl = (id) => {
-  return 'http://60.205.189.66:8080/userInfo?userId=' + id;
-  // return 'http://localhost:8080/userInfo?userId=' + id;
+  // return 'http://60.205.189.66:8080/userInfo?userId=' + id;
+  return 'http://localhost:8080/userInfo?userId=' + id;
 };
 
 Vue.use(mavonEditor);
