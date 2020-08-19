@@ -91,15 +91,25 @@
                       <i class="el-icon-star-on"></i>
                       <span>已收藏</span>
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="ShowAuthorizeDialog(dFile.id)">
+                    <el-dropdown-item
+                      @click.native.prevent="ShowAuthorizeDialog(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
                       <i class="el-icon-s-tools"></i>
                       <span>管理权限</span>
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="templateFile(dFile.id)">
+                    <el-dropdown-item
+                      @click.native.prevent="templateFile(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
                       <i class="el-icon-s-tools" style="color:rgba(255,255,255,0)"></i>
                       <span>存为模板</span>
                     </el-dropdown-item>
-                    <el-dropdown-item divided @click.native.prevent="deleteFile(dFile.id)">
+                    <el-dropdown-item
+                      divided
+                      @click.native.prevent="deleteFile(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
                       <i class="el-icon-star-off" style="color:rgba(255,255,255,0)"></i>
                       <span>删除</span>
                     </el-dropdown-item>
@@ -163,6 +173,7 @@ export default {
           id: "001",
           name: "一二三四五六七八九十一二三四五六七八九十",
           username: "张三",
+          owner: "1",
           team: "-1",
           view: "0",
           edit: "0",
@@ -171,6 +182,7 @@ export default {
           id: "002",
           name: "testfile2",
           username: "王五",
+          owner: "1",
           team: "001",
           view: "1",
           edit: "1",
@@ -179,6 +191,7 @@ export default {
           id: "003",
           name: "testfile2",
           username: "王五",
+          owner: "1",
           team: "002",
           view: "1",
           edit: "2",
@@ -187,6 +200,7 @@ export default {
           id: "004",
           name: "testfile2",
           username: "王五",
+          owner: "1",
           team: "-1",
           view: "0",
           edit: "0",
@@ -195,6 +209,7 @@ export default {
           id: "005",
           name: "testfile2",
           username: "王五",
+          owner: "1",
           team: "001",
           view: "1",
           edit: "1",
@@ -203,6 +218,7 @@ export default {
           id: "006",
           name: "testfile2",
           username: "王五",
+          owner: "1",
           team: "-1",
           view: "1",
           edit: "2",
@@ -211,6 +227,7 @@ export default {
           id: "007",
           name: "testfile2",
           username: "王五",
+          owner: "1",
           team: "-1",
           view: "0",
           edit: "0",
@@ -220,6 +237,9 @@ export default {
   },
   computed: {},
   methods: {
+    cheakOwnerAuth(file) {
+      return file.owner == this.$store.state.userId;
+    },
     editAuthCheck(edit) {
       if (this.selectFileTeam == "-1") {
         if (this.viewAuth == "0" && edit != "0") {

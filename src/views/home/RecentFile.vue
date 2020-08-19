@@ -104,15 +104,25 @@
                       <span v-if="dFile.collected=='已收藏'">已收藏</span>
                       <span v-if="dFile.collected!='已收藏'">收藏</span>
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="ShowAuthorizeDialog(dFile.id)">
+                    <el-dropdown-item
+                      @click.native.prevent="ShowAuthorizeDialog(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
                       <i class="el-icon-s-tools"></i>
                       <span>管理权限</span>
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native.prevent="templateFile(dFile.id)">
+                    <el-dropdown-item
+                      @click.native.prevent="templateFile(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
                       <i class="el-icon-s-tools" style="color:rgba(255,255,255,0)"></i>
                       <span>存为模板</span>
                     </el-dropdown-item>
-                    <el-dropdown-item divided @click.native.prevent="deleteFile(dFile.id)">
+                    <el-dropdown-item
+                      divided
+                      @click.native.prevent="deleteFile(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
                       <i class="el-icon-star-off" style="color:rgba(255,255,255,0)"></i>
                       <span>删除</span>
                     </el-dropdown-item>
@@ -252,6 +262,9 @@ export default {
   },
   computed: {},
   methods: {
+    cheakOwnerAuth(file) {
+      return file.owner == this.$store.state.userId;
+    },
     editAuthCheck(edit) {
       if (this.selectFileTeam == "-1") {
         if (this.viewAuth == "0" && edit != "0") {

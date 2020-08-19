@@ -362,8 +362,8 @@ export /**
  * 最近浏览的文档
  * @param {id}
  * 用户id
- * @returns {files[{id,name,username,team,time,collected,view,edit,isDel}]}
- * files[{文档id,文档名,创建者名,最后编辑时间,是否收藏,浏览权限,编辑权限}]
+ * @returns {files[{id,name,owner,username,team,time,collected,view,edit,isDel}]}
+ * files[{文档id,文档名,创建者id,创建者名,最后编辑时间,是否收藏,浏览权限,编辑权限}]
  * 团队id: '-1'为 不属于团队内
  * 是否收藏:"已收藏"、"未收藏"
  * 浏览权限:'0'为 私人, '1'为 公开
@@ -405,8 +405,8 @@ export /**
  * 收藏的文档
  * @param {id}
  * 用户id
- * @returns {files[{id,name,team,username,view,edit}]}
- * files[{文档id,文档名,创建者名,浏览权限,编辑权限}]
+ * @returns {files[{id,name,team,owner,username,view,edit}]}
+ * files[{文档id,文档名,创建者id,创建者名,浏览权限,编辑权限}]
  * 团队id: '-1'为 不属于团队内
  * 浏览权限:'0'为 私人, '1'为 公开
  * 编辑权限: '0'为 仅创建者, '1'为团队成员, '2'为所有人
