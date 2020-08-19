@@ -243,6 +243,8 @@
           view: "",
           ctl1: true,
           ctl2: true,
+          te: "",
+          tv: "",
         },
         toolbars: {
           bold: true, // 粗体
@@ -363,6 +365,10 @@
       show() {
         console.log("[show]");
         this.showSettings = !this.showSettings;
+        if (this.showSettings === true) {
+          this.setting.edit = this.setting.te;
+          this.setting.view = this.setting.tv;
+        }
         console.log(this.showSettings);
       },
 
@@ -388,6 +394,8 @@
             "此文件正在被他人编辑中，您看到的可能并不是最新内容"
           );
         }
+        this.setting.te = res.data.edit;
+        this.setting.tv = res.data.view;
         GetComment({did: this.$route.query.docId.toString()}).then((res) => {
           this.comment = res.data.comment;
         });
