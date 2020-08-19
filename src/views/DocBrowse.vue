@@ -213,6 +213,7 @@
             :editable="true"
             :scrollStyle="true"
             :ishljs="true"
+            :autofocus="false"
             placeholder="说两句呗"
             previewBackground="#ffffff"
             @imgAdd="imgAdd"
