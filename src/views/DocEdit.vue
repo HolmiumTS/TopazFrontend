@@ -1,5 +1,5 @@
 <template>
-  <el-main>
+  <el-main v-if="this.showData===true">
     <el-row v-if="this.showData===true">
       <el-col :span="8" :offset="8">
         <el-input id="tt" v-model="doc.docName"></el-input>
@@ -146,8 +146,8 @@
           this.$message.error("文档名不能为空！")
           return
         }
-        if (this.doc.docName.length > 20) {
-          this.$message.error("文档名长度不能超过20！")
+        if (this.doc.docName.length > 18) {
+          this.$message.error("文档名长度不能超过18！")
           return
         }
         SaveFile({
@@ -196,18 +196,20 @@
         did: this.$route.query.docId.toString(),
       }).then((res) => {
         if (res.data.edit === false) {
-          this.$message.error("无文档编辑权限");
-          this.$router.push({
-            path: "/docBrowse",
-            query: {docId: this.$route.query.docId},
+          this.$alert('无文档编辑权限', '出错啦', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.go(-1)
+            }
           });
           return;
         }
         if (res.data.lock === true) {
-          this.$message.error("文档正在被他人编辑中，请稍后再试");
-          this.$router.push({
-            path: "/docBrowse",
-            query: {docId: this.$route.query.docId},
+          this.$alert('文档正在被他人编辑中，请稍后再试', '出错啦', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.go(-1)
+            }
           });
           return;
         }
