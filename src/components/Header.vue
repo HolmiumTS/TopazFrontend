@@ -203,8 +203,8 @@ export default {
         { id: "002", name: "baogan", info: "996" },
       ],*/
       teams: null,
-      //messages: [],
-      messages: [
+      messages: [],
+      /*messages: [
         {
           id: "001",
           content: "张三 退出了团队 Testaaaaaaaaaaaaaaa",
@@ -247,7 +247,7 @@ export default {
           time: "8月13日 12:43",
           status: "0",
         },
-      ],
+      ],*/
       unReadMessages: [],
       /*unReadMessages: [
         {
@@ -472,7 +472,7 @@ export default {
     },
   },
   mounted() {
-    console.log("messages");
+    /*console.log("messages");
     console.log(this.messages);
     for (let message of this.messages) {
       console.log("message");
@@ -482,7 +482,7 @@ export default {
         console.log(message);
         this.unReadMessages.push(message);
       }
-    }
+    }*/
     console.log("unReadMessages");
     console.log(this.unReadMessages);
     GetUserMessage({ id: this.$store.state.userId }).then((res) => {
