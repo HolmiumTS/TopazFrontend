@@ -69,14 +69,15 @@
         <td v-for="dFile in disFiles" :key="dFile.id">
           <el-card class="cardFile" :dFile="dFile" shadow="always">
             <el-row class="cardRow">
-              <el-col :span="2" style="margin: 0% 15%">
+              <el-col :span="1" style="margin: 0% 10%">
                 <el-image style="width:60px;height:60px" :src="fileIcon"></el-image>
               </el-col>
-              <el-col :span="9" style="margin: px">
-                <div
+              <el-col :span="14" style="margin: px">
+                <!--<div
                   align="left"
                   style="color:#777777;font-size: 150%;margin:15px auto;"
-                >{{dFile.name}}</div>
+                >{{dFile.name}}</div>-->
+                <div align="left" style="font-size: 100%;margin:20px 0px 5px 0px;">{{dFile.name}}</div>
               </el-col>
               <el-col :span="1" :offset="1">
                 <el-dropdown placement="bottom-end">
@@ -106,7 +107,7 @@
       <div style="font-size:150%;">{{"彻底删除文档 "+ selectedName +"?"}}</div>
       <div slot="footer" class="dialog-footer">
         <el-button type="danger" @click.native.prevent="dis = false" size="mini">取消</el-button>
-        <el-button type="primary" @click.native.prevent="PerishFile()" size="mini">确认</el-button>
+        <el-button type="primary" @click.native.prevent="perishFile" size="mini">确认</el-button>
       </div>
     </el-dialog>
   </el-main>
@@ -119,7 +120,7 @@ export default {
     return {
       fileIcon:
         "http://qexiy12gt.hd-bkt.clouddn.com/%E6%96%87%E6%A1%A3%E5%9B%BE%E6%A0%87.png",
-      rowWidth: 4,
+      rowWidth: 3,
       dis: false,
       selectedId: null,
       selectedName: null,
@@ -174,7 +175,6 @@ export default {
               type: "success",
               message: "恢复成功",
             });
-            this.dis = false;
             this.$router.go(0);
           } else {
             console.log("restoreFile_Failed: " + id);
@@ -185,18 +185,22 @@ export default {
         }
       );
     },
-    perishFile(id) {
+    perishFile() {
       //todo
-      PerishFile({ id: id }).then((res) => {
+      console.log("perishingFile");
+      console.log(this.selectedId);
+      PerishFile({ id: this.selectedId }).then((res) => {
         if (res.data.result == true) {
-          console.log("perishFile_Succeed: " + id);
+          console.log("perishFile_Succeed: " + this.selectedId);
           this.$message({
             type: "success",
             message: "彻底删除成功",
           });
+          this.dis = false;
           this.$router.go(0);
         } else {
-          console.log("perishFile_Failed: " + id);
+          console.log("perishFile_Failed: " + this.selectedId);
+          this.dis = false;
           this.$message.error({
             message: "彻底删除失败",
           });
@@ -221,6 +225,19 @@ export default {
         }
       }
     });
+    /*for (let i = 0; i < this.files.length; ) {
+      //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+        //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+        this.$set(
+          this.displayFiles[parseInt(i / this.rowWidth)],
+          j,
+          this.files[i]
+        );
+        i++;
+      }
+    }*/
     console.log("displayFiles");
     console.log(this.displayFiles);
   },
@@ -229,7 +246,7 @@ export default {
 <style>
 .cardFile {
   height: 80px;
-  width: 300px;
+  width: 500px;
   background-color: #fcfcfc;
   border: white;
 }
