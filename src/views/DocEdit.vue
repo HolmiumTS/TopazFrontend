@@ -146,8 +146,8 @@
           this.$message.error("文档名不能为空！")
           return
         }
-        if (this.doc.docName.length > 18) {
-          this.$message.error("文档名长度不能超过18！")
+        if (this.doc.docName.length > 16) {
+          this.$message.error("文档名长度不能超过16！")
           return
         }
         SaveFile({
