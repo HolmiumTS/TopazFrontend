@@ -235,7 +235,7 @@ export default {
               this.submitting0 = false;
 
               this.userInfo.username = this.changeUserInfoForm.username;
-              this.userInfo.tel = this.changeUserInfoForm.tel.toString();
+              this.userInfo.tel = this.changeUserInfoForm.tel;
               this.userInfo.email = this.changeUserInfoForm.email;
 
               this.$store.dispatch("commitLogin", {
