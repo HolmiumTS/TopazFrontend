@@ -284,7 +284,7 @@
 
       share() {
         this.$alert(
-          "http://60.205.189.66/docBrowse?docId=" + this.$route.query.docId,
+          "http://60.205.189.66:8080/docBrowse?docId=" + this.$route.query.docId,
           "复制下面的链接来分享吧"
         );
       },
