@@ -168,7 +168,7 @@
           <mavon-editor
             ref="editor"
             :toolbars="toolbars"
-            style="min-height: 200px;border-width:1px;border-color:#E6E6E6;border-style: solid;box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);"
+            style="min-height: 250px;border-width:1px;border-color:#E6E6E6;border-style: solid;box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);"
             :subfield="false"
             defaultOpen="edit"
             :toolbarsFlag="true"
