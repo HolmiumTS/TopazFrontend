@@ -42,6 +42,9 @@
       class="el-menu-vertical-demo"
       @select="handleSelect"
       v-if="this.$store.state.status == '1'"
+      background-color="#EEEEEE"
+      text-color="#808080"
+      active-text-color="#000000"
     >
       <el-menu-item index="goBack">
         <i class="el-icon-back"></i>
