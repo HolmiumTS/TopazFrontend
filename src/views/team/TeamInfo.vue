@@ -190,7 +190,7 @@ export default {
         if (res.data.result == true) {
           this.creatorInfo.creatorUrl =
             "http://60.205.189.66:8080/userInfo?userId=" +
-            this.creatorInfo.creatorId;
+            this.aboutTeam.creatorId;
           this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
           console.log(
