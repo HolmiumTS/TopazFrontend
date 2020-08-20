@@ -1,5 +1,6 @@
 <template>
   <el-main>
+    <!--
     <el-table
       :data="files"
       :default-sort="{prop: 'id', order: 'ascending'}"
@@ -10,11 +11,6 @@
       <el-table-column min-width="10%" label="创建者" prop="username" sortable></el-table-column>
       <el-table-column min-width="50%" label="操作">
         <template slot-scope="scope">
-          <!-- <el-button round size="mini" @click.native.prevent>取消收藏</el-button>
-          <el-button @click.native.prevent="browseFile" size="mini">浏览</el-button>
-          <el-button type="warning" @click.native.prevent size="mini">管理权限</el-button>
-          <el-button type="danger" @click.native.prevent size="mini">删除</el-button>
-          <el-button type="primary" @click.native.prevent size="mini">分享</el-button>-->
           <el-button
             v-if="scope.row.collected =='已收藏'"
             type="warning"
@@ -67,37 +63,344 @@
         </template>
       </el-table-column>
     </el-table>
+    -->
+    <table cellspacing="20" style="margin: -20px">
+      <tr v-for="disFiles in displayFiles" :key="disFiles[0].id">
+        <td v-for="dFile in disFiles" :key="dFile.id">
+          <el-card class="cardFile" :dFile="dFile" shadow="always">
+            <el-row class="cardRow">
+              <el-col :span="1" style="margin: 0% 10%">
+                <el-image style="width:60px;height:60px" :src="fileIcon"></el-image>
+              </el-col>
+              <el-col :span="14">
+                <div align="left" style="font-size: 100%;margin:10px 0px 5px 0px;">{{dFile.name}}</div>
+                <div
+                  align="left"
+                  style="font-size: 60%;color:#B3B3B3;margin:0px 0px 5px 0px;"
+                >{{"创建者: "+dFile.username}}</div>
+              </el-col>
+              <el-col :span="1" :offset="1">
+                <el-dropdown placement="bottom-end">
+                  <i class="el-icon-more"></i>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item @click.native.prevent="browseFile(dFile.id)">
+                      <i class="el-icon-search"></i>
+                      <span>浏览</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item @click.native.prevent="collectFile(dFile.id)">
+                      <i class="el-icon-star-on"></i>
+                      <span>已收藏</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      @click.native.prevent="ShowAuthorizeDialog(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
+                      <i class="el-icon-s-tools"></i>
+                      <span>管理权限</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      @click.native.prevent="templateFile(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
+                      <i class="el-icon-s-tools" style="color:rgba(255,255,255,0)"></i>
+                      <span>存为模板</span>
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      divided
+                      @click.native.prevent="deleteFile(dFile.id)"
+                      v-if="cheakOwnerAuth(dFile)"
+                    >
+                      <i class="el-icon-star-off" style="color:rgba(255,255,255,0)"></i>
+                      <span>删除</span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>
+            </el-row>
+          </el-card>
+        </td>
+      </tr>
+    </table>
+    <div v-if="files.length<1" style="margin:20% auto">
+      <div style="font-size:500%;color:#999999">無</div>
+      <div style="font-size:80%;color:#999999">没有文件</div>
+    </div>
+    <el-dialog :visible.sync="showAuthorizeDialog" title="管理文档权限" width="400px">
+      <p align="left">
+        <span>
+          <h4>浏览:</h4>
+        </span>
+        <el-radio-group v-model="viewAuth">
+          <el-radio :label="'0'" v-if="selectFileTeam=='-1'">仅创建者</el-radio>
+          <el-radio :label="'0'" v-if="selectFileTeam!='-1'">文档所在团队成员</el-radio>
+          <el-radio :label="'1'">所有人</el-radio>
+        </el-radio-group>
+      </p>
+      <p align="left">
+        <span>
+          <h4>编辑:</h4>
+        </span>
+        <el-radio-group v-model="editAuth">
+          <el-radio :label="'0'" :disabled="editAuthCheck('0')">仅创建者</el-radio>
+          <el-radio :label="'1'" v-if="selectFileTeam!='-1'" :disabled="editAuthCheck('1')">文档所在团队成员</el-radio>
+          <el-radio :label="'2'" :disabled="editAuthCheck('2')">所有人</el-radio>
+        </el-radio-group>
+      </p>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click.native.prevent="authorizeFile">确认</el-button>
+      </div>
+    </el-dialog>
   </el-main>
 </template>
 <script>
 import { GetCollectedFile } from "../../main";
+import { CollectFile, AuthorizeFile, deleteFile } from "../../main";
 export default {
   data() {
     return {
-      files: [
+      fileIcon:
+        "http://qexiy12gt.hd-bkt.clouddn.com/%E6%96%87%E6%A1%A3%E5%9B%BE%E6%A0%87.png",
+      rowWidth: 3,
+      showAuthorizeDialog: false,
+      viewAuth: null,
+      editAuth: null,
+      selectFileId: null,
+      selectFileTeam: null,
+      displayFiles: [],
+      files: [],
+      /*files: [
         {
           id: "001",
-          name: "testfile1",
+          name: "一二三四五六七八九十一二三四五六七八九十",
           username: "张三",
-          time: "08-14 11:45",
+          owner: "1",
+          team: "-1",
+          view: "0",
+          edit: "0",
         },
         {
           id: "002",
           name: "testfile2",
           username: "王五",
-          time: "08-05 12:22",
+          owner: "1",
+          team: "001",
+          view: "1",
+          edit: "1",
         },
-      ],
+        {
+          id: "003",
+          name: "testfile2",
+          username: "王五",
+          owner: "1",
+          team: "002",
+          view: "1",
+          edit: "2",
+        },
+        {
+          id: "004",
+          name: "testfile2",
+          username: "王五",
+          owner: "1",
+          team: "-1",
+          view: "0",
+          edit: "0",
+        },
+        {
+          id: "005",
+          name: "testfile2",
+          username: "王五",
+          owner: "1",
+          team: "001",
+          view: "1",
+          edit: "1",
+        },
+        {
+          id: "006",
+          name: "testfile2",
+          username: "王五",
+          owner: "1",
+          team: "-1",
+          view: "1",
+          edit: "2",
+        },
+        {
+          id: "007",
+          name: "testfile2",
+          username: "王五",
+          owner: "1",
+          team: "-1",
+          view: "0",
+          edit: "0",
+        },
+      ],*/
     };
   },
-  methods: {},
+  computed: {},
+  methods: {
+    cheakOwnerAuth(file) {
+      return file.owner == this.$store.state.userId;
+    },
+    editAuthCheck(edit) {
+      if (this.selectFileTeam == "-1") {
+        if (this.viewAuth == "0" && edit != "0") {
+          this.editAuth = "0";
+          return true;
+        }
+      } else {
+        if (this.viewAuth == "0" && edit == "2") {
+          if (this.editAuth == "2") {
+            this.editAuth = "1";
+          }
+          return true;
+        }
+      }
+      return false;
+    },
+    collectFile(id) {
+      CollectFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("collectFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "收藏成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("collectFile_Failed: " + id);
+            this.$message.error({
+              message: "收藏失败",
+            });
+          }
+        }
+      );
+    },
+    browseFile(id) {
+      this.$router.push({
+        path: "/docBrowse",
+        query: {
+          docId: id,
+        },
+      });
+    },
+    ShowAuthorizeDialog(id) {
+      for (let i = 0; i < this.files.length; i++) {
+        if (this.files[i].id == id) {
+          this.viewAuth = this.files[i].view;
+          this.editAuth = this.files[i].edit;
+          this.selectFileTeam = this.files[i].team;
+          this.selectFileId = this.files[i].id;
+        }
+      }
+      this.showAuthorizeDialog = true;
+    },
+    authorizeFile(id) {
+      let params = {
+        id: this.selectFileId,
+        view: this.viewAuth,
+        edit: this.editAuth,
+      };
+      AuthorizeFile(params).then((res) => {
+        if (res.data.result == true) {
+          console.log("authFile_Succeed: " + params);
+          this.$message({
+            type: "success",
+            message: "修改成功",
+          });
+          this.$router.go(0);
+        } else {
+          console.log("authFile_Failed: " + params);
+          this.$message.error({
+            message: "收藏失败",
+          });
+        }
+      });
+    },
+    templateFile(id) {
+      TemplateFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("templateFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "模板保存成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("templateFile_Failed: " + id);
+            this.$message.error({
+              message: "模板保存失败",
+            });
+          }
+        }
+      );
+    },
+    deleteFile(id) {
+      DeleteFile({ userId: this.$store.state.userId, fileId: id }).then(
+        (res) => {
+          if (res.data.result == true) {
+            console.log("deleteFile_Succeed: " + id);
+            this.$message({
+              type: "success",
+              message: "删除成功",
+            });
+            this.$router.go(0);
+          } else {
+            console.log("deleteFile_Failed: " + id);
+            this.$message.error({
+              message: "删除失败",
+            });
+          }
+        }
+      );
+    },
+  },
   mounted() {
-    GetCollectedFile({ userId: this.$store.state.userId }).then((res) => {
-      //todo
-      this.files = res.files;
+    GetCollectedFile({ id: this.$store.state.userId }).then((res) => {
+      this.files = res.data.files;
+      for (let i = 0; i < this.files.length; ) {
+        //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+        this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+        for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+          //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+          this.$set(
+            this.displayFiles[parseInt(i / this.rowWidth)],
+            j,
+            this.files[i]
+          );
+          i++;
+        }
+      }
     });
+    /*for (let i = 0; i < this.files.length; ) {
+      //this.displayFiles[parseInt(i / this.rowWidth)] = [];
+      this.$set(this.displayFiles, parseInt(i / this.rowWidth), []);
+      for (let j = 0; j < this.rowWidth && i < this.files.length; j++) {
+        //this.displayFiles[parseInt(i / this.rowWidth)][j] = this.files[i];
+        this.$set(
+          this.displayFiles[parseInt(i / this.rowWidth)],
+          j,
+          this.files[i]
+        );
+        i++;
+      }
+    }*/
+    console.log("displayFiles");
+    console.log(this.displayFiles);
   },
 };
 </script>
 <style>
+.cardFile {
+  height: 80px;
+  width: 500px;
+  background-color: #fcfcfc;
+  border: white;
+}
+.cardRow {
+  margin: -50px;
+}
+.el-dialog {
+  border-radius: 10px;
+}
 </style>

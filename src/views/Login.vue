@@ -1,27 +1,35 @@
 <template>
-  <el-main>
-    <el-form :model="LoginForm" ref="LoginForm" :rules="rule" label-width="0px" class="login-form">
-      <h2>登录</h2>
-      <el-form-item prop="user">
-        <el-input type="text" v-model="LoginForm.user" placeholder="账号、邮箱或手机"></el-input>
-      </el-form-item>
+  <div>
+    <el-main>
+      <el-form
+        :model="LoginForm"
+        ref="LoginForm"
+        :rules="rule"
+        label-width="0px"
+        class="login-form"
+      >
+        <h2>登录</h2>
+        <el-form-item prop="user">
+          <el-input type="text" v-model="LoginForm.user" placeholder="账号、邮箱或手机"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="password">
-        <el-input type="password" v-model="LoginForm.password" placeholder="密码"></el-input>
-      </el-form-item>
+        <el-form-item prop="password">
+          <el-input type="password" v-model="LoginForm.password" placeholder="密码"></el-input>
+        </el-form-item>
 
-      <el-form-item>
-        <el-button
-          type="danger"
-          class="submitBtn"
-          round
-          @click.native.prevent="submit"
-          :loading="loading"
-        >登录</el-button>
-        <el-button type="primary" class="resetBtn" round @click.native.prevent="toRegister">注册</el-button>
-      </el-form-item>
-    </el-form>
-  </el-main>
+        <el-form-item>
+          <el-button
+            type="danger"
+            class="submitBtn"
+            round
+            @click.native.prevent="submit"
+            :loading="loading"
+          >登录</el-button>
+          <el-button type="primary" class="resetBtn" round @click.native.prevent="toRegister">注册</el-button>
+        </el-form-item>
+      </el-form>
+    </el-main>
+  </div>
 </template>
 <script>
 import { Login } from "../main";
@@ -67,6 +75,7 @@ export default {
                 type: "success",
                 message: "登录成功",
               });
+              console.log("logining");
               console.log(res.data.id);
               console.log(res.data.username);
               console.log(res.data.avatar);
@@ -106,10 +115,6 @@ export default {
 }
 .submitBtn {
   width: 65%;
-}
-.to {
-  color: #67c23a;
-  cursor: pointer;
 }
 .plink {
   font-size: 10px;

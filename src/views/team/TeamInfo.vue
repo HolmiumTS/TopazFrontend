@@ -7,27 +7,54 @@
       <h2>团队信息</h2>
       <table border="0" cellspacing="20" style="margin:0 auto;">
         <tr>
-          <td>团队名称：</td>
-          <td>{{aboutTeam.teamName}}</td>
+          <td align="left">团队名称：</td>
+          <td align="left">{{aboutTeam.teamName}}</td>
         </tr>
         <tr>
-          <td>团队编号：</td>
-          <td>{{aboutTeam.teamId}}</td>
+          <td align="left">团队编号：</td>
+          <td align="left">{{aboutTeam.teamId}}</td>
         </tr>
         <tr>
-          <td>团队创建者：</td>
-          <td>
+          <td align="left">团队创建者：</td>
+          <td align="left">
             <el-link :underline="false" :href="creatorInfo.creatorUrl">
-              <el-avatar :src="creatorInfo.creatorAvatar" :alt="creatorInfo.creatorUsername"></el-avatar>
+              <el-avatar
+                :src="creatorInfo.creatorAvatar"
+                :alt="creatorInfo.creatorUsername"
+              >{{creatorInfo.creatorUsername}}</el-avatar>
               <span>{{creatorInfo.creatorUsername}}</span>
             </el-link>
           </td>
         </tr>
         <tr>
-          <td>团队简介：</td>
-          <td>{{aboutTeam.teamInfo}}</td>
+          <td align="left">团队简介：</td>
+          <td align="left">{{aboutTeam.teamInfo}}</td>
         </tr>
       </table>
+
+      <el-button
+        type="primary"
+        v-if="isCreatorOrAdmin"
+        plain
+        round
+        @click.native.prevent="dialogFormVisible=true"
+      >修改团队信息</el-button>
+
+      <el-button
+        type="danger"
+        v-if="aboutTeam.creatorId == this.$store.state.userId"
+        plain
+        round
+        @click.native.prevent="handleDissolve"
+      >解散团队</el-button>
+
+      <el-button
+        type="danger"
+        v-if="isInTeam && (aboutTeam.creatorId != this.$store.state.userId)"
+        plain
+        round
+        @click.native.prevent="handleQuit"
+      >退出团队</el-button>
 
       <el-dialog :visible.sync="dialogFormVisible" title="修改团队信息" width="50%">
         <el-form
@@ -61,60 +88,26 @@
           <el-button type="primary" :loading="submitting" @click.native.prevent="submitTeamInfo">确认</el-button>
         </div>
       </el-dialog>
-
-      <el-button
-        type="primary"
-        v-if="isCreatorOrAdmin"
-        plain
-        round
-        @click.native.prevent="dialogFormVisible=true"
-      >修改团队信息</el-button>
-
-      <el-button
-        type="danger"
-        v-if="aboutTeam.creatorId == this.$store.state.userId"
-        plain
-        round
-        @click.native.prevent="handleDissolve"
-      >解散团队</el-button>
-
-      <el-button
-        type="danger"
-        v-if="isInTeam && (aboutTeam.creatorId != this.$store.state.userId)"
-        plain
-        round
-        @click.native.prevent="handleQuit"
-      >退出团队</el-button>
     </el-main>
   </el-container>
 </template>
 
 <script>
-import { GetUserInfo, GetUserTeam, GetTeamMember } from "../../main";
-import { GetTeamInfo } from "../../main";
+import { GetTeamInfo, QuitTeam } from "../../main";
 import { DissolveTeam } from "../../main";
+import {
+  GetUserInfo,
+  GetUserTeam,
+  GetTeamMember,
+  ChangeTeamInfo,
+} from "../../main";
 
 export default {
+  inject: ["reloadComponent"],
   data() {
     return {
-      aboutTeam: {
-        // teamName: "Topaz Team", // for test
-        // teamId: "123",
-        // creatorId: "19260817",
-        // teamInfo: "955团队",
-        teamName: "",
-        teamId: "",
-        creatorId: "",
-        teamInfo: "",
-      },
-      creatorInfo: {
-        creatorUrl: "",
-        creatorUsername: "",
-        creatorAvatar: "",
-        // creatorUrl: "https://www.baidu.com",
-        // creatorUsername: "一个普通的创建者",
-        // creatorAvatar: "https://i.loli.net/2020/08/11/mfBdpDUIsJChLGM.png",
-      },
+      aboutTeam: {},
+      creatorInfo: {},
       changeTeamInfoForm: {
         teamName: "",
         teamInfo: "",
@@ -142,7 +135,7 @@ export default {
       })
         .then(() => {
           let params = {
-            teamId: this.aboutTeam.teamId,
+            id: this.aboutTeam.teamId,
           };
           console.log("confirm dissolve");
           DissolveTeam(params).then((res) => {
@@ -151,6 +144,8 @@ export default {
                 type: "success",
                 message: "成功解散团队",
               });
+              this.reloadComponent();
+              this.$store.dispatch("commitChangeStatus", "0");
               this.$router.push("/home"); // 返回到主页
             } else {
               this.$message.error({
@@ -174,6 +169,10 @@ export default {
             type: "success",
             message: "成功退出团队！",
           });
+          this.isInTeam = false;
+          this.reloadComponent();
+          this.$store.dispatch("commitChangeStatus", "0");
+          this.$router.push("/home"); // 返回到主页
         } else {
           this.$message.error({
             message: "退出团队失败，请稍后再试",
@@ -183,15 +182,20 @@ export default {
     },
 
     getCreatorUsernameAndAvatar() {
+      console.log("creatorId: " + this.aboutTeam.creatorId);
       let params = {
         id: this.aboutTeam.creatorId,
       };
       GetUserInfo(params).then((res) => {
         if (res.data.result == true) {
           this.creatorInfo.creatorUrl =
-            "http://localhost:8080/userInfo?userId=" + creatorInfo.creatorId; // 替换成 http://[ip]/home/[creatorInfo.creatorId]
+            "http://60.205.189.66:8080/userInfo?userId=" +
+            this.aboutTeam.creatorId;
           this.creatorInfo.creatorUsername = res.data.username;
           this.creatorInfo.creatorAvatar = res.data.avatar;
+          console.log(
+            "creatorInfo.creatorAvatar: " + this.creatorInfo.creatorAvatar
+          );
         } else {
           this.$message.error({
             message: "获取团队创建者信息失败",
@@ -209,6 +213,7 @@ export default {
             teamInfo: this.changeTeamInfoForm.teamInfo,
           };
           this.submitting = true;
+          console.log(params);
           ChangeTeamInfo(params).then((res) => {
             if (res.data.result == true) {
               this.$message({
@@ -219,7 +224,6 @@ export default {
               this.aboutTeam.teamInfo = this.changeTeamInfoForm.teamInfo;
               this.submitting = false;
               this.dialogFormVisible = false;
-              this.mounted();
               this.$router.push({
                 path: "/team/info",
               });
@@ -241,47 +245,62 @@ export default {
   mounted() {
     console.log(this.$store.state.teamId);
     GetTeamInfo({ teamId: this.$store.state.teamId }).then((res) => {
-      this.aboutTeam.teamName = res.data.teamName;
-      this.aboutTeam.teamId = this.$store.state.teamId;
-      this.aboutTeam.creatorId = res.data.creatorId;
-      this.aboutTeam.teamInfo = res.data.teamInfo;
-    });
-    this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
-    this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
-    this.getCreatorUsernameAndAvatar();
-    this.submitting = false;
-    this.dialogFormVisible = false;
+      if (res.data.result == false) {
+        console.log("ERROR");
+      } else {
+        this.aboutTeam.teamName = res.data.teamName;
+        this.aboutTeam.teamId = this.$store.state.teamId;
+        this.aboutTeam.creatorId = res.data.creatorId;
+        this.aboutTeam.teamInfo = res.data.teamInfo;
+        // console.log("teamName: " + this.aboutTeam.teamName);
+        this.changeTeamInfoForm.teamName = this.aboutTeam.teamName;
+        this.changeTeamInfoForm.teamInfo = this.aboutTeam.teamInfo;
 
-    GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
-      var userId = this.$store.state.userId;
-      if (
-        userId == this.aboutTeam.creatorId ||
-        res.data.adminId.includes(userId)
-      )
-        this.isCreatorOrAdmin = true;
-    });
+        this.getCreatorUsernameAndAvatar();
+        this.submitting = false;
+        this.dialogFormVisible = false;
 
-    GetUserTeam({ id: this.$store.state.userId }).then((res) => {
-      this.isInTeam = false;
-      for (var teamID in res.data.joinedTeam) {
-        if (teamID == this.aboutTeam.teamId) this.isInTeam = true;
+        GetTeamMember({ teamId: this.$store.state.teamId }).then((res) => {
+          var userId = this.$store.state.userId;
+          if (res.data.result === true) {
+            for (let i = 0; i < res.data.memberInfo.length; i++) {
+              let id = res.data.memberInfo[i].memberId;
+              let type = res.data.memberInfo[i].memberType;
+              if (id == userId && (type === "0" || type === "1"))
+                this.isCreatorOrAdmin = true;
+            }
+          }
+        });
+
+        GetUserTeam({ id: this.$store.state.userId }).then((res) => {
+          this.isInTeam = false;
+          for (let i = 0; i < res.data.teams.length; i++) {
+            if (res.data.teams[i].id == this.aboutTeam.teamId)
+              this.isInTeam = true;
+          }
+        });
       }
+      // console.log("creatorId2: " + res.data.creatorId);
     });
+    // console.log("creatorId3: " + this.aboutTeam.teamName);
   },
 };
 </script>
 
 <style scoped>
 .teamInfo {
-  margin: auto auto;
+  margin: 2% auto;
   background: #fff;
   box-shadow: 0 0 8px #b4bccc;
   padding: 20px 30px 30px 30px;
   border-radius: 10px;
+  max-width: 600px;
 }
-
 span {
   margin-left: 10px;
   vertical-align: middle;
+}
+.el-dialog {
+  border-radius: 15px;
 }
 </style>

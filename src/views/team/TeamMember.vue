@@ -10,40 +10,46 @@ TODO:
       <el-table
         height="600"
         :data="memberInfo"
-        stripe
-        style="width: 100%"
+        style="width: 1000px;margin:auto auto;border-radius: 20px;box-shadow: 0 0 5px #b4bccc;padding: 20px 30px 30px 30px;"
         :default-sort="{prop: 'memberType', order: 'ascending'}"
       >
-        <el-table-column label="用户" width="400">
+        <el-table-column label="用户" min-width="40%">
           <template slot-scope="scope">
             <el-link :underline="false" :href="scope.row.memberUrl">
-              <el-avatar :src="scope.row.memberAvatar" :alt="scope.row.memberUsername"></el-avatar>
+              <el-avatar :src="scope.row.memberAvatar" :alt="scope.row.memberUsername">{{scope.row.memberUsername}}</el-avatar>
               <span>{{scope.row.memberUsername}}</span>
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column label="权限" width="300">
+        <el-table-column label="权限" min-width="30%">
           <template slot-scope="scope">
             <div v-if="scope.row.memberType==0">创建者</div>
             <div v-else-if="scope.row.memberType==1">管理员</div>
-            <div v-else>普通成员</div>
+            <div v-else-if="scope.row.memberType==2">普通成员</div>
+            <!-- <div v-else>ERROR</div> -->
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column label="操作" min-width="30%">
           <template slot-scope="scope">
-            <el-button
+            <!-- <el-button
               type="primary"
               plain
-              v-if="userTypeInTeam==0&&scope.row.memberType==2"
-              @click.native.prevent="setAdmin(scope.row.memberId)"
+              v-if="scope.row.memberType == 2 && userTypeInTeam == 0"
+              @click.native.prevent="setAdmin(scope.$index, scope.row)"
             >设为管理员</el-button>
 
             <el-button
               type="warning"
               plain
-              v-if="userTypeInTeam==0&&scope.row.memberType==1"
-              @click.native.prevent="cancelAdmin(scope.row.memberId)"
-            >取消管理员</el-button>
+              v-if="scope.row.memberType == 1 && userTypeInTeam == 0"
+              @click.native.prevent="cancelAdmin(scope.$index, scope.row)"
+            >取消管理员</el-button>-->
+            <el-button
+              v-if="userTypeInTeam == 0 && scope.row.memberType != 0"
+              plain
+              :type="scope.row.buttonType"
+              @click.native.prevent="changeAdmin(scope.$index, scope.row)"
+            >{{scope.row.buttonText}}</el-button>
 
             <el-button
               type="success"
@@ -57,7 +63,7 @@ TODO:
               type="danger"
               plain
               v-if="userTypeInTeam<scope.row.memberType"
-              @click.native.prevent="confirmKickOff(scope.row.memberId, scope.row.memberUsername)"
+              @click.native.prevent="confirmKickOff(scope.$index, scope.row.memberId, scope.row.memberUsername)"
             >踢出团队</el-button>
           </template>
         </el-table-column>
@@ -68,7 +74,7 @@ TODO:
           <el-table-column label="用户" width="350">
             <template slot-scope="scope">
               <el-link :underline="false" :href="scope.row.url">
-                <el-avatar :src="scope.row.avatar" :alt="scope.row.username"></el-avatar>
+                <el-avatar :src="scope.row.avatar" :alt="scope.row.username">{{scope.row.memberUsername}}</el-avatar>
                 <span>{{scope.row.username}}</span>
               </el-link>
             </template>
@@ -98,12 +104,14 @@ TODO:
 import {
   GetTeamMember,
   generateUserUrl,
-  GetUserInfo,
   SetAdmin,
   CancelAdmin,
   GetAllApplication,
   JudgeApplication,
+  KickOff,
+  GetUserInfo,
 } from "../../main";
+
 export default {
   data() {
     return {
@@ -163,9 +171,12 @@ export default {
         teamId: this.aboutTeam.teamId,
       };
       GetAllApplication(params).then((res) => {
+        console.log(res.data);
         if (res.data.result == true) {
           this.applicationInfo.splice(0, this.applicationInfo.length);
-          for (var tmp in res.data.application) {
+          var length = res.data.application.length;
+          for (var i = 0; i < length; i++) {
+            var tmp = res.data.application[i];
             this.applicationInfo.push({
               id: tmp.id,
               url: generateUserUrl(tmp.id),
@@ -180,7 +191,7 @@ export default {
         }
       });
       // for test
-      this.applicationInfo.push({
+      /*this.applicationInfo.push({
         id: "12",
         url: "www.bilibili.com",
         username: "bilibili",
@@ -191,7 +202,7 @@ export default {
         url: "www.acfun.cn",
         username: "acfun",
         avatar: "https://i.loli.net/2020/08/11/Rqm3hEG6bnHLsd4.png",
-      });
+      });*/
       // for test
     },
 
@@ -201,13 +212,28 @@ export default {
         id: id,
         isAccept: isAccept == true ? "true" : "false",
       };
-      // console.log(index);
-      JudgeApplication(params).them((res) => {
+      console.log("JudgeApplication.params: " + params);
+      JudgeApplication(params).then((res) => {
         if (res.data.result == true) {
           this.$message({
             type: "success",
-            message: "审核成功",
+            message:
+              params.isAccept === "true" ? "成功通过申请" : "成功拒绝申请",
           });
+          // this.$router.go(0);
+          if (params.isAccept === "true") {
+            GetUserInfo({ id: id }).then((res) => {
+              this.memberInfo.push({
+                memberId: id,
+                memberUrl: generateUserUrl(id),
+                memberUsername: res.data.username,
+                memberType: 2,
+                memberAvatar: res.data.avatar,
+                buttonType: "primary",
+                buttonText: "设为管理员",
+              });
+            });
+          }
           this.applicationInfo.splice(index, 1);
         } else {
           this.$message.error({
@@ -217,17 +243,31 @@ export default {
       });
     },
 
-    setAdmin(id) {
-      console.log(id + " is set as Admin.");
+    changeAdmin(index, row) {
+      if (row.memberType == 1) this.cancelAdmin(index, row);
+      else this.setAdmin(index, row);
+    },
+
+    setAdmin(index, row) {
+      console.log(row.memberId + " is set as Admin.");
       let params = {
         teamId: this.aboutTeam.teamId,
-        id: id,
+        id: row.memberId,
       };
       SetAdmin(params).then((res) => {
         if (res.data.result == true) {
           this.$message({
             type: "success",
             message: "管理员设置成功",
+          });
+          this.memberInfo.splice(index, 1, {
+            memberId: row.memberId,
+            memberUrl: row.memberUrl,
+            memberUsername: row.memberUsername,
+            memberType: 1,
+            memberAvatar: row.memberAvatar,
+            buttonType: "warning",
+            buttonText: "取消管理员",
           });
         } else {
           this.$message.error({
@@ -237,17 +277,26 @@ export default {
       });
     },
 
-    cancelAdmin(id) {
-      console.log(id + " is cancelled.");
+    cancelAdmin(index, row) {
+      console.log(row.memberId + " is cancelled.");
       let params = {
         teamId: this.aboutTeam.teamId,
-        id: id,
+        id: row.memberId,
       };
       CancelAdmin(params).then((res) => {
         if (res.data.result == true) {
           this.$message({
             type: "success",
             message: "管理员取消成功",
+          });
+          this.memberInfo.splice(index, 1, {
+            memberId: row.memberId,
+            memberUrl: row.memberUrl,
+            memberUsername: row.memberUsername,
+            memberType: 2,
+            memberAvatar: row.memberAvatar,
+            buttonType: "primary",
+            buttonText: "设为管理员",
           });
         } else {
           this.$message.error({
@@ -257,19 +306,19 @@ export default {
       });
     },
 
-    confirmKickOff(id, username) {
+    confirmKickOff(index, id, username) {
       this.$confirm("确定要将" + username + "踢出团队吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.kickOff(id);
+          this.kickOff(index, id);
         })
         .catch(() => {});
     },
 
-    kickOff(id) {
+    kickOff(index, id) {
       console.log(id + " is kicked off.");
       let params = {
         teamId: this.aboutTeam.teamId,
@@ -281,6 +330,7 @@ export default {
             type: "success",
             message: "踢出成员成功",
           });
+          this.memberInfo.splice(index, 1);
         } else {
           this.$message.error({
             message: "踢出成员失败，请稍后再试",
@@ -293,39 +343,36 @@ export default {
   mounted() {
     this.userId = this.$store.state.userId;
     this.aboutTeam.teamId = this.$store.state.teamId;
-    this.userTypeInTeam = "3";
     let params = {
-      teamId: this.teamId,
+      teamId: this.aboutTeam.teamId,
     };
     GetTeamMember(params).then((res) => {
-      var tmpMemberInfo = {
-        memberId: "",
-        memberUrl: "",
-        memberUsername: "",
-        memberType: 0,
-        memberAvatar: "",
-      };
       if (res.data.result == true) {
-        var idArray = [{ id: res.data.creatorId, type: 0 }];
-        for (var tmpId in res.data.adminId) {
-          idArray.push({ id: tmpId, type: 1 });
+        for (let i = 0; i < res.data.memberInfo.length; i++) {
+          this.memberInfo.push({});
+          this.memberInfo[i].memberId = res.data.memberInfo[i].memberId;
+          this.memberInfo[i].memberUrl = generateUserUrl(
+            this.memberInfo[i].memberId
+          );
+          this.memberInfo[i].memberUsername =
+            res.data.memberInfo[i].memberUsername;
+          this.memberInfo[i].memberType = parseInt(
+            res.data.memberInfo[i].memberType
+          );
+          this.memberInfo[i].memberAvatar = res.data.memberInfo[i].memberAvatar;
+          if (this.memberInfo[i].memberId === this.$store.state.userId)
+            this.userTypeInTeam = this.memberInfo[i].memberType;
         }
-        for (var tmpId in res.data.memberId) {
-          idArray.push({ id: tmpId, type: 2 });
-        }
-
-        var tmpObj = { tmpId: "", tmpType: 0 };
-        for (tmpObj in idArray) {
-          if (tmpObj.tmpId == this.userId) this.userTypeInTeam = tmpObj.tmpType;
-
-          tmpMemberInfo.memberId = tmpObj.tmpId;
-          tmpMemberInfo.memberUrl = generateUserUrl(tmpObj.tmpId);
-          tmpMemberInfo.memberType = tmpObj.tmpType;
-          GetUserInfo(tmpObj.tmpId).then((res2) => {
-            tmpMemberInfo.memberUsername = res2.data.username;
-            tmpMemberInfo.memberAvatar = res2.data.avatar;
-          });
-          this.memberInfo.push(tmpMemberInfo);
+        if (this.userTypeInTeam == 0) {
+          for (let i = 0; i < this.memberInfo.length; i++) {
+            if (this.memberInfo[i].memberType == 1) {
+              this.memberInfo[i].buttonText = "取消管理员";
+              this.memberInfo[i].buttonType = "warning";
+            } else if (this.memberInfo[i].memberType == 2) {
+              this.memberInfo[i].buttonText = "设为管理员";
+              this.memberInfo[i].buttonType = "primary";
+            }
+          }
         }
       } else {
         this.$message.error({
@@ -340,10 +387,6 @@ export default {
 <style scoped>
 .teamMember {
   margin: auto auto;
-  /* background: #fff;
-  box-shadow: 0 0 8px #b4bccc;
-  padding: 20px 30px 30px 30px;
-  border-radius: 10px; */
 }
 
 span {

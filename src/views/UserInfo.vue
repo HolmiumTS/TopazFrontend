@@ -10,9 +10,8 @@
             :src="ava"
             :size="100"
             fit="fill"
-            v-bind:username="this.$store.state.username"
             style="margin:50% 20%"
-          >{{username}}</el-avatar>
+          >{{this.$store.state.username}}</el-avatar>
           <p v-if="this.$store.state.userId == this.userId" style="margin: -16% 22%">
             <el-button @click.native.prevent="dis2=true">修改头像</el-button>
           </p>
@@ -60,7 +59,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="submitting" @click.native.prevent="submit0">确认</el-button>
+          <el-button type="primary" :loading="submitting0" @click.native.prevent="submit0">确认</el-button>
         </div>
       </el-dialog>
       <el-dialog :visible.sync="dis1" title="修改密码" width="30%">
@@ -72,7 +71,11 @@
           label-width="80px"
         >
           <el-form-item label="旧密码" prop="passwordOld">
-            <el-input v-model="changeUserPasswordForm.passwordOld" placeholder="旧密码"></el-input>
+            <el-input
+              type="password"
+              v-model="changeUserPasswordForm.passwordOld"
+              placeholder="旧密码"
+            ></el-input>
           </el-form-item>
           <el-form-item label="新密码" prop="password">
             <el-input v-model="changeUserPasswordForm.password" placeholder="新密码"></el-input>
@@ -82,12 +85,12 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="submitting" @click.native.prevent="submit1">确认</el-button>
+          <el-button type="primary" :loading="submitting1" @click.native.prevent="submit1">确认</el-button>
         </div>
       </el-dialog>
       <el-dialog :visible.sync="dis2" title="上传头像" width="30%">
         <el-upload
-          :multiple="true"
+          :multiple="false"
           list-type="picture-card"
           :on-remove="handleRemove"
           :action="actionPath"
@@ -102,7 +105,7 @@
           <i class="el-icon-plus"></i>
         </el-upload>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click.native.prevent="submit2">确认</el-button>
+          <el-button type="primary" :loading="submitting2" @click.native.prevent="submit2">确认</el-button>
         </div>
       </el-dialog>
     </el-main>
@@ -143,7 +146,9 @@ export default {
       dis0: false,
       dis1: false,
       dis2: false,
-      submitting: false,
+      submitting0: false,
+      submitting1: false,
+      submitting2: false,
       rule1: {
         passwordOld: [
           {
@@ -220,7 +225,7 @@ export default {
     submit0() {
       this.$refs.changeUserInfoForm.validate((valid) => {
         if (valid) {
-          this.submitting = true;
+          this.submitting0 = true;
           let params = this.changeUserInfoForm;
           params.id = this.userId;
           params.tel = params.tel.toString();
@@ -230,15 +235,18 @@ export default {
                 type: "success",
                 message: "信息修改成功",
               });
-              this.submitting = false;
-              this.$store.dispatch(
-                "commitLogin",
-                this.userId,
-                this.changeUserInfoForm.username,
-                this.userInfo.avatar
-              );
+              this.submitting0 = false;
+
+              this.userInfo.username = this.changeUserInfoForm.username;
+              this.userInfo.tel = this.changeUserInfoForm.tel;
+              this.userInfo.email = this.changeUserInfoForm.email;
+
+              this.$store.dispatch("commitLogin", {
+                userId: this.userId,
+                username: this.changeUserInfoForm.username,
+                avatar: this.userInfo.avatar,
+              });
               this.dis0 = false;
-              this.mounted();
               this.$router.push({
                 path: "/userInfo",
                 query: {
@@ -246,6 +254,7 @@ export default {
                 },
               });
             } else {
+              this.submitting0 = false;
               this.$message.error({
                 message: "信息修改失败,请稍后再试",
               });
@@ -261,20 +270,19 @@ export default {
     submit1() {
       this.$refs.changeUserPasswordForm.validate((valid) => {
         if (valid) {
-          this.submitting = true;
+          this.submitting1 = true;
           let changePasswordParams = {
-            userId: this.userId,
-            oldPassword: this.changeUserPasswordForm.PasswordOld,
+            id: this.userId,
+            oldPassword: this.changeUserPasswordForm.passwordOld,
             newPassword: this.changeUserPasswordForm.password,
           };
           ChangeUserPassword(changePasswordParams).then((res) => {
             if (res.data.result == true) {
-              this.logining = false;
               this.$message({
                 type: "success",
                 message: "密码修改成功",
               });
-              this.submitting = false;
+              this.submitting1 = false;
               this.dis1 = false;
               this.$router.push({
                 path: "/userInfo",
@@ -283,8 +291,9 @@ export default {
                 },
               });
             } else {
+              this.submitting1 = false;
               this.$message.error({
-                message: "密码修改失败，请稍后再试",
+                message: "旧密码错误",
               });
             }
           });
@@ -297,32 +306,32 @@ export default {
     },
     submit2() {
       if (this.avatar.length == 1) {
-        this.submitting = true;
+        this.submitting2 = true;
         ChangeUserAvatar({
           id: this.$store.state.userId,
           avatar: this.avatar[0],
         }).then((res) => {
           if (res.data.result == true) {
+            this.submitting2 = false;
             this.$message({
               type: "success",
               message: "头像修改成功",
             });
-            this.submitting = false;
-            this.$store.dispatch(
-              "commitLogin",
-              this.userId,
-              this.$store.state.username,
-              this.avatar[0]
-            );
+            this.$store.dispatch("commitLogin", {
+              userId: this.userId,
+              username: this.$store.state.username,
+              avatar: this.avatar[0],
+            });
             this.dis2 = false;
-            this.mounted();
-            this.$router.push({
+            /*this.$router.push({
               path: "/userInfo",
               query: {
                 userId: this.$store.state.userId,
               },
-            });
+            });*/
+            this.$router.go(0);
           } else {
+            this.submitting2 = false;
             this.$message.error("修改头像失败, 请稍后再试");
           }
         });
@@ -381,10 +390,12 @@ export default {
   },
   computed: {
     ava() {
-      return (
+      //return this.$store.state.avatar;
+      return this.userInfo.avatar;
+      /*return (
         this.$store.state.avatar ||
         "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png"
-      );
+      );*/
       //return "https://ftp.bmp.ovh/imgs/2020/08/182a2651f9696ab4.png";
       //return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     },
@@ -441,5 +452,8 @@ export default {
   background-color: #ffffff;
   padding: 0 15px;
   transform: translateX(-50%) translateY(-50%);
+}
+.el-dialog {
+  border-radius: 20px;
 }
 </style>

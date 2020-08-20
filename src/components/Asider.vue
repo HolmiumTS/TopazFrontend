@@ -5,8 +5,11 @@
       class="el-menu-vertical-demo"
       @select="handleSelect"
       v-if="this.$store.state.status == '0'"
+      background-color="#EEEEEE"
+      text-color="#808080"
+      active-text-color="#000000"
     >
-      <el-submenu>
+      <el-submenu index="sub1">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
           <span>工作台</span>
@@ -15,7 +18,7 @@
         <el-menu-item index="/home/collectedFile">收藏的文档</el-menu-item>
         <el-menu-item index="/home/myFile">我创建的文档</el-menu-item>
       </el-submenu>
-      <el-submenu>
+      <el-submenu index="sub2">
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span>团队空间</span>
@@ -26,7 +29,7 @@
           ></i>
         </template>
         <template v-for="team in teams">
-          <el-menu-item :key="team.id" :index="team.name" :disabled="team.id=='-1'">{{team.name}}</el-menu-item>
+          <el-menu-item :key="team.id" :index="team.id" :disabled="team.id=='-1'">{{team.name}}</el-menu-item>
         </template>
       </el-submenu>
       <el-menu-item index="/home/recyclebin">
@@ -39,6 +42,9 @@
       class="el-menu-vertical-demo"
       @select="handleSelect"
       v-if="this.$store.state.status == '1'"
+      background-color="#EEEEEE"
+      text-color="#808080"
+      active-text-color="#000000"
     >
       <el-menu-item index="goBack">
         <i class="el-icon-back"></i>
@@ -95,6 +101,7 @@
 <script>
 import { GetUserTeam, CreateTeam } from "../main";
 export default {
+  inject: ["reloadComponent"],
   data() {
     return {
       /*teams: [
@@ -102,6 +109,7 @@ export default {
         { id: "02", name: "test2" },
       ],*/
       teams: [{ id: "-1", name: "空" }],
+      //teams: [],
       dialogFormVisible: false,
       submitting: false,
       createTeamInfoForm: {
@@ -126,22 +134,29 @@ export default {
     },
   },
   methods: {
-    handleSelect(key, index) {
+    handleSelect(key, ind) {
+      let index;
+      if (ind.length > 1) index = ind[1];
+      else index = ind[0];
+      /*console.log("start");
+      console.log(index);
+      console.log("end");*/
       if (index.toString() == "goBack") {
         this.$store.dispatch("commitChangeStatus", "0");
+        this.$store.dispatch("commitChangeTeamId", "");
         this.$router.push("/home/recentFile");
         return;
       }
       for (let i = 0; i < this.teams.length; i++) {
-        if (this.teams[i].name == index.toString()) {
+        if (this.teams[i].id == index.toString()) {
           this.$store.dispatch("commitChangeTeamId", this.teams[i].id);
+          this.$store.dispatch("commitChangeStatus", "1");
           this.$router.push("/team");
           return;
         }
       }
       this.$router.push(index.toString());
     },
-
     createTeam() {
       this.$refs.createTeamInfoForm.validate((valid) => {
         if (valid) {
@@ -160,7 +175,9 @@ export default {
               this.submitting = false;
               this.dialogFormVisible = false;
               // this.$store.dispatch("commitChangeTeamId", "123456");
-              this.$store.dispatch("commmitChangeTeamId", res.data.teamId);
+              this.$store.dispatch("commitChangeTeamId", res.data.teamId);
+              this.$store.dispatch("commitChangeStatus", "1");
+              this.reloadComponent();
               this.$router.push({
                 path: "/team/info",
               });
@@ -179,12 +196,15 @@ export default {
     },
   },
   mounted() {
-    GetUserTeam(this.$store.state.userId).then((res) => {
+    GetUserTeam({ id: this.$store.state.userId }).then((res) => {
       this.teams = res.data.teams;
+      console.log("Asider.vue_teams");
+      console.log(this.teams.length);
+      console.log(this.teams);
+      if (this.teams.length < 1 || this.teams == []) {
+        this.teams = [{ id: "-1", name: "空" }];
+      }
     });
-    if (this.teams.length < 1) {
-      this.teams = [{ id: "-1", name: "空" }];
-    }
   },
 };
 </script>
